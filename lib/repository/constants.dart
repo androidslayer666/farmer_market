@@ -1,0 +1,3 @@
+
+
+const fireStoreUsersTableName = 'users';
