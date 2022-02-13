@@ -11,7 +11,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<AppAuthStatusChanged>(_onStatusChanged);
     stream.listen((user) {
       if(user != null) {
-        print('get a user');
         add(const AppAuthStatusChanged(AuthenticationStatus.authenticated));
       }
     });

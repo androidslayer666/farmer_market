@@ -1,5 +1,5 @@
-import 'package:farmer_market/presentation/app_bloc.dart';
-import 'package:farmer_market/presentation/app_state.dart';
+import 'package:farmer_market/app/app_bloc.dart';
+import 'package:farmer_market/app/app_state.dart';
 import 'package:farmer_market/presentation/navigation/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +10,6 @@ class FarmerMarketApp extends StatelessWidget {
 
   const FarmerMarketApp({Key? key, this.initialPage}) : super(key: key);
 
-
-
   @override
   Widget build(BuildContext context) {
     final Stream<User?> authStream = FirebaseAuth.instance.authStateChanges();
@@ -20,12 +18,11 @@ class FarmerMarketApp extends StatelessWidget {
           return AppBloc(authStream);
         },
         child: BlocListener<AppBloc, AppState>(
-
           listener: (context, state) {
             if (state.authenticationStatus ==
                 AuthenticationStatus.authenticated) {
               print("SUCCESSFUL LOGIN!!!!");
-              Navigator.of(context).pushNamed(mainRoute);
+              //Navigator.of(context).pushNamed(mainRoute);
             }
           },
           child: MaterialApp(

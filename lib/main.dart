@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import 'farmer_market_app.dart';
+import 'app/farmer_market_app.dart';
 import 'presentation/di/getit_setup.dart';
 
 void main() async {
@@ -17,7 +17,7 @@ void main() async {
   // initializing data layer dependencies
   setupGetIt();
 
-  FirebaseAuth.instance.signOut();
+  //FirebaseAuth.instance.signOut();
 
   //checking authorization
   final page = await _getInitPage();
@@ -26,9 +26,9 @@ void main() async {
 }
 
 Future<String> _getInitPage() async {
-  final isAuthorized = FirebaseAuth.instance.currentUser;
-  if(isAuthorized != null) {
+  final currentUser = FirebaseAuth.instance.currentUser;
+  if(currentUser != null) {
     return mainRoute;
   }
-  return loginRoute;
+  return signInRoute;
 }

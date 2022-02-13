@@ -5,8 +5,8 @@ part 'user.g.dart';
 @JsonSerializable()
 class User {
   String name;
-  String email;
-  String password;
+  String phone;
+  String description;
   bool isSeller;
   String? avatarUrl;
   String? address;
@@ -15,8 +15,8 @@ class User {
 
   User({
     required this.name,
-    required this.email,
-    required this.password,
+    required this.phone,
+    required this.description,
     required this.isSeller,
     this.avatarUrl,
     this.address,
@@ -24,6 +24,11 @@ class User {
     this.reviews,
   });
 
+
+  @override
+  String toString() {
+    return 'name : $name ;;; phone: $phone ;;; description $description';
+  }
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

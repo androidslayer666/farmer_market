@@ -23,7 +23,7 @@ class TextInputCustom extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       child: TextField(
         style: TextStyle(fontSize: 20),
-        // controller: controller,
+        controller: controller,
         maxLines: lines,
         onChanged: (String value) => onChanged(value),
         obscureText: isPass,

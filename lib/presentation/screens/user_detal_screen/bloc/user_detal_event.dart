@@ -1,0 +1,50 @@
+
+
+import 'dart:typed_data';
+
+import 'package:equatable/equatable.dart';
+
+abstract class UserDetailEvent extends Equatable {
+  const UserDetailEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
+class UserDetailNameChanged extends UserDetailEvent {
+  const UserDetailNameChanged(this.name);
+
+  final String name;
+
+  @override
+  List<Object> get props => [name];
+}
+
+class UserDetailPhoneChanged extends UserDetailEvent {
+  const UserDetailPhoneChanged(this.phone);
+
+  final String phone;
+
+  @override
+  List<Object> get props => [phone];
+}
+
+class UserDetailDescriptionChanged extends UserDetailEvent {
+  const UserDetailDescriptionChanged(this.description);
+
+  final String description;
+
+  @override
+  List<Object> get props => [description];
+}
+
+class UserDetailImageAddClicked extends UserDetailEvent {
+  const UserDetailImageAddClicked();
+
+  @override
+  List<Object> get props => [];
+}
+
+class UserDetailSubmitted extends UserDetailEvent {
+  const UserDetailSubmitted();
+}
