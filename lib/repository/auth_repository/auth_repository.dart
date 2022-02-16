@@ -1,14 +1,15 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmer_market/repository/auth_repository/show_code_input_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 import '../../presentation/di/getit_setup.dart';
-import '../storage_repository.dart';
+import '../../presentation/screens/phone_enter_screen/bloc/phone_enter_bloc.dart';
+import '../../presentation/shared/constants.dart';
 import '../constants.dart';
 import '../models/user.dart' as models;
+import '../storage_repository.dart';
+import '../success_failure.dart';
 import 'on_code_sent.dart';
 
 class AuthRepository {
@@ -16,9 +17,8 @@ class AuthRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final StorageRepository _storageRepository = locator<StorageRepository>();
 
-  Future<String> signUpWithPhone(
-      {required String phone, required BuildContext context}) async {
-    String res = "Some error Occurred";
+  Future<Result> signUpWithPhone(
+      {required String phone, required PhoneEnterBloc bloc}) async {
     try {
       if (phone.isNotEmpty) {
         // registering user in auth with email and password
@@ -29,48 +29,67 @@ class AuthRepository {
           verificationCompleted: (PhoneAuthCredential cred) {},
           verificationFailed: (FirebaseAuthException exception) => {},
           codeSent: (String verificationId, int? forceResendingToken) =>
-              onCodeSent(verificationId, forceResendingToken, context, _auth),
+              onCodeSent(verificationId, forceResendingToken, bloc, _auth),
           codeAutoRetrievalTimeout: (String verificationId) {},
         );
       }
+      return Success(data: null);
     } catch (err) {
-      print('catch an error');
-      return err.toString();
+      print(err.toString());
+      return Failure(data: err.toString());
     }
-    return res;
   }
 
-  Future<String> addUserInfo(models.User user, Uint8List? file) async {
-    String res = '';
+  Future<Result> addUserInfo(models.User user, Uint8List? file) async {
     try {
       final currentUser = _auth.currentUser;
       if (file != null) {
-        user.avatarUrl = await _storageRepository.uploadImageToStorage(
-            'profilePics', file, false);
+        final result =
+        await _storageRepository.uploadImageToStorage(
+            fireStoreNameProfilePics, file);
+        if (result is Success<String>) {
+          user.avatarUrl = result.data;
+        }
       }
-
       if (currentUser != null) {
         await _firestore
             .collection(fireStoreUsersTableName)
             .doc(currentUser.uid)
             .set(user.toJson());
       }
-      res = 'success';
-    } catch (e) {
-      res = e.toString();
+      return Success(data: null);
+    } catch (err) {
+      return Failure(data: err.toString());
     }
-    return res;
   }
 
-  Future<models.User?> getCurrentUser() async {
+  Future<Result<models.User>> getCurrentUser() async {
     final currentUser = _auth.currentUser;
-    if(currentUser != null) {
+    if (currentUser != null) {
       final jsonUser = await _firestore
-        .collection(fireStoreUsersTableName)
-        .doc(currentUser.uid)
-        .get();
-      return models.User.fromJson(jsonUser.data() as Map<String, dynamic>);
+          .collection(fireStoreUsersTableName)
+          .doc(currentUser.uid)
+          .get();
+      if(jsonUser.data() != null) {
+
+        return Success(
+          data: models.User.fromJson(jsonUser.data() as Map<String, dynamic>));
+      } else {
+
+        return Failure(data: null);
+      }
+    }else {
+      return Failure(data: null);
     }
-    return null;
+  }
+
+  Future<Result> signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      return Success(data: null);
+    }
+    catch (e) {
+      return Failure(data: null);
+    }
   }
 }

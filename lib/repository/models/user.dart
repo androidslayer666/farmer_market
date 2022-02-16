@@ -6,7 +6,7 @@ part 'user.g.dart';
 class User {
   String name;
   String phone;
-  String description;
+  String? description;
   bool isSeller;
   String? avatarUrl;
   String? address;

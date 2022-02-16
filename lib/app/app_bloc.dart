@@ -1,26 +1,26 @@
 
+import 'package:farmer_market/repository/auth_repository/auth_repository.dart';
+import 'package:farmer_market/repository/success_failure.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:bloc/bloc.dart';
 
+import '../presentation/di/getit_setup.dart';
 import 'app_event.dart';
 import 'app_state.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
-  AppBloc(Stream<User?> stream) : super(const AppState()) {
-    on<AppAuthStatusChanged>(_onStatusChanged);
-    stream.listen((user) {
-      if(user != null) {
-        add(const AppAuthStatusChanged(AuthenticationStatus.authenticated));
-      }
-    });
+  AppBloc(bool authenticated) : super(AppState(authenticated: authenticated)) {
+    on<AppAuthStatusChanged>(_onAuthStatusChanged);
   }
-  void _onStatusChanged(
+
+  void _onAuthStatusChanged(
       AppAuthStatusChanged event,
       Emitter<AppState> emit,
       ) {
-    final status = event.status;
-    emit(state.copyWith(authenticationStatus: status));
+    print('on status Changed, status : ${event.authenticated}');
+    final status = event.authenticated;
+    emit(state.copyWith(authenticated: status));
   }
 
 }

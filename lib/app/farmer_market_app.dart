@@ -5,30 +5,38 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class FarmerMarketApp extends StatelessWidget {
-  final String? initialPage;
+import 'theme_data.dart';
 
-  const FarmerMarketApp({Key? key, this.initialPage}) : super(key: key);
+class FarmerMarketApp extends StatelessWidget {
+  const FarmerMarketApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final Stream<User?> authStream = FirebaseAuth.instance.authStateChanges();
     return BlocProvider(
         create: (context) {
-          return AppBloc(authStream);
+          print(FirebaseAuth.instance.currentUser);
+          final authenticated = FirebaseAuth.instance.currentUser != null;
+          return AppBloc(authenticated);
         },
-        child: BlocListener<AppBloc, AppState>(
-          listener: (context, state) {
-            if (state.authenticationStatus ==
-                AuthenticationStatus.authenticated) {
-              print("SUCCESSFUL LOGIN!!!!");
-              //Navigator.of(context).pushNamed(mainRoute);
-            }
-          },
-          child: MaterialApp(
-            initialRoute: initialPage,
-            routes: routes,
-          ),
-        ));
+        child: FarmerMarketAppBody());
+  }
+}
+
+class FarmerMarketAppBody extends StatelessWidget {
+  const FarmerMarketAppBody({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AppBloc, AppState>(
+      builder: (context, state) {
+        print(state);
+        return MaterialApp(
+          key: UniqueKey(),
+          theme: themeData,
+          initialRoute: state.authenticated ? mainRoute : signInRoute,
+          routes: routes,
+        );
+      },
+    );
   }
 }

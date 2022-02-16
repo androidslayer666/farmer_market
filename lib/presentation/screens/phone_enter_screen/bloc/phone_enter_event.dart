@@ -34,7 +34,7 @@ class PhoneEnterSubmitted extends PhoneEnterEvent {
 }
 
 class PhoneCodeSent extends PhoneEnterEvent{
-  const PhoneCodeSent(this.onCodeSubmitted);
+  const PhoneCodeSent({required this.onCodeSubmitted});
   final Function(String) onCodeSubmitted;
 }
 

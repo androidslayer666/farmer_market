@@ -1,20 +1,32 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
-pickImage(ImageSource source) async {
+Future<Uint8List?> pickImage(ImageSource source) async {
   final ImagePicker _imagePicker = ImagePicker();
   XFile? _file = await _imagePicker.pickImage(source: source);
   if (_file != null) {
     return await _file.readAsBytes();
   }
   print('No Image Selected');
+  return null;
+}
+
+Future<Uint8List?> urlToUint8List(String? url) async {
+  if (url != null){
+    return  (await NetworkAssetBundle(Uri.parse(url)).load(url))
+        .buffer
+        .asUint8List();
+  }
+  return null;
 }
 
 extension PhoneValidator on String {
   bool isValidPhone() {
     return RegExp(
-        r'^(?:[+0]9)?[0-9]{10}$')
+        r'^[\d\(\)\-+].{10,}$')
         .hasMatch(this);
   }
 }
@@ -28,16 +40,24 @@ extension PasswordValidator on String {
 
 
 class NumberTextInputFormatter extends TextInputFormatter {
-  final firstScobe = 3;
-  final secondScobe = 6;
-  final delimiter = ' ';
-  final maxLength = 16;
-  final delimitersAfter = [3, 5];
+  NumberTextInputFormatter({
+    this.firstBrace = 3,
+    this.secondBrace = 6,
+    this.delimiter = ' ',
+    this.maxLength = 16,
+    this.delimitersAfter = const [3,5]
+});
+
+  int firstBrace;
+  int secondBrace;
+  String delimiter;
+  int maxLength;
+  List<int> delimitersAfter;
 
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    print("New value length : ${newValue.text.length}");
+    //print("New value length : ${newValue.text.length}");
 
 
     if (oldValue.text.length > newValue.text.length) {
@@ -56,31 +76,31 @@ class NumberTextInputFormatter extends TextInputFormatter {
       newText.write('+');
       if (newValue.selection.end >= 1) selectionIndex++;
     }
-    if (newTextLength == firstScobe) {
+    if (newTextLength == firstBrace) {
       newText.write(
-          newValue.text.substring(0, usedSubstringIndex = firstScobe - 1) +
+          newValue.text.substring(0, usedSubstringIndex = firstBrace - 1) +
               '(');
       if (newValue.selection.end >= 2) selectionIndex += 1;
     }
 
-    if (newTextLength == secondScobe) {
+    if (newTextLength == secondBrace) {
       //newText.write('(');
       newText.write(
-          newValue.text.substring(0, usedSubstringIndex = secondScobe) + ')');
+          newValue.text.substring(0, usedSubstringIndex = secondBrace) + ')');
       if (newValue.selection.end >= 2) selectionIndex += 1;
     }
 
-    print("index : ${newValue.text.indexOf(')')}");
+    //print("index : ${newValue.text.indexOf(')')}");
 
     for (var element in delimitersAfter) {
       if (newValue.text.contains(')') &&
           newTextLength ==
-              newValue.text.indexOf(')') + element + 1 +delimitersAfter.indexOf(element)) {
-        print("secondScobe + element : ${secondScobe + element}");
+              newValue.text.indexOf(')') + element + 1 + delimitersAfter.indexOf(element)) {
+        //print("secondScobe + element : ${secondBrace + element}");
         newText.write(newValue.text.substring(
             0,
             usedSubstringIndex =
-                secondScobe + element + 1 + delimitersAfter.indexOf(element)) +
+                secondBrace + element + 1 + delimitersAfter.indexOf(element)) +
             delimiter);
         if (newValue.selection.end >= 2) selectionIndex += 1;
 

@@ -2,20 +2,18 @@ import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
 
-enum AuthenticationStatus { authenticated, unAuthenticated }
-
 class AppState extends Equatable {
   const AppState(
-      {this.authenticationStatus = AuthenticationStatus.unAuthenticated});
+      {required this.authenticated});
 
-  final AuthenticationStatus authenticationStatus;
+  final bool authenticated;
 
-  AppState copyWith({AuthenticationStatus? authenticationStatus}) {
+  AppState copyWith({bool? authenticated}) {
     return AppState(
-      authenticationStatus: authenticationStatus ?? this.authenticationStatus,
+      authenticated: authenticated ?? this.authenticated,
     );
   }
 
   @override
-  List<Object?> get props => [authenticationStatus];
+  List<Object?> get props => [authenticated];
 }

@@ -1,10 +1,15 @@
+import 'package:farmer_market/presentation/navigation/navigation_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_verification_code/flutter_verification_code.dart';
 
+import '../../../app/app_bloc.dart';
+import '../../../app/app_event.dart';
 import '../../../repository/auth_repository/auth_repository.dart';
 import '../../di/getit_setup.dart';
 import '../../navigation/routes.dart';
 import '../../shared/text_input_custom.dart';
+import '../../shared/utils.dart';
 import 'bloc/phone_enter_bloc.dart';
 import 'bloc/phone_enter_event.dart';
 import 'bloc/phone_enter_state.dart';
@@ -15,19 +20,16 @@ class PhoneEnterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('AppBar'),
-      ),
       body: BlocProvider(
           create: (context) {
             return PhoneEnterBloc(authRepository: locator<AuthRepository>());
           },
-          child: BlocListener<PhoneEnterBloc, PhoneEnterState>(
+          child: BlocListener<PhoneEnterBloc, PhoneEnterStateFreezed>(
               listener: (context, state) {
-                // if (state.loginStatus == .success) {
-                //   print("SUCCESSFUL LOGIN!!!!");
-                //   Navigator.of(context).pushNamed(mainRoute);
-                // }
+                if (state.loginStatus == PhoneLoginStatus.success) {
+                  print(state);
+                  Navigator.of(context).pushNamed(mainRoute);
+                }
               },
               child: PhoneEnterScreenBody())),
     );
@@ -42,8 +44,6 @@ class PhoneEnterScreenBody extends StatefulWidget {
 }
 
 class _PhoneEnterScreenBodyState extends State<PhoneEnterScreenBody> {
-  late PhoneEnterBloc loginBloc;
-  var codeIsSent = false;
   late TextEditingController phoneController;
   late TextEditingController codeController;
 
@@ -52,47 +52,101 @@ class _PhoneEnterScreenBodyState extends State<PhoneEnterScreenBody> {
     super.initState();
     phoneController = TextEditingController();
     codeController = TextEditingController();
-    loginBloc = context.read<PhoneEnterBloc>();
+  }
+
+  @override
+  void dispose() {
+    phoneController.dispose();
+    codeController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    //final loginBloc = context.read<PhoneEnterBloc>();
-    return BlocBuilder<PhoneEnterBloc, PhoneEnterState>(
-        builder: (context, state) {
-      return Column(
-        children: [
-          if (!state.codeIsSent)
-            TextInputCustom(
-              controller: phoneController,
-              hint: 'Phone',
-              onChanged: (phone) =>
-                  loginBloc.add(PhoneEnterPhoneChanged(phone)),
-            )
-          else
-            TextInputCustom(
-              controller: codeController,
-              hint: 'Code',
-              onChanged: (code) => loginBloc.add(PhoneEnterCodeChanged(code)),
-            ),
-          const Divider(
-            height: 100,
+    final loginBloc = context.read<PhoneEnterBloc>();
+    final appBloc = context.read<AppBloc>();
+    return BlocConsumer<PhoneEnterBloc, PhoneEnterStateFreezed>(
+        listener: (context, state) {
+          print(state.haveUserInfoOnServer);
+      if (state.loginStatus == PhoneLoginStatus.success) {
+        if(state.haveUserInfoOnServer == true){
+          //appBloc.add(const AppAuthStatusChanged(true));
+          navigateToMainScreen(context, clearStack: true);
+        }else {
+          navigateToUserDetailScreen(context, clearStack: true);
+        }
+      }
+    }, builder: (context, state) {
+      //print(state);
+      return WillPopScope(
+          onWillPop: () async => false,
+          child: SafeArea(
+            child: SingleChildScrollView(
+          reverse: true,
+          child: Column(
+            children: [
+              Image.asset('assets/images/logo1.png'),
+              if (state.codeIsSent == false)
+                TextInputCustom(
+                  icon: const Icon(Icons.phone),
+                  controller: phoneController,
+                  hint: 'Phone',
+                  textInputType: TextInputType.phone,
+                  textInputFormatter: NumberTextInputFormatter(),
+                  onChanged: (phone) =>
+                      loginBloc.add(PhoneEnterPhoneChanged(phone)),
+                )
+              else
+                VerificationCode(
+                  textStyle: const TextStyle(fontSize: 20.0),
+                  keyboardType: TextInputType.number,
+                  length: 6,
+                  cursorColor: Colors.blue,
+                  onCompleted: (String code) {
+                    loginBloc.add(PhoneEnterCodeChanged(code));
+                  },
+                  onEditing: (bool value) {},
+                ),
+              if (state.phoneIsValid == false)
+                Center(
+                  child: Row(
+                    children: const [
+                      Icon(Icons.error),
+                      Text('Please enter correct phone number')
+                    ],
+                  ),
+                ),
+              const Divider(
+                height: 100,
+              ),
+              if (state.codeIsSent == false)
+                ElevatedButton(
+                    onPressed: () {
+                      loginBloc.add(PhoneEnterSubmitted(context));
+                      //loginController.logIn((){Navigator.of(context).pushNamed(mainRoute);});
+                    },
+                    child: const Text('Send Code'))
+              else if (state.isLoading == true)
+                const CircularProgressIndicator()
+              else
+                ElevatedButton(
+                    onPressed: () {
+                      loginBloc.add(const OnCodeSubmitted());
+                      //loginController.logIn((){Navigator.of(context).pushNamed(mainRoute);});
+                    },
+                    child: const Text('Confirm Code')),
+              if (state.loginStatus == PhoneLoginStatus.failure)
+                Center(
+                  child: Row(
+                    children: const [
+                      Icon(Icons.error),
+                      Text('Server response gave bad result, please try again')
+                    ],
+                  ),
+                )
+            ],
           ),
-          if (!state.codeIsSent)
-            ElevatedButton(
-                onPressed: () {
-                  loginBloc.add(PhoneEnterSubmitted(context));
-                  //loginController.logIn((){Navigator.of(context).pushNamed(mainRoute);});
-                },
-                child: const Text('Send Code'))
-          else
-            ElevatedButton(
-                onPressed: () {
-                  loginBloc.add(const OnCodeSubmitted());
-                  //loginController.logIn((){Navigator.of(context).pushNamed(mainRoute);});
-                },
-                child: const Text('Confirm Code')),
-        ],
+        )),
       );
     });
   }

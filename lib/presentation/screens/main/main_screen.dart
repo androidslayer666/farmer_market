@@ -1,9 +1,11 @@
+import 'package:farmer_market/presentation/di/getit_setup.dart';
 import 'package:farmer_market/presentation/screens/main/bloc/main_bloc.dart';
 import 'package:farmer_market/presentation/screens/main/bloc/main_state.dart';
 import 'package:farmer_market/repository/auth_repository/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../navigation/navigation_wrapper.dart';
 import 'bloc/main_event.dart';
 
 class MainScreen extends StatelessWidget {
@@ -12,12 +14,29 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<MainBloc>(
-      create: (context) {
-        return MainBloc(authRepository: AuthRepository())
-          ..add(const MainScreenInit());
-      },
-      child: BlocBuilder<MainBloc, MainState>(builder: (context, state) {
-        return Scaffold(
+        create: (context) {
+          return MainBloc(authRepository: locator.get<AuthRepository>())
+            ..add(const MainScreenInit());
+        },
+        child: MainScreenBody());
+  }
+}
+
+class MainScreenBody extends StatelessWidget {
+  const MainScreenBody({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final mainBloc = context.read<MainBloc>();
+
+    return BlocConsumer<MainBloc, MainState>(listener: (context, state) {
+      if (state.mainScreenEditProfileClicked == true) {
+        navigateToUserDetailScreen(context);
+      }
+    }, builder: (context, state) {
+      return WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
           appBar: AppBar(
             title: Row(
               children: [
@@ -29,7 +48,11 @@ class MainScreen extends StatelessWidget {
                 Center(
                     child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(state.user?.name ?? ''),
+                  child: GestureDetector(
+                      onTap: () {
+                        mainBloc.add(const MainScreenEditProfileClicked());
+                      },
+                      child: Text(state.user?.name ?? '')),
                 ))
               ],
             ),
@@ -37,8 +60,8 @@ class MainScreen extends StatelessWidget {
           body: Container(
             child: Text(''),
           ),
-        );
-      }),
-    );
+        ),
+      );
+    });
   }
 }

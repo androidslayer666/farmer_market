@@ -19,16 +19,5 @@ void main() async {
 
   //FirebaseAuth.instance.signOut();
 
-  //checking authorization
-  final page = await _getInitPage();
-
-  runApp( FarmerMarketApp(initialPage: page));
-}
-
-Future<String> _getInitPage() async {
-  final currentUser = FirebaseAuth.instance.currentUser;
-  if(currentUser != null) {
-    return mainRoute;
-  }
-  return signInRoute;
+  runApp( const FarmerMarketApp());
 }

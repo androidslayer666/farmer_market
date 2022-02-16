@@ -11,3 +11,7 @@ class MainScreenInit extends MainEvent{
   const MainScreenInit();
 }
 
+class MainScreenEditProfileClicked extends MainEvent{
+  const MainScreenEditProfileClicked();
+}
+

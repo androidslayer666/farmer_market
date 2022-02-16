@@ -11,6 +11,10 @@ abstract class UserDetailEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class UserDetailInit extends UserDetailEvent{
+  const UserDetailInit();
+}
+
 class UserDetailNameChanged extends UserDetailEvent {
   const UserDetailNameChanged(this.name);
 
@@ -47,4 +51,8 @@ class UserDetailImageAddClicked extends UserDetailEvent {
 
 class UserDetailSubmitted extends UserDetailEvent {
   const UserDetailSubmitted();
+}
+
+class UserDetailLogOutClicked extends UserDetailEvent{
+  const UserDetailLogOutClicked();
 }

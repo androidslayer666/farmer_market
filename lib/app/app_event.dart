@@ -12,10 +12,11 @@ abstract class AppEvent extends Equatable {
 }
 
 class AppAuthStatusChanged extends AppEvent {
-  const AppAuthStatusChanged(this.status);
+  const AppAuthStatusChanged(this.authenticated);
 
-  final AuthenticationStatus status;
+  final bool authenticated;
+}
 
-  @override
-  List<Object> get props => [status];
+class InitialLaunch extends AppEvent{
+  const InitialLaunch();
 }
