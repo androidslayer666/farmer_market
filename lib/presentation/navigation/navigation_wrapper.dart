@@ -28,3 +28,8 @@ void navigateToEnterPhoneScreen(BuildContext context, {bool clearStack = false})
     Navigator.of(context).pushNamed(signInRoute);
   }
 }
+
+void navigateToAddProductScreen(BuildContext context){
+  print('navigateToAddProductScreen');
+    Navigator.of(context).pushNamed(addProductRoute);
+}

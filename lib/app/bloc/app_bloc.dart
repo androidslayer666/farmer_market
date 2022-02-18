@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:bloc/bloc.dart';
 
-import '../presentation/di/getit_setup.dart';
 import 'app_event.dart';
 import 'app_state.dart';
 

@@ -36,8 +36,12 @@ dependencies:
 #freezed
   freezed: 1.1.0
 
+#location
+  geolocator: ^8.2.0
+
 # various
   uuid: ^3.0.5
+  cached_network_image: 3.2.0
   flutter_verification_code: 1.1.2
   cupertino_icons: ^1.0.2
 

@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
 
-import '../../../app/app_bloc.dart';
-import '../../../app/app_event.dart';
+import '../../../app/bloc/app_bloc.dart';
+import '../../../app/di/getit_setup.dart';
 import '../../../repository/auth_repository/auth_repository.dart';
-import '../../di/getit_setup.dart';
 import '../../navigation/routes.dart';
 import '../../shared/text_input_custom.dart';
 import '../../shared/utils.dart';

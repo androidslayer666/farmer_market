@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../app/di/getit_setup.dart';
 import '../../../repository/auth_repository/auth_repository.dart';
-import '../../di/getit_setup.dart';
 import '../../navigation/navigation_wrapper.dart';
 import '../../shared/text_input_custom.dart';
 import 'bloc/user_detail_bloc.dart';
@@ -62,6 +62,12 @@ class _UserDetailScreenBodyState extends State<UserDetailScreenBody> {
         if (state.logOutIsClicked == true) {
           navigateToEnterPhoneScreen(context, clearStack: true);
         }
+        if(state.existedName != null) {
+          nameController.text = state.existedName!;
+        }
+        if(state.existedDescription != null) {
+          descriptionController.text = state.existedDescription!;
+        }
       },
       builder: (context, state) => SafeArea(
         child: SingleChildScrollView(
@@ -70,7 +76,7 @@ class _UserDetailScreenBodyState extends State<UserDetailScreenBody> {
               Image.asset('assets/images/logo1.png'),
               TextInputCustom(
                 icon: const Icon(Icons.person),
-                controller: state.name?? TextEditingController(),
+                controller: nameController,
                 hint: 'Name',
                 onChanged: (value) {
                   signInBloc.add(UserDetailNameChanged(value));
@@ -78,7 +84,7 @@ class _UserDetailScreenBodyState extends State<UserDetailScreenBody> {
               ),
               TextInputCustom(
                 icon: const Icon(Icons.text_snippet),
-                controller: state.description ?? TextEditingController(),
+                controller: descriptionController,
                 hint: 'Description',
                 onChanged: (value) {
                   signInBloc.add(UserDetailDescriptionChanged(value));

@@ -18,7 +18,6 @@ class UserDetailBloc extends Bloc<UserDetailEvent, UserDetailState> {
       : _authRepository = authRepository,
         super(const UserDetailState()) {
     on<UserDetailNameChanged>(_onNameChanged);
-    on<UserDetailPhoneChanged>(_onPhoneChanged);
     on<UserDetailDescriptionChanged>(_onDescriptionChanged);
     on<UserDetailImageAddClicked>(_onImageChanged);
     on<UserDetailSubmitted>(_onSubmitted);
@@ -37,13 +36,15 @@ class UserDetailBloc extends Bloc<UserDetailEvent, UserDetailState> {
     if (result is Success<User>) {
       emit(state.copyWith(
           haveUserInfoOnServer: true,
-          name: TextEditingController()..text = result.data?.name ?? '',
-          description: TextEditingController()..text =  result.data?.description?? '',
+          existedName: result.data?.name ?? '',
+          existedDescription: result.data?.description?? '',
           isLoading: false));
       emit(state.copyWith(
           avatarFile: await urlToUint8List(
             result.data?.avatarUrl,
           ),
+          existedName: null,
+          existedDescription: null,
           isImageLoading: false,
           isLoading: false));
     } else {
@@ -66,15 +67,7 @@ class UserDetailBloc extends Bloc<UserDetailEvent, UserDetailState> {
   ) {
     final name = event.name;
     if(state.name != null){}
-    //emit(state.copyWith(name: state.name!.text = name));
-  }
-
-  void _onPhoneChanged(
-    UserDetailPhoneChanged event,
-    Emitter<UserDetailState> emit,
-  ) {
-    final phone = event.phone;
-    //emit(state.copyWith(phone: phone, phoneIsValid: phone.isValidPhone()));
+    emit(state.copyWith(name: name));
   }
 
   void _onDescriptionChanged(
@@ -82,7 +75,7 @@ class UserDetailBloc extends Bloc<UserDetailEvent, UserDetailState> {
     Emitter<UserDetailState> emit,
   ) {
     final description = event.description;
-    emit(state.copyWith(description: TextEditingController()..text = description));
+    emit(state.copyWith(description: description));
   }
 
   void _onImageChanged(
@@ -106,9 +99,9 @@ class UserDetailBloc extends Bloc<UserDetailEvent, UserDetailState> {
       try {
         await _authRepository.addUserInfo(
             User(
-                name: state.name?.text ?? '',
-                phone: state.phone ?? '',
-                description: state.description?.text ?? '',
+                name: state.name ?? '',
+                phone: '',
+                description: state.description ?? '',
                 isSeller: false),
             state.avatarFile);
         emit(state.copyWith(userDetailStatus: UserDetailStatus.success, isLoading: false));

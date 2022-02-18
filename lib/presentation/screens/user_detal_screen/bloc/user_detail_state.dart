@@ -10,11 +10,11 @@ enum UserDetailStatus { success, failure, unknown }
 @freezed
 class UserDetailState with _$UserDetailState {
   const factory UserDetailState(
-      {TextEditingController? name,
-      bool? phoneIsValid,
-      String? phone,
+      {String? name,
+          String? existedName,
       bool? haveUserInfoOnServer,
-      TextEditingController? description,
+          String? existedDescription,
+          String? description,
       bool? isLoading,
       bool? isImageLoading,
       bool? logOutIsClicked,

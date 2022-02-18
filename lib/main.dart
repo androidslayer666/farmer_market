@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'app/di/getit_setup.dart';
 import 'app/farmer_market_app.dart';
-import 'presentation/di/getit_setup.dart';
 
 void main() async {
 

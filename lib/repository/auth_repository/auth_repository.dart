@@ -3,12 +3,12 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../presentation/di/getit_setup.dart';
+import '../../app/di/getit_setup.dart';
 import '../../presentation/screens/phone_enter_screen/bloc/phone_enter_bloc.dart';
 import '../../presentation/shared/constants.dart';
 import '../constants.dart';
 import '../models/user.dart' as models;
-import '../storage_repository.dart';
+import '../storage/storage_repository.dart';
 import '../success_failure.dart';
 import 'on_code_sent.dart';
 
@@ -45,8 +45,7 @@ class AuthRepository {
       final currentUser = _auth.currentUser;
       if (file != null) {
         final result =
-        await _storageRepository.uploadImageToStorage(
-            fireStoreNameProfilePics, file);
+        await _storageRepository.uploadPictureToStorage(fireStoreNameProfilePics, file);
         if (result is Success<String>) {
           user.avatarUrl = result.data;
         }

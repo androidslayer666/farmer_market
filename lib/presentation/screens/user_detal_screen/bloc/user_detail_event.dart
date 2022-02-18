@@ -24,15 +24,6 @@ class UserDetailNameChanged extends UserDetailEvent {
   List<Object> get props => [name];
 }
 
-class UserDetailPhoneChanged extends UserDetailEvent {
-  const UserDetailPhoneChanged(this.phone);
-
-  final String phone;
-
-  @override
-  List<Object> get props => [phone];
-}
-
 class UserDetailDescriptionChanged extends UserDetailEvent {
   const UserDetailDescriptionChanged(this.description);
 

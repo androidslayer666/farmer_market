@@ -8,7 +8,7 @@ class StorageRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  Future<Result<String>> uploadImageToStorage(String tableName, Uint8List file) async {
+  Future<Result<String>> uploadPictureToStorage(String tableName, Uint8List file) async {
     // creating location to our firebase storage
 
     try {

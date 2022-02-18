@@ -1,11 +1,12 @@
-import 'package:farmer_market/app/app_bloc.dart';
-import 'package:farmer_market/app/app_state.dart';
+import 'package:farmer_market/app/bloc/app_bloc.dart';
 import 'package:farmer_market/presentation/navigation/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'theme_data.dart';
+import 'bloc/app_state.dart';
+import 'bloc/app_bloc.dart';
+import 'theme/theme_data.dart';
 
 class FarmerMarketApp extends StatelessWidget {
   const FarmerMarketApp({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class FarmerMarketApp extends StatelessWidget {
           final authenticated = FirebaseAuth.instance.currentUser != null;
           return AppBloc(authenticated);
         },
-        child: FarmerMarketAppBody());
+        child: const FarmerMarketAppBody());
   }
 }
 
