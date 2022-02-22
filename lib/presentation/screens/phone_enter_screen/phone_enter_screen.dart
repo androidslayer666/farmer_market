@@ -63,13 +63,11 @@ class _PhoneEnterScreenBodyState extends State<PhoneEnterScreenBody> {
   @override
   Widget build(BuildContext context) {
     final loginBloc = context.read<PhoneEnterBloc>();
-    final appBloc = context.read<AppBloc>();
     return BlocConsumer<PhoneEnterBloc, PhoneEnterStateFreezed>(
         listener: (context, state) {
           print(state.haveUserInfoOnServer);
       if (state.loginStatus == PhoneLoginStatus.success) {
         if(state.haveUserInfoOnServer == true){
-          //appBloc.add(const AppAuthStatusChanged(true));
           navigateToMainScreen(context, clearStack: true);
         }else {
           navigateToUserDetailScreen(context, clearStack: true);
@@ -106,6 +104,7 @@ class _PhoneEnterScreenBodyState extends State<PhoneEnterScreenBody> {
                   },
                   onEditing: (bool value) {},
                 ),
+              // only show if equals false to not showing initially
               if (state.phoneIsValid == false)
                 Center(
                   child: Row(

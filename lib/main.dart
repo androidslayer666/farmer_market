@@ -1,10 +1,9 @@
-import 'package:farmer_market/presentation/navigation/routes.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'app/di/getit_setup.dart';
 import 'app/farmer_market_app.dart';
+
 
 void main() async {
 
@@ -19,5 +18,5 @@ void main() async {
 
   //FirebaseAuth.instance.signOut();
 
-  runApp( const FarmerMarketApp());
+  runApp(const FarmerMarketApp());
 }

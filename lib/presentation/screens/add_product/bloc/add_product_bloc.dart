@@ -12,8 +12,11 @@ import 'add_product_event.dart';
 import 'add_product_state.dart';
 
 class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
-  AddProductBloc({required ProductRepository productRepository})
+  AddProductBloc({
+    required AuthRepository authRepository,
+    required ProductRepository productRepository})
       : _productRepository = productRepository,
+        _authRepository = authRepository,
         super(const AddProductState()) {
     on<AddProductNameChanged>(_onNameChanged);
     on<AddProductDescriptionChanged>(_onDescriptionChanged);
@@ -25,6 +28,7 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
   }
 
   final ProductRepository _productRepository;
+  final AuthRepository _authRepository;
 
   Future<void> _onInit(
     AddProductInit event,
@@ -95,6 +99,7 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
   ) async {
     emit(state.copyWith(isLoading: true));
     try {
+      final user = await _authRepository.getCurrentUser();
       final result = _productRepository.saveProduct(
           Product(
               name: state.name ?? '',

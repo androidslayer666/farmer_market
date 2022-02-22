@@ -1,7 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:farmer_market/repository/address_repository/address_repository.dart';
+import 'package:farmer_market/repository/models/api/address.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../app/di/getit_setup.dart';
@@ -14,37 +17,57 @@ class ProductRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final StorageRepository _storageRepository = locator<StorageRepository>();
+  final AddressRepository _addressRepository = locator<AddressRepository>();
 
   Future<Result> saveProduct(Product product, Uint8List? file) async {
     try {
-      final currentUser = _auth.currentUser;
+      final _currentUser = _auth.currentUser;
+
       if (file != null) {
         final result = await _storageRepository.uploadPictureToStorage(
             fireStoreNameProductPics, file);
-        if (result is Success<String>) {
+        if (result is Success<String, String>) {
           product.pictureUrl = result.data;
         }
       }
-      if (currentUser != null) {
+
+      if (_currentUser != null) {
+        final address = await _addressRepository.getUserAddress(_currentUser.uid);
+        product.userID = _currentUser.uid;
+        if(address is Success<Address, String>) {
+          product.address = address.data;
+        }
         await _firestore
             .collection(fireStoreNameProductTable)
             .doc(Uuid().v1())
             .set(product.toJson());
       }
-      return Success(data: null);
+
+      return Success();
     } catch (e) {
-      return Failure(data: null);
+      return Failure();
     }
   }
 
-  Future<Result<List<Product>>> getAllProducts() async {
+  Future<Result<List<Product>, String>> getAllProducts() async {
     try {
       final listProducts =
           await _firestore.collection(fireStoreNameProductTable).get();
-      print("sdfvlknsdfv     " + listProducts.docs.first.data().toString());
-      return Success(data: (listProducts.docs.map((e) => Product.fromJson(e.data() as Map<String, dynamic>)).toList()));
+      return Success(data: (listProducts.docs.map((e) => Product.fromJson(e.data())).toList()));
     } catch (e) {
-      return Failure(data: null);
+      return Failure();
     }
   }
+
+  Future<Result<List<Product>, String>> getUserProducts() async {
+    final _currentUser = _auth.currentUser;
+    try {
+      final listProducts =
+      await _firestore.collection(fireStoreNameProductTable).where('userID', isEqualTo: _currentUser?.uid ).get();
+      return Success(data: (listProducts.docs.map((e) => Product.fromJson(e.data())).toList()));
+    } catch (e) {
+      return Failure();
+    }
+  }
+  
 }

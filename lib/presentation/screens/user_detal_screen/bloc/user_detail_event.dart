@@ -4,6 +4,9 @@ import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
 
+import '../../../../repository/models/api/address.dart';
+import '../../../../repository/models/api/suggestion.dart';
+
 abstract class UserDetailEvent extends Equatable {
   const UserDetailEvent();
 
@@ -33,11 +36,30 @@ class UserDetailDescriptionChanged extends UserDetailEvent {
   List<Object> get props => [description];
 }
 
+
+class UserDetailAddressChanged extends UserDetailEvent {
+  const UserDetailAddressChanged(this.address);
+
+  final String address;
+
+  @override
+  List<Object> get props => [address];
+}
+
 class UserDetailImageAddClicked extends UserDetailEvent {
   const UserDetailImageAddClicked();
 
   @override
   List<Object> get props => [];
+}
+
+class UserDetailAddressOptionSubmitted extends UserDetailEvent {
+  const UserDetailAddressOptionSubmitted(this.address);
+
+  final Address address;
+
+  @override
+  List<Object> get props => [address];
 }
 
 class UserDetailSubmitted extends UserDetailEvent {

@@ -1,13 +1,13 @@
-abstract class Result<T>{}
+abstract class Result<T,E>{}
 
-class Success<T> extends Result<T>{
-  Success({required this.data});
+class Success<T,E> extends Result<T,E>{
+  Success({this.data});
 
   T? data;
 }
 
-class Failure<T> extends Result<T> {
-  Failure({required this.data});
+class Failure<T,E> extends Result<T,E> {
+  Failure({this.error});
 
-  T? data;
+  E? error;
 }

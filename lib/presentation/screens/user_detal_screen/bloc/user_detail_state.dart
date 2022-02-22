@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 
-import 'package:flutter/cupertino.dart';
+import 'package:farmer_market/repository/models/api/address.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+import '../../../../repository/models/user.dart';
 
 part 'user_detail_state.freezed.dart';
 
@@ -11,10 +13,13 @@ enum UserDetailStatus { success, failure, unknown }
 class UserDetailState with _$UserDetailState {
   const factory UserDetailState(
       {String? name,
-          String? existedName,
+      User? existedUser,
+          String? str,
       bool? haveUserInfoOnServer,
-          String? existedDescription,
-          String? description,
+      String? description,
+      String? addressQuery,
+      Address? address,
+      List<Address>? addresses,
       bool? isLoading,
       bool? isImageLoading,
       bool? logOutIsClicked,

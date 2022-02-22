@@ -19,10 +19,13 @@ class _$UserDetailStateTearOff {
 
   _Initial call(
       {String? name,
-      String? existedName,
+      User? existedUser,
+      String? str,
       bool? haveUserInfoOnServer,
-      String? existedDescription,
       String? description,
+      String? addressQuery,
+      Address? address,
+      List<Address>? addresses,
       bool? isLoading,
       bool? isImageLoading,
       bool? logOutIsClicked,
@@ -30,10 +33,13 @@ class _$UserDetailStateTearOff {
       Uint8List? avatarFile}) {
     return _Initial(
       name: name,
-      existedName: existedName,
+      existedUser: existedUser,
+      str: str,
       haveUserInfoOnServer: haveUserInfoOnServer,
-      existedDescription: existedDescription,
       description: description,
+      addressQuery: addressQuery,
+      address: address,
+      addresses: addresses,
       isLoading: isLoading,
       isImageLoading: isImageLoading,
       logOutIsClicked: logOutIsClicked,
@@ -49,10 +55,13 @@ const $UserDetailState = _$UserDetailStateTearOff();
 /// @nodoc
 mixin _$UserDetailState {
   String? get name => throw _privateConstructorUsedError;
-  String? get existedName => throw _privateConstructorUsedError;
+  User? get existedUser => throw _privateConstructorUsedError;
+  String? get str => throw _privateConstructorUsedError;
   bool? get haveUserInfoOnServer => throw _privateConstructorUsedError;
-  String? get existedDescription => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
+  String? get addressQuery => throw _privateConstructorUsedError;
+  Address? get address => throw _privateConstructorUsedError;
+  List<Address>? get addresses => throw _privateConstructorUsedError;
   bool? get isLoading => throw _privateConstructorUsedError;
   bool? get isImageLoading => throw _privateConstructorUsedError;
   bool? get logOutIsClicked => throw _privateConstructorUsedError;
@@ -71,10 +80,13 @@ abstract class $UserDetailStateCopyWith<$Res> {
       _$UserDetailStateCopyWithImpl<$Res>;
   $Res call(
       {String? name,
-      String? existedName,
+      User? existedUser,
+      String? str,
       bool? haveUserInfoOnServer,
-      String? existedDescription,
       String? description,
+      String? addressQuery,
+      Address? address,
+      List<Address>? addresses,
       bool? isLoading,
       bool? isImageLoading,
       bool? logOutIsClicked,
@@ -94,10 +106,13 @@ class _$UserDetailStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = freezed,
-    Object? existedName = freezed,
+    Object? existedUser = freezed,
+    Object? str = freezed,
     Object? haveUserInfoOnServer = freezed,
-    Object? existedDescription = freezed,
     Object? description = freezed,
+    Object? addressQuery = freezed,
+    Object? address = freezed,
+    Object? addresses = freezed,
     Object? isLoading = freezed,
     Object? isImageLoading = freezed,
     Object? logOutIsClicked = freezed,
@@ -109,22 +124,34 @@ class _$UserDetailStateCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      existedName: existedName == freezed
-          ? _value.existedName
-          : existedName // ignore: cast_nullable_to_non_nullable
+      existedUser: existedUser == freezed
+          ? _value.existedUser
+          : existedUser // ignore: cast_nullable_to_non_nullable
+              as User?,
+      str: str == freezed
+          ? _value.str
+          : str // ignore: cast_nullable_to_non_nullable
               as String?,
       haveUserInfoOnServer: haveUserInfoOnServer == freezed
           ? _value.haveUserInfoOnServer
           : haveUserInfoOnServer // ignore: cast_nullable_to_non_nullable
               as bool?,
-      existedDescription: existedDescription == freezed
-          ? _value.existedDescription
-          : existedDescription // ignore: cast_nullable_to_non_nullable
-              as String?,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      addressQuery: addressQuery == freezed
+          ? _value.addressQuery
+          : addressQuery // ignore: cast_nullable_to_non_nullable
+              as String?,
+      address: address == freezed
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as Address?,
+      addresses: addresses == freezed
+          ? _value.addresses
+          : addresses // ignore: cast_nullable_to_non_nullable
+              as List<Address>?,
       isLoading: isLoading == freezed
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -157,10 +184,13 @@ abstract class _$InitialCopyWith<$Res>
   @override
   $Res call(
       {String? name,
-      String? existedName,
+      User? existedUser,
+      String? str,
       bool? haveUserInfoOnServer,
-      String? existedDescription,
       String? description,
+      String? addressQuery,
+      Address? address,
+      List<Address>? addresses,
       bool? isLoading,
       bool? isImageLoading,
       bool? logOutIsClicked,
@@ -180,10 +210,13 @@ class __$InitialCopyWithImpl<$Res> extends _$UserDetailStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = freezed,
-    Object? existedName = freezed,
+    Object? existedUser = freezed,
+    Object? str = freezed,
     Object? haveUserInfoOnServer = freezed,
-    Object? existedDescription = freezed,
     Object? description = freezed,
+    Object? addressQuery = freezed,
+    Object? address = freezed,
+    Object? addresses = freezed,
     Object? isLoading = freezed,
     Object? isImageLoading = freezed,
     Object? logOutIsClicked = freezed,
@@ -195,22 +228,34 @@ class __$InitialCopyWithImpl<$Res> extends _$UserDetailStateCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      existedName: existedName == freezed
-          ? _value.existedName
-          : existedName // ignore: cast_nullable_to_non_nullable
+      existedUser: existedUser == freezed
+          ? _value.existedUser
+          : existedUser // ignore: cast_nullable_to_non_nullable
+              as User?,
+      str: str == freezed
+          ? _value.str
+          : str // ignore: cast_nullable_to_non_nullable
               as String?,
       haveUserInfoOnServer: haveUserInfoOnServer == freezed
           ? _value.haveUserInfoOnServer
           : haveUserInfoOnServer // ignore: cast_nullable_to_non_nullable
               as bool?,
-      existedDescription: existedDescription == freezed
-          ? _value.existedDescription
-          : existedDescription // ignore: cast_nullable_to_non_nullable
-              as String?,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
+      addressQuery: addressQuery == freezed
+          ? _value.addressQuery
+          : addressQuery // ignore: cast_nullable_to_non_nullable
+              as String?,
+      address: address == freezed
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as Address?,
+      addresses: addresses == freezed
+          ? _value.addresses
+          : addresses // ignore: cast_nullable_to_non_nullable
+              as List<Address>?,
       isLoading: isLoading == freezed
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -240,10 +285,13 @@ class __$InitialCopyWithImpl<$Res> extends _$UserDetailStateCopyWithImpl<$Res>
 class _$_Initial implements _Initial {
   const _$_Initial(
       {this.name,
-      this.existedName,
+      this.existedUser,
+      this.str,
       this.haveUserInfoOnServer,
-      this.existedDescription,
       this.description,
+      this.addressQuery,
+      this.address,
+      this.addresses,
       this.isLoading,
       this.isImageLoading,
       this.logOutIsClicked,
@@ -253,13 +301,19 @@ class _$_Initial implements _Initial {
   @override
   final String? name;
   @override
-  final String? existedName;
+  final User? existedUser;
+  @override
+  final String? str;
   @override
   final bool? haveUserInfoOnServer;
   @override
-  final String? existedDescription;
-  @override
   final String? description;
+  @override
+  final String? addressQuery;
+  @override
+  final Address? address;
+  @override
+  final List<Address>? addresses;
   @override
   final bool? isLoading;
   @override
@@ -273,7 +327,7 @@ class _$_Initial implements _Initial {
 
   @override
   String toString() {
-    return 'UserDetailState(name: $name, existedName: $existedName, haveUserInfoOnServer: $haveUserInfoOnServer, existedDescription: $existedDescription, description: $description, isLoading: $isLoading, isImageLoading: $isImageLoading, logOutIsClicked: $logOutIsClicked, userDetailStatus: $userDetailStatus, avatarFile: $avatarFile)';
+    return 'UserDetailState(name: $name, existedUser: $existedUser, str: $str, haveUserInfoOnServer: $haveUserInfoOnServer, description: $description, addressQuery: $addressQuery, address: $address, addresses: $addresses, isLoading: $isLoading, isImageLoading: $isImageLoading, logOutIsClicked: $logOutIsClicked, userDetailStatus: $userDetailStatus, avatarFile: $avatarFile)';
   }
 
   @override
@@ -283,13 +337,16 @@ class _$_Initial implements _Initial {
             other is _Initial &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality()
-                .equals(other.existedName, existedName) &&
+                .equals(other.existedUser, existedUser) &&
+            const DeepCollectionEquality().equals(other.str, str) &&
             const DeepCollectionEquality()
                 .equals(other.haveUserInfoOnServer, haveUserInfoOnServer) &&
             const DeepCollectionEquality()
-                .equals(other.existedDescription, existedDescription) &&
-            const DeepCollectionEquality()
                 .equals(other.description, description) &&
+            const DeepCollectionEquality()
+                .equals(other.addressQuery, addressQuery) &&
+            const DeepCollectionEquality().equals(other.address, address) &&
+            const DeepCollectionEquality().equals(other.addresses, addresses) &&
             const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
             const DeepCollectionEquality()
                 .equals(other.isImageLoading, isImageLoading) &&
@@ -305,10 +362,13 @@ class _$_Initial implements _Initial {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(existedName),
+      const DeepCollectionEquality().hash(existedUser),
+      const DeepCollectionEquality().hash(str),
       const DeepCollectionEquality().hash(haveUserInfoOnServer),
-      const DeepCollectionEquality().hash(existedDescription),
       const DeepCollectionEquality().hash(description),
+      const DeepCollectionEquality().hash(addressQuery),
+      const DeepCollectionEquality().hash(address),
+      const DeepCollectionEquality().hash(addresses),
       const DeepCollectionEquality().hash(isLoading),
       const DeepCollectionEquality().hash(isImageLoading),
       const DeepCollectionEquality().hash(logOutIsClicked),
@@ -324,10 +384,13 @@ class _$_Initial implements _Initial {
 abstract class _Initial implements UserDetailState {
   const factory _Initial(
       {String? name,
-      String? existedName,
+      User? existedUser,
+      String? str,
       bool? haveUserInfoOnServer,
-      String? existedDescription,
       String? description,
+      String? addressQuery,
+      Address? address,
+      List<Address>? addresses,
       bool? isLoading,
       bool? isImageLoading,
       bool? logOutIsClicked,
@@ -337,13 +400,19 @@ abstract class _Initial implements UserDetailState {
   @override
   String? get name;
   @override
-  String? get existedName;
+  User? get existedUser;
+  @override
+  String? get str;
   @override
   bool? get haveUserInfoOnServer;
   @override
-  String? get existedDescription;
-  @override
   String? get description;
+  @override
+  String? get addressQuery;
+  @override
+  Address? get address;
+  @override
+  List<Address>? get addresses;
   @override
   bool? get isLoading;
   @override

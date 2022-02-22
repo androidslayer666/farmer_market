@@ -11,6 +11,8 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
       userID: json['userID'] as String,
       unit: $enumDecode(_$UnitEnumMap, json['unit']),
       description: json['description'] as String?,
+      address:
+          Product._addressFromJson(json['address'] as Map<String, dynamic>?),
       price: json['price'] as int?,
       pictureUrl: json['pictureUrl'] as String?,
       reviews:
@@ -23,6 +25,7 @@ Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
       'price': instance.price,
       'description': instance.description,
       'pictureUrl': instance.pictureUrl,
+      'address': Product._addressToJson(instance.address),
       'reviews': instance.reviews,
       'userID': instance.userID,
     };

@@ -8,12 +8,14 @@ class TextInputCustom extends StatelessWidget {
   final int? lines;
   final String hint;
   final bool isPass;
+  final FocusNode? node;
   final TextInputType? textInputType;
   final TextInputFormatter? textInputFormatter;
   final Function(String) onChanged;
 
   const TextInputCustom({Key? key,
     this.icon,
+    this.node,
     required this.controller,
     this.lines = 1,
     this.textInputType,
@@ -33,6 +35,7 @@ class TextInputCustom extends StatelessWidget {
         keyboardType: textInputType,
         inputFormatters: [if (textInputFormatter != null) textInputFormatter!],
         maxLines: lines,
+        focusNode: node,
         onChanged: (String value) => onChanged(value),
         obscureText: isPass,
         decoration: InputDecoration(

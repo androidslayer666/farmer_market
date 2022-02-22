@@ -20,6 +20,7 @@ class AddProductScreen extends StatelessWidget {
         body: BlocProvider(
       create: (context) {
         return AddProductBloc(
+          authRepository: locator<AuthRepository>(),
             productRepository: locator<ProductRepository>())
           ..add(const AddProductInit());
       },

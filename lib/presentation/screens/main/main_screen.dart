@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../app/di/getit_setup.dart';
+import '../../../repository/models/product.dart';
 import '../../../repository/products/product_repository.dart';
 import '../../navigation/navigation_wrapper.dart';
 import 'bloc/main_event.dart';
@@ -43,27 +44,25 @@ class MainScreenBody extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Theme.of(context).backgroundColor,
-            title: Row(
-              children: [
+            title: GestureDetector(
+              onTap: () {
+                mainBloc.add(const MainScreenEditProfileClicked());
+              },
+              child: Row(children: [
                 CircleAvatar(
                     backgroundColor: Colors.transparent,
                     backgroundImage: state.user?.avatarUrl == null
                         ? null
-                        : NetworkImage(
-                            state.user!.avatarUrl!)),
+                        : NetworkImage(state.user!.avatarUrl!)),
                 Center(
-                    child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                      onTap: () {
-                        mainBloc.add(const MainScreenEditProfileClicked());
-                      },
+                  child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Text(
                         state.user?.name ?? '',
                         style: const TextStyle(color: Colors.white),
                       )),
-                ))
-              ],
+                )
+              ]),
             ),
           ),
           body: Padding(
@@ -73,9 +72,7 @@ class MainScreenBody extends StatelessWidget {
               itemCount: state.listProducts.length,
               itemBuilder: (BuildContext context, int index) {
                 return ListItem(
-                  name: state.listProducts[index].name,
-                  url: state.listProducts[index].pictureUrl,
-                  price: state.listProducts[index].price,
+                  product: state.listProducts[index],
                 );
               },
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -99,18 +96,14 @@ class MainScreenBody extends StatelessWidget {
 }
 
 class ListItem extends StatelessWidget {
-  const ListItem({Key? key, this.name, this.url, this.price}) : super(key: key);
+  const ListItem({Key? key, required this.product}) : super(key: key);
 
-  final String? name;
-  final String? url;
-  final int? price;
+  final Product product;
+
 
   @override
   Widget build(BuildContext context) {
-    String namePrice = '';
-    if (name != null) namePrice += name!;
-    if (name != null) namePrice += name!;
-
+    //print(product);
     return Card(
       color: Theme.of(context).cardColor,
       elevation: 1,
@@ -118,13 +111,17 @@ class ListItem extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Column(children: [
         Expanded(
-            flex: 3,
+            flex: 5,
             child:
-                url != null ? CachedNetworkImage(imageUrl: url!) : SizedBox()),
+            product.pictureUrl != null ? CachedNetworkImage(imageUrl: product.pictureUrl!) : SizedBox()),
         Expanded(
-            flex: 1,
+            flex: 2,
             child: Center(
-                child: Text('$name' + ', ' + price.toString() + '\u20BD'))),
+                child: Column(children: [Text('${product.name}' + ', ' + product.price.toString() + '\u20BD'),
+                if(product.address?.city != null)
+                  Text('${product.address?.city}')
+                ]))),
+
       ]),
     );
   }
