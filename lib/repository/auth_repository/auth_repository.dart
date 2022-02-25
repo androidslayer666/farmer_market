@@ -3,12 +3,11 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app/di/getit_setup.dart';
 import '../../presentation/screens/phone_enter_screen/bloc/phone_enter_bloc.dart';
 import '../constants.dart';
-import '../models/user.dart' as models;
+import '../models/user/user.dart' as models;
 import '../storage/storage_repository.dart';
 import '../success_failure.dart';
 import 'on_code_sent.dart';
@@ -27,10 +26,10 @@ class AuthRepository {
     try {
       if (phone.isNotEmpty) {
         // registering user in auth with email and password
-        print("starting auth $phone");
+        //print("starting auth $phone");
 
         await _auth.verifyPhoneNumber(
-          phoneNumber: '+79200657986',
+          phoneNumber: phone,
           verificationCompleted: (PhoneAuthCredential cred) {},
           verificationFailed: (FirebaseAuthException exception) => {},
           codeSent: (String verificationId, int? forceResendingToken) =>
@@ -40,28 +39,27 @@ class AuthRepository {
       }
       return Success(data: null);
     } catch (err) {
-      print(err.toString());
       return Failure(error: err.toString());
     }
   }
 
   Future<Result> addUserInfo(models.User user, Uint8List? file) async {
-    //print("addUserInfo $user");
     try {
       final currentUser = _auth.currentUser;
       if (file != null) {
         final result = await _storageRepository.uploadPictureToStorage(
             fireStoreNameProfilePics, file);
         if (result is Success<String, String>) {
-          user.avatarUrl = result.data;
+          user = user.copyWith(avatarUrl: result.data);
         }
       }
-      print(user.toJson());
+      final jsonUser = user.toJson();
+
       if (currentUser != null) {
         await _firestore
             .collection(fireStoreUsersTableName)
             .doc(currentUser.uid)
-            .set(user.toJson());
+            .set(jsonUser);
       }
       return Success(data: null);
     } catch (err) {
@@ -89,9 +87,6 @@ class AuthRepository {
   }
 
   Future<String?> getUserId() async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? userId = prefs.getString(sharedPrefsUserIdName);
-    // if(userId != null)
     return _auth.currentUser?.uid;
   }
 

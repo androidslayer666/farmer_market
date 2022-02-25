@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
 
-import '../../../app/bloc/app_bloc.dart';
 import '../../../app/di/getit_setup.dart';
+import '../../../generated/l10n.dart';
 import '../../../repository/auth_repository/auth_repository.dart';
 import '../../navigation/routes.dart';
 import '../../shared/text_input_custom.dart';
@@ -26,11 +26,11 @@ class PhoneEnterScreen extends StatelessWidget {
           child: BlocListener<PhoneEnterBloc, PhoneEnterStateFreezed>(
               listener: (context, state) {
                 if (state.loginStatus == PhoneLoginStatus.success) {
-                  print(state);
+                  //print(state);
                   Navigator.of(context).pushNamed(mainRoute);
                 }
               },
-              child: PhoneEnterScreenBody())),
+              child: const PhoneEnterScreenBody())),
     );
   }
 }
@@ -65,19 +65,19 @@ class _PhoneEnterScreenBodyState extends State<PhoneEnterScreenBody> {
     final loginBloc = context.read<PhoneEnterBloc>();
     return BlocConsumer<PhoneEnterBloc, PhoneEnterStateFreezed>(
         listener: (context, state) {
-          print(state.haveUserInfoOnServer);
+      //print(state.haveUserInfoOnServer);
       if (state.loginStatus == PhoneLoginStatus.success) {
-        if(state.haveUserInfoOnServer == true){
+        if (state.haveUserInfoOnServer == true) {
           navigateToMainScreen(context, clearStack: true);
-        }else {
+        } else {
           navigateToUserDetailScreen(context, clearStack: true);
         }
       }
     }, builder: (context, state) {
       //print(state);
       return WillPopScope(
-          onWillPop: () async => false,
-          child: SafeArea(
+        onWillPop: () async => false,
+        child: SafeArea(
             child: SingleChildScrollView(
           reverse: true,
           child: Column(
@@ -87,7 +87,7 @@ class _PhoneEnterScreenBodyState extends State<PhoneEnterScreenBody> {
                 TextInputCustom(
                   icon: const Icon(Icons.phone),
                   controller: phoneController,
-                  hint: 'Phone',
+                  hint: S.of(context).phoneEnterScreen_phone,
                   textInputType: TextInputType.phone,
                   textInputFormatter: NumberTextInputFormatter(),
                   onChanged: (phone) =>
@@ -108,9 +108,9 @@ class _PhoneEnterScreenBodyState extends State<PhoneEnterScreenBody> {
               if (state.phoneIsValid == false)
                 Center(
                   child: Row(
-                    children: const [
-                      Icon(Icons.error),
-                      Text('Please enter correct phone number')
+                    children: [
+                      const Icon(Icons.error),
+                      Text(S.of(context).phoneEnterScreen_enterCorrectPhone)
                     ],
                   ),
                 ),
@@ -123,7 +123,7 @@ class _PhoneEnterScreenBodyState extends State<PhoneEnterScreenBody> {
                       loginBloc.add(PhoneEnterSubmitted(context));
                       //loginController.logIn((){Navigator.of(context).pushNamed(mainRoute);});
                     },
-                    child: const Text('Send Code'))
+                    child: Text(S.of(context).phoneEnterScreen_sendCode))
               else if (state.isLoading == true)
                 const CircularProgressIndicator()
               else
@@ -132,13 +132,13 @@ class _PhoneEnterScreenBodyState extends State<PhoneEnterScreenBody> {
                       loginBloc.add(const OnCodeSubmitted());
                       //loginController.logIn((){Navigator.of(context).pushNamed(mainRoute);});
                     },
-                    child: const Text('Confirm Code')),
+                    child: Text(S.of(context).phoneEnterScreen_confirmCode)),
               if (state.loginStatus == PhoneLoginStatus.failure)
                 Center(
                   child: Row(
-                    children: const [
-                      Icon(Icons.error),
-                      Text('Server response gave bad result, please try again')
+                    children: [
+                      const Icon(Icons.error),
+                      Text(S.of(context).phoneEnterScreen_serverResponseGaveBad)
                     ],
                   ),
                 )

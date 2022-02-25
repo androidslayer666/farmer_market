@@ -1,9 +1,8 @@
 import 'dart:typed_data';
 
-import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../repository/models/product.dart';
+import '../../../../repository/models/product/product.dart';
 
 part 'add_product_state.freezed.dart';
 

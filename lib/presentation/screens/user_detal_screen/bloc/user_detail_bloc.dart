@@ -4,13 +4,13 @@ import 'package:bloc/bloc.dart';
 import 'package:farmer_market/presentation/screens/user_detal_screen/bloc/user_detail_event.dart';
 import 'package:farmer_market/presentation/screens/user_detal_screen/bloc/user_detail_state.dart';
 import 'package:farmer_market/presentation/shared/utils.dart';
-import 'package:farmer_market/repository/models/user.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../repository/address_repository/address_repository.dart';
 import '../../../../repository/auth_repository/auth_repository.dart';
 import '../../../../repository/models/api/address.dart';
 import '../../../../repository/models/api/suggestion.dart';
+import '../../../../repository/models/user/user.dart';
 import '../../../../repository/success_failure.dart';
 
 class UserDetailBloc extends Bloc<UserDetailEvent, UserDetailState> {

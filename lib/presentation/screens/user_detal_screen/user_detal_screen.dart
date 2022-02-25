@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../app/di/getit_setup.dart';
+import '../../../generated/l10n.dart';
 import '../../../repository/address_repository/address_repository.dart';
 import '../../../repository/auth_repository/auth_repository.dart';
 import '../../../repository/models/api/address.dart';
-import '../../../repository/models/api/suggestion.dart';
 import '../../navigation/navigation_wrapper.dart';
 import '../../shared/text_input_custom.dart';
 import 'bloc/user_detail_bloc.dart';
@@ -53,7 +53,8 @@ class _UserDetailScreenBodyState extends State<UserDetailScreenBody> {
 
   @override
   void dispose() {
-    //addressController.dispose();
+    // address controller is no need to be disposed cause it's a link
+    // to Autocomplete widget's controller which will be disposed on it's own
     nameController.dispose();
     descriptionController.dispose();
     super.dispose();
@@ -73,13 +74,12 @@ class _UserDetailScreenBodyState extends State<UserDetailScreenBody> {
           navigateToEnterPhoneScreen(context, clearStack: true);
         }
         if (state.existedUser?.name != null) {
-          nameController.text = state.existedUser!.name;
+          nameController.text = state.existedUser!.name!;
         }
         if (state.existedUser?.description != null) {
           descriptionController.text = state.existedUser!.description!;
         }
-        if (state.existedUser?.address?.city != null) {
-          print(state);
+        if (state.existedUser?.address != null) {
           addressController.text = state.existedUser!.address!.city!;
         }
       },
@@ -93,7 +93,7 @@ class _UserDetailScreenBodyState extends State<UserDetailScreenBody> {
                 TextInputCustom(
                   icon: const Icon(Icons.person),
                   controller: nameController,
-                  hint: 'Name',
+                  hint: S.of(context).userDetailScreen_name,
                   onChanged: (value) {
                     signInBloc.add(UserDetailNameChanged(value));
                   },
@@ -101,25 +101,25 @@ class _UserDetailScreenBodyState extends State<UserDetailScreenBody> {
                 TextInputCustom(
                   icon: const Icon(Icons.text_snippet),
                   controller: descriptionController,
-                  hint: 'Description',
+                  hint: S.of(context).userDetailScreen_description,
                   onChanged: (value) {
                     signInBloc.add(UserDetailDescriptionChanged(value));
                   },
                 ),
                 Autocomplete<Address>(
                   optionsBuilder: (TextEditingValue value) {
-                    print(state.addresses);
+                    //print(state.addresses);
                     return state.addresses ?? <Address>[];
                   },
                   fieldViewBuilder: (context, addressProvidedController, node,
                       onFieldSubmitted) {
                     addressController = addressProvidedController;
-                    print(addressController);
+                    //print(addressController);
                     return TextInputCustom(
                       node: node,
                       icon: const Icon(Icons.location_city),
                       controller: addressController,
-                      hint: 'Address',
+                      hint: S.of(context).userDetailScreen_address,
                       onChanged: (value) {
                         signInBloc.add(UserDetailAddressChanged(value));
                       },
@@ -127,7 +127,7 @@ class _UserDetailScreenBodyState extends State<UserDetailScreenBody> {
                   },
                   onSelected: (Address address) {
                     signInBloc.add(UserDetailAddressOptionSubmitted(address));
-                    debugPrint('You just selected $address');
+                    //debugPrint('You just selected $address');
                   },
                 ),
                 const Divider(height: 30),
@@ -157,10 +157,11 @@ class _UserDetailScreenBodyState extends State<UserDetailScreenBody> {
                 if (state.userDetailStatus == UserDetailStatus.failure)
                   Center(
                     child: Row(
-                      children: const [
-                        Icon(Icons.error),
-                        Text(
-                            'Something went wrong with server response, please try later')
+                      children: [
+                        const Icon(Icons.error),
+                        Text(S
+                            .of(context)
+                            .userDetailScreen_serverResponseGaveBad)
                       ],
                     ),
                   ),
@@ -175,7 +176,7 @@ class _UserDetailScreenBodyState extends State<UserDetailScreenBody> {
                           onPressed: () {
                             signInBloc.add(const UserDetailSubmitted());
                           },
-                          child: const Text('Save'),
+                          child: Text(S.of(context).userDetailScreen_save),
                         ),
                     ]),
                     Row(mainAxisAlignment: MainAxisAlignment.end, children: [
@@ -183,7 +184,7 @@ class _UserDetailScreenBodyState extends State<UserDetailScreenBody> {
                         onPressed: () {
                           signInBloc.add(const UserDetailLogOutClicked());
                         },
-                        icon: Icon(Icons.logout),
+                        icon: const Icon(Icons.logout),
                         iconSize: 50,
                       )
                     ])

@@ -1,4 +1,4 @@
-import 'package:farmer_market/repository/models/product.dart';
+import 'package:farmer_market/repository/models/product/product.dart';
 
 
 

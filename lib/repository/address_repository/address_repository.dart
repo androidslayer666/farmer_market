@@ -2,14 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:farmer_market/repository/models/api/suggestion.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../api/address_suggestions_rest_client.dart';
 import '../constants.dart';
 import '../models/api/address.dart';
 import '../success_failure.dart';
-import '../models/user.dart' as models;
-import '../models/api/address.dart' as models;
+import '../models/user/user.dart' as models;
 
 class AddressRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

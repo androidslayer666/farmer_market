@@ -6,7 +6,6 @@ import 'app/farmer_market_app.dart';
 
 
 void main() async {
-
   // initialize binding
   WidgetsFlutterBinding.ensureInitialized();
 

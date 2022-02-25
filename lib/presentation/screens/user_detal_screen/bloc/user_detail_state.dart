@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:farmer_market/repository/models/api/address.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../repository/models/user.dart';
+import '../../../../repository/models/user/user.dart';
 
 part 'user_detail_state.freezed.dart';
 

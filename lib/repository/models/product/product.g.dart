@@ -6,26 +6,26 @@ part of 'product.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Product _$ProductFromJson(Map<String, dynamic> json) => Product(
-      name: json['name'] as String,
-      userID: json['userID'] as String,
-      unit: $enumDecode(_$UnitEnumMap, json['unit']),
-      description: json['description'] as String?,
-      address:
-          Product._addressFromJson(json['address'] as Map<String, dynamic>?),
+_$_Initial _$$_InitialFromJson(Map<String, dynamic> json) => _$_Initial(
+      name: json['name'] as String?,
+      unit: $enumDecodeNullable(_$UnitEnumMap, json['unit']),
       price: json['price'] as int?,
+      description: json['description'] as String?,
       pictureUrl: json['pictureUrl'] as String?,
+      address: addressFromJson(json['address'] as Map<String, dynamic>?),
       reviews:
           (json['reviews'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      userID: json['userID'] as String?,
     );
 
-Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
+Map<String, dynamic> _$$_InitialToJson(_$_Initial instance) =>
+    <String, dynamic>{
       'name': instance.name,
       'unit': _$UnitEnumMap[instance.unit],
       'price': instance.price,
       'description': instance.description,
       'pictureUrl': instance.pictureUrl,
-      'address': Product._addressToJson(instance.address),
+      'address': addressToJson(instance.address),
       'reviews': instance.reviews,
       'userID': instance.userID,
     };

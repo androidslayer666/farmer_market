@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../app/di/getit_setup.dart';
+import '../../../generated/l10n.dart';
 import '../../../repository/auth_repository/auth_repository.dart';
-import '../../../repository/models/product.dart';
+import '../../../repository/models/product/product.dart';
 import '../../../repository/products/product_repository.dart';
 import '../../shared/text_input_custom.dart';
 import 'bloc/add_product_bloc.dart';
@@ -65,7 +66,7 @@ class _AddProductScreenBodyState extends State<AddProductScreenBody> {
     final signInBloc = context.read<AddProductBloc>();
     return BlocConsumer<AddProductBloc, AddProductState>(
       listener: (context, state) {
-        print(state);
+        //print(state);
         state.existedName != null ? nameController.text = state.existedName! : {};
         state.existedDescription != null ? descriptionController.text = state.existedDescription! : {};
         state.existedPrice != null ? priceController.text = state.existedPrice! : {};
@@ -74,7 +75,7 @@ class _AddProductScreenBodyState extends State<AddProductScreenBody> {
       builder: (context, state) => Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).backgroundColor,
-          title: const Text('Add product'),
+          title: Text(S.of(context).addProductScreen_addProduct),
         ),
         body: SingleChildScrollView(
             reverse: true,
@@ -82,7 +83,7 @@ class _AddProductScreenBodyState extends State<AddProductScreenBody> {
               TextInputCustom(
                 icon: const Icon(Icons.person),
                 controller: nameController,
-                hint: 'Product',
+                hint: S.of(context).addProductScreen_product,
                 onChanged: (value) {
                   signInBloc.add(AddProductNameChanged(value));
                 },
@@ -90,7 +91,7 @@ class _AddProductScreenBodyState extends State<AddProductScreenBody> {
               TextInputCustom(
                 icon: const Icon(Icons.text_snippet),
                 controller: descriptionController,
-                hint: 'Description',
+                hint: S.of(context).addProductScreen_description,
                 onChanged: (value) {
                   signInBloc.add(AddProductDescriptionChanged(value));
                 },
@@ -99,7 +100,7 @@ class _AddProductScreenBodyState extends State<AddProductScreenBody> {
                 icon: const Icon(Icons.text_snippet),
                 controller: priceController,
                 textInputType: TextInputType.number,
-                hint: 'Price',
+                hint: S.of(context).addProductScreen_price,
                 onChanged: (value) {
                   signInBloc.add(AddProductPriceChanged(value));
                 },
@@ -151,7 +152,7 @@ class _AddProductScreenBodyState extends State<AddProductScreenBody> {
                         onPressed: () {
                           signInBloc.add(const AddProductSubmitted());
                         },
-                        child: const Text('Save'),
+                        child: Text(S.of(context).addProductScreen_save),
                       ),
                   ]),
                 ],

@@ -92,6 +92,8 @@ abstract class $UserDetailStateCopyWith<$Res> {
       bool? logOutIsClicked,
       UserDetailStatus? userDetailStatus,
       Uint8List? avatarFile});
+
+  $UserCopyWith<$Res>? get existedUser;
 }
 
 /// @nodoc
@@ -174,6 +176,17 @@ class _$UserDetailStateCopyWithImpl<$Res>
               as Uint8List?,
     ));
   }
+
+  @override
+  $UserCopyWith<$Res>? get existedUser {
+    if (_value.existedUser == null) {
+      return null;
+    }
+
+    return $UserCopyWith<$Res>(_value.existedUser!, (value) {
+      return _then(_value.copyWith(existedUser: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -196,6 +209,9 @@ abstract class _$InitialCopyWith<$Res>
       bool? logOutIsClicked,
       UserDetailStatus? userDetailStatus,
       Uint8List? avatarFile});
+
+  @override
+  $UserCopyWith<$Res>? get existedUser;
 }
 
 /// @nodoc

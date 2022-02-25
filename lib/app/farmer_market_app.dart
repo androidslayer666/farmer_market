@@ -1,12 +1,13 @@
-import 'package:farmer_market/app/bloc/app_bloc.dart';
 import 'package:farmer_market/presentation/navigation/routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../generated/l10n.dart';
 import 'bloc/app_state.dart';
 import 'bloc/app_bloc.dart';
 import 'theme/theme_data.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class FarmerMarketApp extends StatelessWidget {
   const FarmerMarketApp({Key? key}) : super(key: key);
@@ -30,12 +31,20 @@ class FarmerMarketAppBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppBloc, AppState>(
       builder: (context, state) {
-        print(state);
+        //print(state);
         return MaterialApp(
-          key: UniqueKey(),
           theme: themeData,
           initialRoute: state.authenticated ? mainRoute : signInRoute,
           routes: routes,
+          localizationsDelegates: const [
+            // 1
+            S.delegate,
+            // 2
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
         );
       },
     );

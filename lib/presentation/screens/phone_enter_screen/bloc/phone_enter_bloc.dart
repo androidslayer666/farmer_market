@@ -43,7 +43,6 @@ class PhoneEnterBloc extends Bloc<PhoneEnterEvent, PhoneEnterStateFreezed> {
 
   void _onPhoneSubmitted(
       PhoneEnterSubmitted event, Emitter<PhoneEnterStateFreezed> emit) async {
-    print('phone enter submitted');
     if (state.phone != null) {
       emit(state.copyWith(phoneIsValid: state.phone!.isValidPhone()));
     }
@@ -64,7 +63,6 @@ class PhoneEnterBloc extends Bloc<PhoneEnterEvent, PhoneEnterStateFreezed> {
 
   void _onPhoneCodeSent(
       PhoneCodeSent event, Emitter<PhoneEnterStateFreezed> emit) {
-    print('phone code sent');
     emit(state.copyWith(
         onCodeConfirmedDo: event.onCodeSubmitted,
         codeIsSent: true,
@@ -73,7 +71,6 @@ class PhoneEnterBloc extends Bloc<PhoneEnterEvent, PhoneEnterStateFreezed> {
 
   void _onCodeSubmitted(
       OnCodeSubmitted event, Emitter<PhoneEnterStateFreezed> emit) async {
-    print('code submitted');
     if (state.code != null) {
       emit(state.copyWith(codeIsValid: state.code!.isValidCode()));
       if (state.onCodeConfirmedDo != null && state.code!.isValidCode()) {
@@ -88,7 +85,6 @@ class PhoneEnterBloc extends Bloc<PhoneEnterEvent, PhoneEnterStateFreezed> {
               loginStatus: PhoneLoginStatus.success,
               haveUserInfoOnServer: haveCurrentUserName));
         } else {
-          print('exception' + result.toString());
           emit(state.copyWith(
               isLoading: false,
               loginStatus: PhoneLoginStatus.failure,

@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 Future<Uint8List?> pickImage(ImageSource source) async {
   final ImagePicker _imagePicker = ImagePicker();
@@ -116,4 +117,15 @@ class NumberTextInputFormatter extends TextInputFormatter {
       selection: TextSelection.collapsed(offset: selectionIndex),
     );
   }
+}
+
+
+String getCurrencySign(
+    NumberFormat formatCurrency,
+Locale locale
+){
+  if(locale.toString() == 'ru') {
+    return '\u20BD';
+  }
+  return formatCurrency.currencySymbol;
 }

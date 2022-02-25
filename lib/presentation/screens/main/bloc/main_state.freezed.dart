@@ -19,12 +19,14 @@ class _$MainStateTearOff {
 
   _Initial call(
       {User? user,
-      bool? mainScreenEditProfileClicked,
-      List<Product> listProducts = const []}) {
+      List<Product> listProducts = const [],
+      String? errorWhileFetchingProducts,
+      bool? isLoading}) {
     return _Initial(
       user: user,
-      mainScreenEditProfileClicked: mainScreenEditProfileClicked,
       listProducts: listProducts,
+      errorWhileFetchingProducts: errorWhileFetchingProducts,
+      isLoading: isLoading,
     );
   }
 }
@@ -35,8 +37,9 @@ const $MainState = _$MainStateTearOff();
 /// @nodoc
 mixin _$MainState {
   User? get user => throw _privateConstructorUsedError;
-  bool? get mainScreenEditProfileClicked => throw _privateConstructorUsedError;
   List<Product> get listProducts => throw _privateConstructorUsedError;
+  String? get errorWhileFetchingProducts => throw _privateConstructorUsedError;
+  bool? get isLoading => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MainStateCopyWith<MainState> get copyWith =>
@@ -49,8 +52,11 @@ abstract class $MainStateCopyWith<$Res> {
       _$MainStateCopyWithImpl<$Res>;
   $Res call(
       {User? user,
-      bool? mainScreenEditProfileClicked,
-      List<Product> listProducts});
+      List<Product> listProducts,
+      String? errorWhileFetchingProducts,
+      bool? isLoading});
+
+  $UserCopyWith<$Res>? get user;
 }
 
 /// @nodoc
@@ -64,23 +70,39 @@ class _$MainStateCopyWithImpl<$Res> implements $MainStateCopyWith<$Res> {
   @override
   $Res call({
     Object? user = freezed,
-    Object? mainScreenEditProfileClicked = freezed,
     Object? listProducts = freezed,
+    Object? errorWhileFetchingProducts = freezed,
+    Object? isLoading = freezed,
   }) {
     return _then(_value.copyWith(
       user: user == freezed
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User?,
-      mainScreenEditProfileClicked: mainScreenEditProfileClicked == freezed
-          ? _value.mainScreenEditProfileClicked
-          : mainScreenEditProfileClicked // ignore: cast_nullable_to_non_nullable
-              as bool?,
       listProducts: listProducts == freezed
           ? _value.listProducts
           : listProducts // ignore: cast_nullable_to_non_nullable
               as List<Product>,
+      errorWhileFetchingProducts: errorWhileFetchingProducts == freezed
+          ? _value.errorWhileFetchingProducts
+          : errorWhileFetchingProducts // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isLoading: isLoading == freezed
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
+  }
+
+  @override
+  $UserCopyWith<$Res>? get user {
+    if (_value.user == null) {
+      return null;
+    }
+
+    return $UserCopyWith<$Res>(_value.user!, (value) {
+      return _then(_value.copyWith(user: value));
+    });
   }
 }
 
@@ -91,8 +113,12 @@ abstract class _$InitialCopyWith<$Res> implements $MainStateCopyWith<$Res> {
   @override
   $Res call(
       {User? user,
-      bool? mainScreenEditProfileClicked,
-      List<Product> listProducts});
+      List<Product> listProducts,
+      String? errorWhileFetchingProducts,
+      bool? isLoading});
+
+  @override
+  $UserCopyWith<$Res>? get user;
 }
 
 /// @nodoc
@@ -107,22 +133,27 @@ class __$InitialCopyWithImpl<$Res> extends _$MainStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? user = freezed,
-    Object? mainScreenEditProfileClicked = freezed,
     Object? listProducts = freezed,
+    Object? errorWhileFetchingProducts = freezed,
+    Object? isLoading = freezed,
   }) {
     return _then(_Initial(
       user: user == freezed
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User?,
-      mainScreenEditProfileClicked: mainScreenEditProfileClicked == freezed
-          ? _value.mainScreenEditProfileClicked
-          : mainScreenEditProfileClicked // ignore: cast_nullable_to_non_nullable
-              as bool?,
       listProducts: listProducts == freezed
           ? _value.listProducts
           : listProducts // ignore: cast_nullable_to_non_nullable
               as List<Product>,
+      errorWhileFetchingProducts: errorWhileFetchingProducts == freezed
+          ? _value.errorWhileFetchingProducts
+          : errorWhileFetchingProducts // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isLoading: isLoading == freezed
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -132,20 +163,23 @@ class __$InitialCopyWithImpl<$Res> extends _$MainStateCopyWithImpl<$Res>
 class _$_Initial implements _Initial {
   const _$_Initial(
       {this.user,
-      this.mainScreenEditProfileClicked,
-      this.listProducts = const []});
+      this.listProducts = const [],
+      this.errorWhileFetchingProducts,
+      this.isLoading});
 
   @override
   final User? user;
-  @override
-  final bool? mainScreenEditProfileClicked;
   @JsonKey()
   @override
   final List<Product> listProducts;
+  @override
+  final String? errorWhileFetchingProducts;
+  @override
+  final bool? isLoading;
 
   @override
   String toString() {
-    return 'MainState(user: $user, mainScreenEditProfileClicked: $mainScreenEditProfileClicked, listProducts: $listProducts)';
+    return 'MainState(user: $user, listProducts: $listProducts, errorWhileFetchingProducts: $errorWhileFetchingProducts, isLoading: $isLoading)';
   }
 
   @override
@@ -154,19 +188,20 @@ class _$_Initial implements _Initial {
         (other.runtimeType == runtimeType &&
             other is _Initial &&
             const DeepCollectionEquality().equals(other.user, user) &&
-            const DeepCollectionEquality().equals(
-                other.mainScreenEditProfileClicked,
-                mainScreenEditProfileClicked) &&
             const DeepCollectionEquality()
-                .equals(other.listProducts, listProducts));
+                .equals(other.listProducts, listProducts) &&
+            const DeepCollectionEquality().equals(
+                other.errorWhileFetchingProducts, errorWhileFetchingProducts) &&
+            const DeepCollectionEquality().equals(other.isLoading, isLoading));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(user),
-      const DeepCollectionEquality().hash(mainScreenEditProfileClicked),
-      const DeepCollectionEquality().hash(listProducts));
+      const DeepCollectionEquality().hash(listProducts),
+      const DeepCollectionEquality().hash(errorWhileFetchingProducts),
+      const DeepCollectionEquality().hash(isLoading));
 
   @JsonKey(ignore: true)
   @override
@@ -177,15 +212,18 @@ class _$_Initial implements _Initial {
 abstract class _Initial implements MainState {
   const factory _Initial(
       {User? user,
-      bool? mainScreenEditProfileClicked,
-      List<Product> listProducts}) = _$_Initial;
+      List<Product> listProducts,
+      String? errorWhileFetchingProducts,
+      bool? isLoading}) = _$_Initial;
 
   @override
   User? get user;
   @override
-  bool? get mainScreenEditProfileClicked;
-  @override
   List<Product> get listProducts;
+  @override
+  String? get errorWhileFetchingProducts;
+  @override
+  bool? get isLoading;
   @override
   @JsonKey(ignore: true)
   _$InitialCopyWith<_Initial> get copyWith =>
