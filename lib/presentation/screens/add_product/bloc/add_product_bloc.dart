@@ -4,9 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'package:farmer_market/presentation/shared/utils.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../../repository/auth_repository/auth_repository.dart';
-import '../../../../repository/models/product/product.dart';
-import '../../../../repository/products/product_repository.dart';
+import '../../../../data/repository/auth_repository/auth_repository.dart';
+import '../../../../data/repository/models/product/product.dart';
+import '../../../../data/repository/products/product_repository.dart';
 import 'add_product_event.dart';
 import 'add_product_state.dart';
 

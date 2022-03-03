@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../app/di/getit_setup.dart';
 import '../../../generated/l10n.dart';
-import '../../../repository/auth_repository/auth_repository.dart';
-import '../../../repository/models/product/product.dart';
-import '../../../repository/products/product_repository.dart';
+import '../../../data/repository/auth_repository/auth_repository.dart';
+import '../../../data/repository/models/product/product.dart';
+import '../../../data/repository/products/product_repository.dart';
 import '../../shared/text_input_custom.dart';
 import 'bloc/add_product_bloc.dart';
 import 'bloc/add_product_event.dart';

@@ -1,14 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:farmer_market/presentation/screens/main/bloc/main_bloc.dart';
 import 'package:farmer_market/presentation/screens/main/bloc/main_state.dart';
-import 'package:farmer_market/repository/auth_repository/auth_repository.dart';
+import 'package:farmer_market/data/repository/auth_repository/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../../app/di/getit_setup.dart';
-import '../../../repository/models/product/product.dart';
-import '../../../repository/products/product_repository.dart';
+import '../../../data/repository/models/product/product.dart';
+import '../../../data/repository/products/product_repository.dart';
 import '../../navigation/navigation_wrapper.dart';
 import '../../shared/utils.dart';
 import 'bloc/main_event.dart';

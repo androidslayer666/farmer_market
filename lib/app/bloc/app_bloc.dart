@@ -1,8 +1,4 @@
 
-import 'package:farmer_market/repository/auth_repository/auth_repository.dart';
-import 'package:farmer_market/repository/success_failure.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:bloc/bloc.dart';
 
 import 'app_event.dart';

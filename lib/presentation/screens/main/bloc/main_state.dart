@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../repository/models/product/product.dart';
-import '../../../../repository/models/user/user.dart';
+import '../../../../data/repository/models/product/product.dart';
+import '../../../../data/repository/models/user/user.dart';
 
 part 'main_state.freezed.dart';
 

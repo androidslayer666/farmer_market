@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../repository/models/product/product.dart';
+import '../../../../data/repository/models/product/product.dart';
 
 part 'add_product_state.freezed.dart';
 

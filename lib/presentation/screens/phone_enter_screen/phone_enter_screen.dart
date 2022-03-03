@@ -5,7 +5,7 @@ import 'package:flutter_verification_code/flutter_verification_code.dart';
 
 import '../../../app/di/getit_setup.dart';
 import '../../../generated/l10n.dart';
-import '../../../repository/auth_repository/auth_repository.dart';
+import '../../../data/repository/auth_repository/auth_repository.dart';
 import '../../navigation/routes.dart';
 import '../../shared/text_input_custom.dart';
 import '../../shared/utils.dart';

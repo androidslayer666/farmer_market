@@ -4,8 +4,8 @@ import 'package:farmer_market/presentation/screens/phone_enter_screen/bloc/phone
 import 'package:farmer_market/presentation/shared/utils.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
 
-import '../../../../repository/auth_repository/auth_repository.dart';
-import '../../../../repository/success_failure.dart';
+import '../../../../data/repository/auth_repository/auth_repository.dart';
+import '../../../../data/repository/success_failure.dart';
 
 class PhoneEnterBloc extends Bloc<PhoneEnterEvent, PhoneEnterStateFreezed> {
   PhoneEnterBloc({

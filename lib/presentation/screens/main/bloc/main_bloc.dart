@@ -1,11 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:farmer_market/presentation/screens/main/bloc/main_state.dart';
-import 'package:farmer_market/repository/success_failure.dart';
+import 'package:farmer_market/data/repository/success_failure.dart';
 
-import '../../../../repository/auth_repository/auth_repository.dart';
-import '../../../../repository/models/product/product.dart';
-import '../../../../repository/models/user/user.dart';
-import '../../../../repository/products/product_repository.dart';
+import '../../../../data/repository/auth_repository/auth_repository.dart';
+import '../../../../data/repository/models/product/product.dart';
+import '../../../../data/repository/models/user/user.dart';
+import '../../../../data/repository/products/product_repository.dart';
 import 'main_event.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {

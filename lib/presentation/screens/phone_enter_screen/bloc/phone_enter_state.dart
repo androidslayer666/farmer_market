@@ -9,8 +9,8 @@ class PhoneEnterStateFreezed with _$PhoneEnterStateFreezed {
   const factory PhoneEnterStateFreezed(
       {@Default(true) bool? phoneIsValid,
         @Default(true) bool? codeIsValid,
-        @Default('')String?  phone,
-        @Default('') String? code,
+        @Default('+79200657987')String?  phone,
+        @Default('123123') String? code,
         @Default(false) bool? haveUserInfoOnServer,
         @Default(false) bool? isLoading,
         @Default(false) bool? codeIsSent,
