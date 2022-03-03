@@ -5,11 +5,11 @@ import 'app/di/getit_setup.dart';
 import 'app/farmer_market_app.dart';
 
 
+
 void main() async {
-
   // initialize binding
-  WidgetsFlutterBinding.ensureInitialized();
-
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   // initialize firebase
   await Firebase.initializeApp();
 
@@ -17,6 +17,6 @@ void main() async {
   setupGetIt();
 
   //FirebaseAuth.instance.signOut();
-
+  // FlutterNativeSplash.remove();
   runApp(const FarmerMarketApp());
 }

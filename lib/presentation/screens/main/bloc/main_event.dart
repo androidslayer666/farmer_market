@@ -15,3 +15,7 @@ class MainScreenEditProfileClicked extends MainEvent{
   const MainScreenEditProfileClicked();
 }
 
+class UpdateListProductRequested extends MainEvent{
+  const UpdateListProductRequested();
+}
+

@@ -1,0 +1,22 @@
+{
+  "@@locale": "en",
+  "farmerMarket": "Farmer market",
+  "addProductScreen_addProduct": "Add product",
+  "addProductScreen_product": "Product",
+  "addProductScreen_description": "Description",
+  "addProductScreen_price": "Price",
+  "addProductScreen_save": "Save",
+
+  "phoneEnterScreen_phone":"Phone",
+  "phoneEnterScreen_enterCorrectPhone":"Please enter correct phone number",
+  "phoneEnterScreen_sendCode":"Send Code",
+  "phoneEnterScreen_confirmCode":"Confirm Code",
+  "phoneEnterScreen_serverResponseGaveBad":"Something went wrong with server response, please try later",
+
+  "userDetailScreen_name":"Name",
+  "userDetailScreen_description":"Description",
+  "userDetailScreen_address":"Address",
+  "userDetailScreen_serverResponseGaveBad":"Something went wrong with server response, please try later",
+  "userDetailScreen_save":"Save"
+
+}

@@ -1,0 +1,22 @@
+{
+  "@@locale": "ru",
+  "farmerMarket": "Фермерский рынок",
+  "addProductScreen_addProduct": "Добавить продукт",
+  "addProductScreen_product": "Продукт",
+  "addProductScreen_description": "Описание",
+  "addProductScreen_price": "Цена",
+  "addProductScreen_save": "Сохранить",
+
+  "phoneEnterScreen_phone":"Телефон",
+  "phoneEnterScreen_enterCorrectPhone":"Пожалуйста введите корректный номер",
+  "phoneEnterScreen_sendCode":"Выслать код",
+  "phoneEnterScreen_confirmCode":"Подтвердить код",
+  "phoneEnterScreen_serverResponseGaveBad":"Что-то пошло не так, попробуйте позднее",
+
+
+  "userDetailScreen_name":"Имя",
+  "userDetailScreen_description":"Описание",
+  "userDetailScreen_address":"Адрес",
+  "userDetailScreen_serverResponseGaveBad":"Что-то пошло не так, попробуйте позднее",
+  "userDetailScreen_save":"Save"
+}

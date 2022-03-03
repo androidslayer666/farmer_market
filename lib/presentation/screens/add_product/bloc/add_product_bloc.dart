@@ -2,12 +2,11 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:farmer_market/presentation/shared/utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../../repository/auth_repository/auth_repository.dart';
-import '../../../../repository/models/product.dart';
-import '../../../../repository/products/product_repository.dart';
+import '../../../../data/repository/auth_repository/auth_repository.dart';
+import '../../../../data/repository/models/product/product.dart';
+import '../../../../data/repository/products/product_repository.dart';
 import 'add_product_event.dart';
 import 'add_product_state.dart';
 
@@ -99,16 +98,16 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
   ) async {
     emit(state.copyWith(isLoading: true));
     try {
-      final user = await _authRepository.getCurrentUser();
-      final result = _productRepository.saveProduct(
+      final userId = await _authRepository.getUserId();
+      _productRepository.saveProduct(
           Product(
               name: state.name ?? '',
-              userID: '123',
+              userID: userId,
               unit: state.unit ?? Unit.kilos,
               description: state.description ?? '',
               price: int.parse(state.price ?? '0')),
           state.productImage);
-      print(result);
+      //print(result);
       emit(state.copyWith(isLoading: false));
     } catch (_) {}
   }

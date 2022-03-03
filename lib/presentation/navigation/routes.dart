@@ -1,4 +1,4 @@
-import 'package:farmer_market/presentation/screens/user_detal_screen/user_detal_screen.dart';
+import 'package:farmer_market/presentation/screens/user_detail_screen/user_detal_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../screens/add_product/add_product_screen.dart';
