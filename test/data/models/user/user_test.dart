@@ -1,6 +1,6 @@
-import 'package:farmer_market/data/repository/models/addressConvertors.dart';
-import 'package:farmer_market/data/repository/models/api/address.dart';
-import 'package:farmer_market/data/repository/models/user/user.dart';
+import 'package:farmer_market/data/models/address_convertors.dart';
+import 'package:farmer_market/data/models/api/address.dart';
+import 'package:farmer_market/data/models/user/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:collection/collection.dart';
 

@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../addressConvertors.dart';
+import '../address_convertors.dart';
 import '../api/address.dart';
 
 part 'product.freezed.dart';
@@ -12,6 +12,7 @@ enum Unit { litres, kilos }
 @freezed
 class Product with _$Product {
   const factory Product({
+    String? id,
     String? name,
     Unit? unit,
     int? price,

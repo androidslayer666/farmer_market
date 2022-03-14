@@ -4,16 +4,17 @@ import 'package:bloc/bloc.dart';
 import 'package:farmer_market/presentation/shared/utils.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../data/models/product/product.dart';
 import '../../../../data/repository/auth_repository/auth_repository.dart';
-import '../../../../data/repository/models/product/product.dart';
 import '../../../../data/repository/products/product_repository.dart';
+import '../../../../data/repository/success_failure.dart';
 import 'add_product_event.dart';
 import 'add_product_state.dart';
 
 class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
-  AddProductBloc({
-    required AuthRepository authRepository,
-    required ProductRepository productRepository})
+  AddProductBloc(
+      {required AuthRepository authRepository,
+      required ProductRepository productRepository})
       : _productRepository = productRepository,
         _authRepository = authRepository,
         super(const AddProductState()) {
@@ -24,6 +25,7 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
     on<AddProductImageAddClicked>(_onImageChanged);
     on<AddProductSubmitted>(_onSubmitted);
     on<AddProductInit>(_onInit);
+    on<AddProductDeleteSubmitted>(_addProductDeleteSubmitted);
   }
 
   final ProductRepository _productRepository;
@@ -33,25 +35,19 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
     AddProductInit event,
     Emitter<AddProductState> emit,
   ) async {
-    // emit(state.copyWith(isLoading: true, isImageLoading: true));
-    // final result = await _authRepository.getCurrentUser();
-    // if (result is Success<User>) {
-    //   emit(state.copyWith(
-    //       existedName:result.data?.name ?? '',
-    //       existedDescription: result.data?.description ?? '',
-    //       isLoading: false));
-    //   emit(state.copyWith(
-    //       productImage: await urlToUint8List(
-    //         result.data?.avatarUrl,
-    //       ),
-    //       isImageLoading: false,
-    //       isLoading: false,
-    //       existedName: null,
-    //     existedDescription: null
-    //   ));
-    // } else {
-    //   emit(state.copyWith(isLoading: false, isImageLoading: false));
-    // }
+    if (event.args != null) {
+      print(event.args);
+      final product = event.args!.product;
+      emit(state.copyWith(
+          name: product?.name,
+          description: product?.description,
+          price: product?.price.toString(),
+          unit: product?.unit,
+          pictureUrl: product?.pictureUrl,
+          id: product?.id));
+      emit(state.copyWith(
+          productImage: await urlToUint8List(product?.pictureUrl)));
+    }
   }
 
   void _onNameChanged(
@@ -97,18 +93,29 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
     Emitter<AddProductState> emit,
   ) async {
     emit(state.copyWith(isLoading: true));
-    try {
-      final userId = await _authRepository.getUserId();
-      _productRepository.saveProduct(
-          Product(
-              name: state.name ?? '',
-              userID: userId,
-              unit: state.unit ?? Unit.kilos,
-              description: state.description ?? '',
-              price: int.parse(state.price ?? '0')),
-          state.productImage);
-      //print(result);
-      emit(state.copyWith(isLoading: false));
-    } catch (_) {}
+    final userId = await _authRepository.getUserId();
+    final product = Product(
+        id: state.id,
+        name: state.name ?? '',
+        userID: userId,
+        unit: state.unit ?? Unit.kilos,
+        pictureUrl: state.pictureUrl,
+        description: state.description ?? '',
+        price: int.parse(state.price ?? '0'));
+    print(product);
+    final result =
+        await _productRepository.saveProduct(product, state.productImage);
+    emit(state.copyWith(
+        isLoading: false, addingIsSuccessful: result is Success));
+  }
+
+  Future<void> _addProductDeleteSubmitted(
+    AddProductDeleteSubmitted event,
+    Emitter<AddProductState> emit,
+  ) async {
+    emit(state.copyWith(isLoading: true));
+    final result = await _productRepository.deleteProducts(event.uid);
+    emit(state.copyWith(
+        isLoading: false, deletingIsSuccessful: result is Success));
   }
 }

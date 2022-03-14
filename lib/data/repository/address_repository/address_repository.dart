@@ -4,9 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../data/api/address_suggestions_rest_client.dart';
 import '../constants.dart';
-import '../models/api/address.dart';
-import '../models/api/suggestion.dart';
-import '../models/user/user.dart' as models;
+import '../../models/api/address.dart';
+import '../../models/api/suggestion.dart';
+import '../../models/user/user.dart' as models;
 import '../success_failure.dart';
 import '../token_provider/token_provider.dart';
 

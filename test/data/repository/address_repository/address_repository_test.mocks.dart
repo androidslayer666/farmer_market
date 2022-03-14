@@ -10,8 +10,7 @@ import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_inte
     as _i3;
 import 'package:farmer_market/data/api/address_suggestions_rest_client.dart'
     as _i10;
-import 'package:farmer_market/data/repository/models/api/suggestions.dart'
-    as _i7;
+import 'package:farmer_market/data/models/api/suggestions.dart' as _i7;
 import 'package:farmer_market/data/repository/token_provider/token_provider.dart'
     as _i11;
 import 'package:firebase_auth/firebase_auth.dart' as _i6;

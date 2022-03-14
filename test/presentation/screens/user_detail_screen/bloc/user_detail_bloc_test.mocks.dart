@@ -5,14 +5,13 @@
 import 'dart:async' as _i4;
 import 'dart:typed_data' as _i10;
 
+import 'package:farmer_market/data/models/api/address.dart' as _i6;
+import 'package:farmer_market/data/models/api/suggestion.dart' as _i5;
+import 'package:farmer_market/data/models/user/user.dart' as _i9;
 import 'package:farmer_market/data/repository/address_repository/address_repository.dart'
     as _i3;
 import 'package:farmer_market/data/repository/auth_repository/auth_repository.dart'
     as _i7;
-import 'package:farmer_market/data/repository/models/api/address.dart' as _i6;
-import 'package:farmer_market/data/repository/models/api/suggestion.dart'
-    as _i5;
-import 'package:farmer_market/data/repository/models/user/user.dart' as _i9;
 import 'package:farmer_market/data/repository/success_failure.dart' as _i2;
 import 'package:farmer_market/presentation/screens/phone_enter_screen/bloc/phone_enter_bloc.dart'
     as _i8;

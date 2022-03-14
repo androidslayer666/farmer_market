@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:farmer_market/data/repository/address_repository/address_repository.dart';
 import 'package:farmer_market/data/repository/auth_repository/auth_repository.dart';
-import 'package:farmer_market/data/repository/models/user/user.dart';
+import 'package:farmer_market/data/models/user/user.dart';
 import 'package:farmer_market/data/repository/success_failure.dart';
 import 'package:farmer_market/presentation/screens/user_detail_screen/bloc/user_detail_bloc.dart';
 import 'package:farmer_market/presentation/screens/user_detail_screen/bloc/user_detail_event.dart';
@@ -44,14 +44,14 @@ void main() {
         build: () => UserDetailBloc(
             addressRepository: addressRepository,
             authRepository: authRepository),
-        act: (bloc) => bloc.add(UserDetailInit()),
+        act: (bloc) => bloc.add(UserDetailInit(null)),
         expect: () => [
               UserDetailState(isLoading: true, isImageLoading: true),
               UserDetailState(
                   isLoading: false,
                   isImageLoading: true,
                   haveUserInfoOnServer: true,
-                  existedUser: User()),
+              ),
               UserDetailState(
                   isLoading: false,
                   isImageLoading: false,

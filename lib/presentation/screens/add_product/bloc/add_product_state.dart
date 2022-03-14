@@ -2,7 +2,8 @@ import 'dart:typed_data';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../data/repository/models/product/product.dart';
+import '../../../../data/models/product/product.dart';
+
 
 part 'add_product_state.freezed.dart';
 
@@ -10,15 +11,15 @@ part 'add_product_state.freezed.dart';
 class AddProductState with _$AddProductState {
   const factory AddProductState(
       {String? name,
-      String? existedName,
+          String? id,
       String? description,
-      String? existedDescription,
       String? price,
-      String? existedPrice,
+          String? pictureUrl,
       Unit? unit,
-      Unit? existedUnit,
       bool? isLoading,
       bool? isImageLoading,
       bool? confirmIsClicked,
+      bool? deletingIsSuccessful,
+      bool? addingIsSuccessful,
       Uint8List? productImage}) = _Initial;
 }

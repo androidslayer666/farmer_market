@@ -1,16 +1,23 @@
 import 'package:equatable/equatable.dart';
+import 'package:farmer_market/presentation/navigation/arguments.dart';
 
-import '../../../../data/repository/models/product/product.dart';
+import '../../../../data/models/product/product.dart';
+
 
 abstract class AddProductEvent extends Equatable {
   const AddProductEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class AddProductInit extends AddProductEvent{
-  const AddProductInit();
+  const AddProductInit(this.args);
+
+  final AddProductArguments? args;
+
+  @override
+  List<Object?> get props => [args];
 }
 
 class AddProductNameChanged extends AddProductEvent {
@@ -58,4 +65,13 @@ class AddProductImageAddClicked extends AddProductEvent {
 
 class AddProductSubmitted extends AddProductEvent {
   const AddProductSubmitted();
+}
+
+class AddProductDeleteSubmitted extends AddProductEvent {
+  const AddProductDeleteSubmitted(this.uid);
+
+  final String uid;
+
+  @override
+  List<Object> get props => [uid];
 }

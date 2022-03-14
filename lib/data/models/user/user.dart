@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../addressConvertors.dart';
+import '../address_convertors.dart';
 import '../api/address.dart';
 
 part 'user.freezed.dart';

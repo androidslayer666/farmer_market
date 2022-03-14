@@ -7,6 +7,7 @@ part of 'product.dart';
 // **************************************************************************
 
 _$_Initial _$$_InitialFromJson(Map<String, dynamic> json) => _$_Initial(
+      id: json['id'] as String?,
       name: json['name'] as String?,
       unit: $enumDecodeNullable(_$UnitEnumMap, json['unit']),
       price: json['price'] as int?,
@@ -20,6 +21,7 @@ _$_Initial _$$_InitialFromJson(Map<String, dynamic> json) => _$_Initial(
 
 Map<String, dynamic> _$$_InitialToJson(_$_Initial instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'name': instance.name,
       'unit': _$UnitEnumMap[instance.unit],
       'price': instance.price,

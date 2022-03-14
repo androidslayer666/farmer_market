@@ -8,6 +8,7 @@ const fireStoreNameKeysTable = 'apiKey';
 const fireStoreNameKeyDocument = 'U2s9ExFtgfwBR3phMdXp';
 const fireStoreNameKeyDadataParameter = 'dadataApiKey';
 const fireStoreNameAddressTable = 'fireStoreNameAddressTable';
+const fireStoreNameCartTable = 'fireStoreNameCartTable';
 
 
 //Shared prefs

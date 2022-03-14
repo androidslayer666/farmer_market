@@ -3,17 +3,21 @@
 
 import 'package:equatable/equatable.dart';
 
-import '../../../../data/repository/models/api/address.dart';
+import '../../../../data/models/api/address.dart';
+import '../../../../data/models/user/user.dart';
 
 abstract class UserDetailEvent extends Equatable {
   const UserDetailEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class UserDetailInit extends UserDetailEvent{
-  const UserDetailInit();
+  const UserDetailInit(this.user);
+  final User? user;
+  @override
+  List<Object?> get props => [user];
 }
 
 class UserDetailNameChanged extends UserDetailEvent {

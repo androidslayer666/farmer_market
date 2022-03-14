@@ -19,8 +19,6 @@ class _$UserDetailStateTearOff {
 
   _Initial call(
       {String? name,
-      User? existedUser,
-      String? str,
       bool? haveUserInfoOnServer,
       String? description,
       String? addressQuery,
@@ -33,8 +31,6 @@ class _$UserDetailStateTearOff {
       Uint8List? avatarFile}) {
     return _Initial(
       name: name,
-      existedUser: existedUser,
-      str: str,
       haveUserInfoOnServer: haveUserInfoOnServer,
       description: description,
       addressQuery: addressQuery,
@@ -55,8 +51,6 @@ const $UserDetailState = _$UserDetailStateTearOff();
 /// @nodoc
 mixin _$UserDetailState {
   String? get name => throw _privateConstructorUsedError;
-  User? get existedUser => throw _privateConstructorUsedError;
-  String? get str => throw _privateConstructorUsedError;
   bool? get haveUserInfoOnServer => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get addressQuery => throw _privateConstructorUsedError;
@@ -80,8 +74,6 @@ abstract class $UserDetailStateCopyWith<$Res> {
       _$UserDetailStateCopyWithImpl<$Res>;
   $Res call(
       {String? name,
-      User? existedUser,
-      String? str,
       bool? haveUserInfoOnServer,
       String? description,
       String? addressQuery,
@@ -92,8 +84,6 @@ abstract class $UserDetailStateCopyWith<$Res> {
       bool? logOutIsClicked,
       UserDetailStatus? userDetailStatus,
       Uint8List? avatarFile});
-
-  $UserCopyWith<$Res>? get existedUser;
 }
 
 /// @nodoc
@@ -108,8 +98,6 @@ class _$UserDetailStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = freezed,
-    Object? existedUser = freezed,
-    Object? str = freezed,
     Object? haveUserInfoOnServer = freezed,
     Object? description = freezed,
     Object? addressQuery = freezed,
@@ -125,14 +113,6 @@ class _$UserDetailStateCopyWithImpl<$Res>
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      existedUser: existedUser == freezed
-          ? _value.existedUser
-          : existedUser // ignore: cast_nullable_to_non_nullable
-              as User?,
-      str: str == freezed
-          ? _value.str
-          : str // ignore: cast_nullable_to_non_nullable
               as String?,
       haveUserInfoOnServer: haveUserInfoOnServer == freezed
           ? _value.haveUserInfoOnServer
@@ -176,17 +156,6 @@ class _$UserDetailStateCopyWithImpl<$Res>
               as Uint8List?,
     ));
   }
-
-  @override
-  $UserCopyWith<$Res>? get existedUser {
-    if (_value.existedUser == null) {
-      return null;
-    }
-
-    return $UserCopyWith<$Res>(_value.existedUser!, (value) {
-      return _then(_value.copyWith(existedUser: value));
-    });
-  }
 }
 
 /// @nodoc
@@ -197,8 +166,6 @@ abstract class _$InitialCopyWith<$Res>
   @override
   $Res call(
       {String? name,
-      User? existedUser,
-      String? str,
       bool? haveUserInfoOnServer,
       String? description,
       String? addressQuery,
@@ -209,9 +176,6 @@ abstract class _$InitialCopyWith<$Res>
       bool? logOutIsClicked,
       UserDetailStatus? userDetailStatus,
       Uint8List? avatarFile});
-
-  @override
-  $UserCopyWith<$Res>? get existedUser;
 }
 
 /// @nodoc
@@ -226,8 +190,6 @@ class __$InitialCopyWithImpl<$Res> extends _$UserDetailStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = freezed,
-    Object? existedUser = freezed,
-    Object? str = freezed,
     Object? haveUserInfoOnServer = freezed,
     Object? description = freezed,
     Object? addressQuery = freezed,
@@ -243,14 +205,6 @@ class __$InitialCopyWithImpl<$Res> extends _$UserDetailStateCopyWithImpl<$Res>
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      existedUser: existedUser == freezed
-          ? _value.existedUser
-          : existedUser // ignore: cast_nullable_to_non_nullable
-              as User?,
-      str: str == freezed
-          ? _value.str
-          : str // ignore: cast_nullable_to_non_nullable
               as String?,
       haveUserInfoOnServer: haveUserInfoOnServer == freezed
           ? _value.haveUserInfoOnServer
@@ -301,8 +255,6 @@ class __$InitialCopyWithImpl<$Res> extends _$UserDetailStateCopyWithImpl<$Res>
 class _$_Initial implements _Initial {
   const _$_Initial(
       {this.name,
-      this.existedUser,
-      this.str,
       this.haveUserInfoOnServer,
       this.description,
       this.addressQuery,
@@ -316,10 +268,6 @@ class _$_Initial implements _Initial {
 
   @override
   final String? name;
-  @override
-  final User? existedUser;
-  @override
-  final String? str;
   @override
   final bool? haveUserInfoOnServer;
   @override
@@ -343,7 +291,7 @@ class _$_Initial implements _Initial {
 
   @override
   String toString() {
-    return 'UserDetailState(name: $name, existedUser: $existedUser, str: $str, haveUserInfoOnServer: $haveUserInfoOnServer, description: $description, addressQuery: $addressQuery, address: $address, addresses: $addresses, isLoading: $isLoading, isImageLoading: $isImageLoading, logOutIsClicked: $logOutIsClicked, userDetailStatus: $userDetailStatus, avatarFile: $avatarFile)';
+    return 'UserDetailState(name: $name, haveUserInfoOnServer: $haveUserInfoOnServer, description: $description, addressQuery: $addressQuery, address: $address, addresses: $addresses, isLoading: $isLoading, isImageLoading: $isImageLoading, logOutIsClicked: $logOutIsClicked, userDetailStatus: $userDetailStatus, avatarFile: $avatarFile)';
   }
 
   @override
@@ -352,9 +300,6 @@ class _$_Initial implements _Initial {
         (other.runtimeType == runtimeType &&
             other is _Initial &&
             const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality()
-                .equals(other.existedUser, existedUser) &&
-            const DeepCollectionEquality().equals(other.str, str) &&
             const DeepCollectionEquality()
                 .equals(other.haveUserInfoOnServer, haveUserInfoOnServer) &&
             const DeepCollectionEquality()
@@ -378,8 +323,6 @@ class _$_Initial implements _Initial {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(existedUser),
-      const DeepCollectionEquality().hash(str),
       const DeepCollectionEquality().hash(haveUserInfoOnServer),
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(addressQuery),
@@ -400,8 +343,6 @@ class _$_Initial implements _Initial {
 abstract class _Initial implements UserDetailState {
   const factory _Initial(
       {String? name,
-      User? existedUser,
-      String? str,
       bool? haveUserInfoOnServer,
       String? description,
       String? addressQuery,
@@ -415,10 +356,6 @@ abstract class _Initial implements UserDetailState {
 
   @override
   String? get name;
-  @override
-  User? get existedUser;
-  @override
-  String? get str;
   @override
   bool? get haveUserInfoOnServer;
   @override

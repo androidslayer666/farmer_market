@@ -22,7 +22,8 @@ class _$ProductTearOff {
   const _$ProductTearOff();
 
   _Initial call(
-      {String? name,
+      {String? id,
+      String? name,
       Unit? unit,
       int? price,
       String? description,
@@ -32,6 +33,7 @@ class _$ProductTearOff {
       List<String>? reviews,
       String? userID}) {
     return _Initial(
+      id: id,
       name: name,
       unit: unit,
       price: price,
@@ -53,6 +55,7 @@ const $Product = _$ProductTearOff();
 
 /// @nodoc
 mixin _$Product {
+  String? get id => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   Unit? get unit => throw _privateConstructorUsedError;
   int? get price => throw _privateConstructorUsedError;
@@ -74,7 +77,8 @@ abstract class $ProductCopyWith<$Res> {
   factory $ProductCopyWith(Product value, $Res Function(Product) then) =
       _$ProductCopyWithImpl<$Res>;
   $Res call(
-      {String? name,
+      {String? id,
+      String? name,
       Unit? unit,
       int? price,
       String? description,
@@ -95,6 +99,7 @@ class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? name = freezed,
     Object? unit = freezed,
     Object? price = freezed,
@@ -105,6 +110,10 @@ class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
     Object? userID = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -147,7 +156,8 @@ abstract class _$InitialCopyWith<$Res> implements $ProductCopyWith<$Res> {
       __$InitialCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String? name,
+      {String? id,
+      String? name,
       Unit? unit,
       int? price,
       String? description,
@@ -169,6 +179,7 @@ class __$InitialCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? name = freezed,
     Object? unit = freezed,
     Object? price = freezed,
@@ -179,6 +190,10 @@ class __$InitialCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
     Object? userID = freezed,
   }) {
     return _then(_Initial(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -219,7 +234,8 @@ class __$InitialCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Initial implements _Initial {
   const _$_Initial(
-      {this.name,
+      {this.id,
+      this.name,
       this.unit,
       this.price,
       this.description,
@@ -231,6 +247,8 @@ class _$_Initial implements _Initial {
   factory _$_Initial.fromJson(Map<String, dynamic> json) =>
       _$$_InitialFromJson(json);
 
+  @override
+  final String? id;
   @override
   final String? name;
   @override
@@ -251,7 +269,7 @@ class _$_Initial implements _Initial {
 
   @override
   String toString() {
-    return 'Product(name: $name, unit: $unit, price: $price, description: $description, pictureUrl: $pictureUrl, address: $address, reviews: $reviews, userID: $userID)';
+    return 'Product(id: $id, name: $name, unit: $unit, price: $price, description: $description, pictureUrl: $pictureUrl, address: $address, reviews: $reviews, userID: $userID)';
   }
 
   @override
@@ -259,6 +277,7 @@ class _$_Initial implements _Initial {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Initial &&
+            const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.unit, unit) &&
             const DeepCollectionEquality().equals(other.price, price) &&
@@ -274,6 +293,7 @@ class _$_Initial implements _Initial {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(unit),
       const DeepCollectionEquality().hash(price),
@@ -296,7 +316,8 @@ class _$_Initial implements _Initial {
 
 abstract class _Initial implements Product {
   const factory _Initial(
-      {String? name,
+      {String? id,
+      String? name,
       Unit? unit,
       int? price,
       String? description,
@@ -308,6 +329,8 @@ abstract class _Initial implements Product {
 
   factory _Initial.fromJson(Map<String, dynamic> json) = _$_Initial.fromJson;
 
+  @override
+  String? get id;
   @override
   String? get name;
   @override

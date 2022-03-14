@@ -1,13 +1,13 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmer_market/data/repository/models/api/address.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../models/api/address.dart';
 import '../constants.dart';
 import '../interfaces/i_address_repository.dart';
-import '../models/product/product.dart';
+import '../../models/product/product.dart';
 import '../storage/storage_repository.dart';
 import '../success_failure.dart';
 
@@ -31,7 +31,8 @@ class ProductRepository {
     try {
       final _currentUser = _auth.currentUser;
 
-      if (file != null) {
+      if (file != null && product.pictureUrl == null) {
+        print("file != null");
         final result = await _storageRepository.uploadPictureToStorage(
             fireStoreNameProductPics, file);
         if (result is Success<String, String>) {
@@ -40,6 +41,7 @@ class ProductRepository {
       }
 
       if (_currentUser != null) {
+        print("_currentUser != null");
         final address =
             await _addressRepository.getUserAddress(_currentUser.uid);
         product = product.copyWith(userID: _currentUser.uid);
@@ -47,11 +49,15 @@ class ProductRepository {
           product = product.copyWith(address: address.data);
         }
 
+        if(product.id == null) {
+          product = product.copyWith(id: const Uuid().v1());
+        }
+
         final jsonProduct = product.toJson();
 
         await _firestore
             .collection(fireStoreNameProductTable)
-            .doc(Uuid().v1())
+            .doc(product.id)
             .set(jsonProduct);
       }
 
@@ -65,6 +71,9 @@ class ProductRepository {
     try {
       final listProducts =
           await _firestore.collection(fireStoreNameProductTable).get();
+      // print(listProducts.docs
+      //     .map((e) => Product.fromJson(e.data()))
+      //     .toList());
       return Success(
           data: (listProducts.docs
               .map((e) => Product.fromJson(e.data()))
@@ -87,6 +96,20 @@ class ProductRepository {
               .toList()));
     } catch (e) {
       return Failure();
+    }
+  }
+
+  Future<Result> deleteProducts(String productUid) async {
+    try{
+      await _firestore
+          .collection(fireStoreNameProductTable)
+          .doc(productUid)
+          .delete();
+      print("Success()");
+      return(Success());
+    }catch(e){
+      print(e);
+      return Failure(error: e.toString());
     }
   }
 }

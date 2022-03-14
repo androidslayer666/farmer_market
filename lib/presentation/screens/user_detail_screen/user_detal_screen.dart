@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../app/di/getit_setup.dart';
-import '../../../data/repository/interfaces/i_address_repository.dart';
-import '../../../generated/l10n.dart';
-import '../../../data/repository/address_repository/address_repository.dart';
+import '../../../data/models/api/address.dart';
 import '../../../data/repository/auth_repository/auth_repository.dart';
-import '../../../data/repository/models/api/address.dart';
+import '../../../data/repository/interfaces/i_address_repository.dart';
+import '../../../data/models/user/user.dart';
+import '../../../generated/l10n.dart';
+import '../../navigation/arguments.dart';
 import '../../navigation/navigation_wrapper.dart';
 import '../../shared/text_input_custom.dart';
 import 'bloc/user_detail_bloc.dart';
@@ -18,21 +19,26 @@ class UserDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)!.settings.arguments as UserDetailArguments?;
     return Scaffold(
         body: BlocProvider(
       create: (context) {
         return UserDetailBloc(
             authRepository: locator<AuthRepository>(),
             addressRepository: locator<IAddressRepository>())
-          ..add(const UserDetailInit());
+          ..add(UserDetailInit(args?.user));
       },
-      child: const UserDetailScreenBody(),
+      child: UserDetailScreenBody(args: args),
     ));
   }
 }
 
 class UserDetailScreenBody extends StatefulWidget {
-  const UserDetailScreenBody({Key? key}) : super(key: key);
+  const UserDetailScreenBody({Key? key, this.args})
+      : super(key: key);
+
+  final UserDetailArguments? args;
 
   @override
   State<UserDetailScreenBody> createState() => _UserDetailScreenBodyState();
@@ -47,21 +53,17 @@ class _UserDetailScreenBodyState extends State<UserDetailScreenBody> {
   @override
   void initState() {
     super.initState();
-    addressController = TextEditingController();
-    nameController = TextEditingController();
-    descriptionController = TextEditingController();
+    final User? user = widget.args?.user;
+    nameController = TextEditingController(text: user?.name ?? '');
+    descriptionController = TextEditingController(text: user?.description ?? '');
   }
 
   @override
   void dispose() {
-    // address controller is no need to be disposed cause it's a link
-    // to Autocomplete widget's controller which will be disposed on it's own
     nameController.dispose();
     descriptionController.dispose();
     super.dispose();
   }
-
-  void onFieldSubmitted() {}
 
   @override
   Widget build(BuildContext context) {
@@ -74,14 +76,11 @@ class _UserDetailScreenBodyState extends State<UserDetailScreenBody> {
         if (state.logOutIsClicked == true) {
           navigateToEnterPhoneScreen(context, clearStack: true);
         }
-        if (state.existedUser?.name != null) {
-          nameController.text = state.existedUser!.name!;
-        }
-        if (state.existedUser?.description != null) {
-          descriptionController.text = state.existedUser!.description!;
-        }
-        if (state.existedUser?.address != null) {
-          addressController.text = state.existedUser!.address!.city!;
+        //this is because of the hardcoded editing controller in Autocomplete.
+        // It's not possible to set initial text directly, so I pass the value
+        // after the link to the controller is passed to addressController
+        if(state.addressQuery == null){
+          addressController.text = widget.args?.user?.address.toString() ?? '';
         }
       },
       builder: (context, state) {
@@ -128,7 +127,6 @@ class _UserDetailScreenBodyState extends State<UserDetailScreenBody> {
                   },
                   onSelected: (Address address) {
                     signInBloc.add(UserDetailAddressOptionSubmitted(address));
-                    //debugPrint('You just selected $address');
                   },
                 ),
                 const Divider(height: 30),

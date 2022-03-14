@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:farmer_market/data/api/address_suggestions_rest_client.dart';
 import 'package:farmer_market/data/repository/address_repository/address_repository.dart';
-import 'package:farmer_market/data/repository/models/api/address.dart';
-import 'package:farmer_market/data/repository/models/api/suggestion.dart';
-import 'package:farmer_market/data/repository/models/api/suggestions.dart';
+import 'package:farmer_market/data/models/api/address.dart';
+import 'package:farmer_market/data/models/api/suggestion.dart';
+import 'package:farmer_market/data/models/api/suggestions.dart';
 import 'package:farmer_market/data/repository/success_failure.dart';
 import 'package:farmer_market/data/repository/token_provider/token_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';

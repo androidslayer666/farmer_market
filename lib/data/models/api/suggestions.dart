@@ -1,4 +1,4 @@
-import 'package:farmer_market/data/repository/models/api/suggestion.dart';
+import 'package:farmer_market/data/models/api/suggestion.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'suggestions.g.dart';

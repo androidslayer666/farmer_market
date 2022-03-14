@@ -1,4 +1,4 @@
-import 'package:farmer_market/data/repository/models/api/suggestions.dart';
+import 'package:farmer_market/data/models/api/suggestions.dart';
 import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart' as retro;
 import 'package:dio/dio.dart';

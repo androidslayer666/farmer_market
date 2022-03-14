@@ -8,9 +8,9 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../../data/repository/auth_repository/auth_repository.dart';
 import '../../../../data/repository/interfaces/i_address_repository.dart';
-import '../../../../data/repository/models/api/address.dart';
-import '../../../../data/repository/models/api/suggestion.dart';
-import '../../../../data/repository/models/user/user.dart';
+import '../../../../data/models/api/address.dart';
+import '../../../../data/models/api/suggestion.dart';
+import '../../../../data/models/user/user.dart';
 import '../../../../data/repository/success_failure.dart';
 
 class UserDetailBloc extends Bloc<UserDetailEvent, UserDetailState> {
@@ -42,15 +42,14 @@ class UserDetailBloc extends Bloc<UserDetailEvent, UserDetailState> {
     if (result is Success<User, String>) {
       emit(state.copyWith(
           haveUserInfoOnServer: true,
-          existedUser: result.data,
-          name: result.data?.name,
-          description: result.data?.description,
+          name: event.user?.name,
+          addressQuery: event.user?.address.toString(),
+          description: event.user?.description,
           isLoading: false));
       emit(state.copyWith(
           avatarFile: await urlToUint8List(
             result.data?.avatarUrl,
           ),
-          existedUser: null,
           isImageLoading: false,
           isLoading: false));
     } else {

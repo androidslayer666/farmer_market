@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../../../../data/repository/models/api/address.dart';
+import '../../models/api/address.dart';
+
 
 part 'suggestion.g.dart';
 

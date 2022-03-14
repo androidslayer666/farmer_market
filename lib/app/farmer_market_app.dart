@@ -39,9 +39,7 @@ class FarmerMarketAppBody extends StatelessWidget {
           initialRoute: state.authenticated ? mainRoute : signInRoute,
           routes: routes,
           localizationsDelegates: const [
-            // 1
             S.delegate,
-            // 2
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
