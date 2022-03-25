@@ -1,7 +1,7 @@
 
 
 
-import '../../data/repository/models/product/product.dart';
+import '../../data/models/product/product.dart';
 
 final listProducts = [
   const Product(

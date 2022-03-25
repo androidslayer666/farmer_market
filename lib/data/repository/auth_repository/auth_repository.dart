@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../presentation/screens/phone_enter_screen/bloc/phone_enter_bloc.dart';
 import '../constants.dart';
-import '../models/user/user.dart' as models;
+import '../../models/user/user.dart' as models;
 import '../storage/storage_repository.dart';
 import '../success_failure.dart';
 import 'on_code_sent.dart';
@@ -85,7 +85,7 @@ class AuthRepository {
     }
   }
 
-  Future<String?> getUserId() async {
+ String? getUserId() {
     return _auth.currentUser?.uid;
   }
 

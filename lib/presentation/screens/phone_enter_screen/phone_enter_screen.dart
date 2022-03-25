@@ -70,7 +70,7 @@ class _PhoneEnterScreenBodyState extends State<PhoneEnterScreenBody> {
         if (state.haveUserInfoOnServer == true) {
           navigateToMainScreen(context, clearStack: true);
         } else {
-          navigateToUserDetailScreen(context, clearStack: true);
+          navigateToEditUserScreen(context, clearStack: true);
         }
       }
     }, builder: (context, state) {

@@ -1,6 +1,6 @@
-import 'package:farmer_market/data/repository/models/addressConvertors.dart';
-import 'package:farmer_market/data/repository/models/api/address.dart';
-import 'package:farmer_market/data/repository/models/user/user.dart';
+import 'package:farmer_market/data/models/convertors.dart';
+import 'package:farmer_market/data/models/api/address.dart';
+import 'package:farmer_market/data/models/user/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:collection/collection.dart';
 
@@ -43,7 +43,7 @@ final userJson = {
       street: '')),
   'phone': 'phone',
   'isSeller': false,
-  'products': [],
+  'product_repository': [],
   'avatarUrl': 'avatarUrl'
 };
 

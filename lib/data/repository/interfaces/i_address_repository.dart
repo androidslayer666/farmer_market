@@ -1,5 +1,5 @@
-import '../models/api/address.dart';
-import '../models/api/suggestion.dart';
+import '../../models/api/address.dart';
+import '../../models/api/suggestion.dart';
 import '../success_failure.dart';
 
 abstract class IAddressRepository {
