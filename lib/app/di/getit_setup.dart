@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:farmer_market/data/repository/order_repository/order_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -8,8 +9,9 @@ import '../../data/api/address_suggestions_rest_client.dart';
 import '../../data/repository/address_repository/address_repository.dart';
 import '../../data/repository/auth_repository/auth_repository.dart';
 import '../../data/repository/cart_repository/cart_repository.dart';
+import '../../data/repository/chat_repository/chat_repository.dart';
 import '../../data/repository/interfaces/i_address_repository.dart';
-import '../../data/repository/products/product_repository.dart';
+import '../../data/repository/product_repository/product_repository.dart';
 import '../../data/repository/storage/storage_repository.dart';
 import '../../data/repository/token_provider/token_provider.dart';
 import '../../data/repository/user_repository/user_repository.dart';
@@ -52,4 +54,14 @@ void setupGetIt() {
       firestore: _firestore,
       auth: _auth,
       addressRepository: _addressRepository));
+
+  locator.registerLazySingleton(() => OrderRepository(
+      firestore: _firestore,
+      auth: _auth,
+      addressRepository: _addressRepository));
+
+  locator.registerLazySingleton(() => ChatRepository(
+      firestore: _firestore,
+      auth: _auth,
+      ));
 }

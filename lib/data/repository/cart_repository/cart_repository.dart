@@ -22,13 +22,12 @@ class CartRepository {
         _addressRepository = addressRepository;
 
   Future<Result> saveCart({required Cart cart}) async {
-    //try {
+    try {
       final _currentUser = _auth.currentUser;
 
       if (_currentUser != null) {
         final updatedCart = cart.copyWith(userId: _currentUser.uid);
         final jsonCart = updatedCart.toJson();
-        //print(jsonCart);
 
         await _firestore
             .collection(fireStoreNameCartTable)
@@ -40,10 +39,10 @@ class CartRepository {
         print('no user');
         return Failure(error: 'cant recognise the user id, please reboot the app');}
 
-    // } catch (e) {
-    //   print(e);
-    //   return Failure(error: e.toString());
-    // }
+    } catch (e) {
+      print(e);
+      return Failure(error: e.toString());
+    }
   }
 
   Future<Result<Cart, String>> getCart() async {

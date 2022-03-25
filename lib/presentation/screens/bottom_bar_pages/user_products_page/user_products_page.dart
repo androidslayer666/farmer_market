@@ -23,19 +23,6 @@ class UserProductsPage extends StatelessWidget {
                   //bloc.add(const UpdateListProductRequested());
                 },
                 child:
-                    // GridView.builder(
-                    //   itemCount: state.listUserProducts.length,
-                    //   itemBuilder: (BuildContext context, int index) {
-                    //     return ProductGridItem(
-                    //       product: state.listUserProducts[index],
-                    //     );
-                    //   },
-                    //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    //     crossAxisCount: 2,
-                    //     crossAxisSpacing: 10.0,
-                    //     mainAxisSpacing: 10.0,
-                    //   ),
-                    // ),
                     ListView.builder(
                       itemCount: state.listUserProducts.length,
                         itemBuilder: (context, index) => ProductListItem(

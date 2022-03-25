@@ -28,10 +28,13 @@ class _$ProductTearOff {
       int? price,
       String? description,
       String? pictureUrl,
+      @JsonKey(fromJson: categoryFromJson, toJson: categoryToJson)
+          Category? category,
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
       List<String>? reviews,
-      String? userID}) {
+      String? userID,
+      DateTime? nextPossibleShipping}) {
     return _Initial(
       id: id,
       name: name,
@@ -39,9 +42,11 @@ class _$ProductTearOff {
       price: price,
       description: description,
       pictureUrl: pictureUrl,
+      category: category,
       address: address,
       reviews: reviews,
       userID: userID,
+      nextPossibleShipping: nextPossibleShipping,
     );
   }
 
@@ -60,12 +65,15 @@ mixin _$Product {
   Unit? get unit => throw _privateConstructorUsedError;
   int? get price => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
-  String? get pictureUrl =>
+  String? get pictureUrl => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: categoryFromJson, toJson: categoryToJson)
+  Category? get category =>
       throw _privateConstructorUsedError; // ignore: invalid_annotation_target
   @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
   Address? get address => throw _privateConstructorUsedError;
   List<String>? get reviews => throw _privateConstructorUsedError;
   String? get userID => throw _privateConstructorUsedError;
+  DateTime? get nextPossibleShipping => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -83,10 +91,13 @@ abstract class $ProductCopyWith<$Res> {
       int? price,
       String? description,
       String? pictureUrl,
+      @JsonKey(fromJson: categoryFromJson, toJson: categoryToJson)
+          Category? category,
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
       List<String>? reviews,
-      String? userID});
+      String? userID,
+      DateTime? nextPossibleShipping});
 }
 
 /// @nodoc
@@ -105,9 +116,11 @@ class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
     Object? price = freezed,
     Object? description = freezed,
     Object? pictureUrl = freezed,
+    Object? category = freezed,
     Object? address = freezed,
     Object? reviews = freezed,
     Object? userID = freezed,
+    Object? nextPossibleShipping = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -134,6 +147,10 @@ class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
           ? _value.pictureUrl
           : pictureUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      category: category == freezed
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as Category?,
       address: address == freezed
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
@@ -146,6 +163,10 @@ class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
           ? _value.userID
           : userID // ignore: cast_nullable_to_non_nullable
               as String?,
+      nextPossibleShipping: nextPossibleShipping == freezed
+          ? _value.nextPossibleShipping
+          : nextPossibleShipping // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -162,10 +183,13 @@ abstract class _$InitialCopyWith<$Res> implements $ProductCopyWith<$Res> {
       int? price,
       String? description,
       String? pictureUrl,
+      @JsonKey(fromJson: categoryFromJson, toJson: categoryToJson)
+          Category? category,
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
       List<String>? reviews,
-      String? userID});
+      String? userID,
+      DateTime? nextPossibleShipping});
 }
 
 /// @nodoc
@@ -185,9 +209,11 @@ class __$InitialCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
     Object? price = freezed,
     Object? description = freezed,
     Object? pictureUrl = freezed,
+    Object? category = freezed,
     Object? address = freezed,
     Object? reviews = freezed,
     Object? userID = freezed,
+    Object? nextPossibleShipping = freezed,
   }) {
     return _then(_Initial(
       id: id == freezed
@@ -214,6 +240,10 @@ class __$InitialCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
           ? _value.pictureUrl
           : pictureUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      category: category == freezed
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as Category?,
       address: address == freezed
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
@@ -226,6 +256,10 @@ class __$InitialCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
           ? _value.userID
           : userID // ignore: cast_nullable_to_non_nullable
               as String?,
+      nextPossibleShipping: nextPossibleShipping == freezed
+          ? _value.nextPossibleShipping
+          : nextPossibleShipping // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -240,9 +274,13 @@ class _$_Initial implements _Initial {
       this.price,
       this.description,
       this.pictureUrl,
-      @JsonKey(fromJson: addressFromJson, toJson: addressToJson) this.address,
+      @JsonKey(fromJson: categoryFromJson, toJson: categoryToJson)
+          this.category,
+      @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
+          this.address,
       this.reviews,
-      this.userID});
+      this.userID,
+      this.nextPossibleShipping});
 
   factory _$_Initial.fromJson(Map<String, dynamic> json) =>
       _$$_InitialFromJson(json);
@@ -259,6 +297,9 @@ class _$_Initial implements _Initial {
   final String? description;
   @override
   final String? pictureUrl;
+  @override
+  @JsonKey(fromJson: categoryFromJson, toJson: categoryToJson)
+  final Category? category;
   @override // ignore: invalid_annotation_target
   @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
   final Address? address;
@@ -266,10 +307,12 @@ class _$_Initial implements _Initial {
   final List<String>? reviews;
   @override
   final String? userID;
+  @override
+  final DateTime? nextPossibleShipping;
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, unit: $unit, price: $price, description: $description, pictureUrl: $pictureUrl, address: $address, reviews: $reviews, userID: $userID)';
+    return 'Product(id: $id, name: $name, unit: $unit, price: $price, description: $description, pictureUrl: $pictureUrl, category: $category, address: $address, reviews: $reviews, userID: $userID, nextPossibleShipping: $nextPossibleShipping)';
   }
 
   @override
@@ -285,9 +328,12 @@ class _$_Initial implements _Initial {
                 .equals(other.description, description) &&
             const DeepCollectionEquality()
                 .equals(other.pictureUrl, pictureUrl) &&
+            const DeepCollectionEquality().equals(other.category, category) &&
             const DeepCollectionEquality().equals(other.address, address) &&
             const DeepCollectionEquality().equals(other.reviews, reviews) &&
-            const DeepCollectionEquality().equals(other.userID, userID));
+            const DeepCollectionEquality().equals(other.userID, userID) &&
+            const DeepCollectionEquality()
+                .equals(other.nextPossibleShipping, nextPossibleShipping));
   }
 
   @override
@@ -299,9 +345,11 @@ class _$_Initial implements _Initial {
       const DeepCollectionEquality().hash(price),
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(pictureUrl),
+      const DeepCollectionEquality().hash(category),
       const DeepCollectionEquality().hash(address),
       const DeepCollectionEquality().hash(reviews),
-      const DeepCollectionEquality().hash(userID));
+      const DeepCollectionEquality().hash(userID),
+      const DeepCollectionEquality().hash(nextPossibleShipping));
 
   @JsonKey(ignore: true)
   @override
@@ -322,10 +370,13 @@ abstract class _Initial implements Product {
       int? price,
       String? description,
       String? pictureUrl,
+      @JsonKey(fromJson: categoryFromJson, toJson: categoryToJson)
+          Category? category,
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
       List<String>? reviews,
-      String? userID}) = _$_Initial;
+      String? userID,
+      DateTime? nextPossibleShipping}) = _$_Initial;
 
   factory _Initial.fromJson(Map<String, dynamic> json) = _$_Initial.fromJson;
 
@@ -341,6 +392,9 @@ abstract class _Initial implements Product {
   String? get description;
   @override
   String? get pictureUrl;
+  @override
+  @JsonKey(fromJson: categoryFromJson, toJson: categoryToJson)
+  Category? get category;
   @override // ignore: invalid_annotation_target
   @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
   Address? get address;
@@ -348,6 +402,8 @@ abstract class _Initial implements Product {
   List<String>? get reviews;
   @override
   String? get userID;
+  @override
+  DateTime? get nextPossibleShipping;
   @override
   @JsonKey(ignore: true)
   _$InitialCopyWith<_Initial> get copyWith =>

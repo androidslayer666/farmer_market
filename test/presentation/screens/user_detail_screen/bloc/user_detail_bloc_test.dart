@@ -3,9 +3,9 @@ import 'package:farmer_market/data/repository/address_repository/address_reposit
 import 'package:farmer_market/data/repository/auth_repository/auth_repository.dart';
 import 'package:farmer_market/data/models/user/user.dart';
 import 'package:farmer_market/data/repository/success_failure.dart';
-import 'package:farmer_market/presentation/screens/user_detail_screen/bloc/user_detail_bloc.dart';
-import 'package:farmer_market/presentation/screens/user_detail_screen/bloc/user_detail_event.dart';
-import 'package:farmer_market/presentation/screens/user_detail_screen/bloc/user_detail_state.dart';
+import 'package:farmer_market/presentation/screens/edit_user_screen/bloc/edit_user_bloc.dart';
+import 'package:farmer_market/presentation/screens/edit_user_screen/bloc/edit_user_event.dart';
+import 'package:farmer_market/presentation/screens/edit_user_screen/bloc/edit_user_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -26,33 +26,33 @@ void main() {
   });
 
   group('WeatherCubit', () {
-    blocTest<UserDetailBloc, UserDetailState>('',
-        build: () => UserDetailBloc(
+    blocTest<EditUserBloc, EditUserState>('',
+        build: () => EditUserBloc(
             addressRepository: addressRepository,
             authRepository: authRepository),
         act: (bloc) => bloc.add(UserDetailNameChanged('123')),
-        expect: () => [UserDetailState(name: '123')]);
+        expect: () => [EditUserState(name: '123')]);
 
-    blocTest<UserDetailBloc, UserDetailState>('',
-        build: () => UserDetailBloc(
+    blocTest<EditUserBloc, EditUserState>('',
+        build: () => EditUserBloc(
             addressRepository: addressRepository,
             authRepository: authRepository),
         act: (bloc) => bloc.add(UserDetailDescriptionChanged('123')),
-        expect: () => [UserDetailState(description: '123')]);
+        expect: () => [EditUserState(description: '123')]);
 
-    blocTest<UserDetailBloc, UserDetailState>('',
-        build: () => UserDetailBloc(
+    blocTest<EditUserBloc, EditUserState>('',
+        build: () => EditUserBloc(
             addressRepository: addressRepository,
             authRepository: authRepository),
         act: (bloc) => bloc.add(UserDetailInit(null)),
         expect: () => [
-              UserDetailState(isLoading: true, isImageLoading: true),
-              UserDetailState(
+              EditUserState(isLoading: true, isImageLoading: true),
+              EditUserState(
                   isLoading: false,
                   isImageLoading: true,
                   haveUserInfoOnServer: true,
               ),
-              UserDetailState(
+              EditUserState(
                   isLoading: false,
                   isImageLoading: false,
                   haveUserInfoOnServer: true)

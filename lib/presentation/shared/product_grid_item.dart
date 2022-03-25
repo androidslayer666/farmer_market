@@ -35,20 +35,20 @@ class ProductGridItem extends StatelessWidget {
                   ? CachedNetworkImage(imageUrl: product.pictureUrl!)
                   : Image.asset('assets/images/placeholder-image.png')),
           Expanded(flex: 2, child: _productDescriptionBuilder(product, locale)),
-          Expanded(
-            flex: 2,
-            child: OutlinedButton(
-              style: ButtonStyle(
-                  foregroundColor: MaterialStateProperty.all(
-                      Theme.of(context).backgroundColor)),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Icon(Icons.add), Icon(Icons.shopping_cart)]),
-              onPressed: () {
-                mainBloc.add(MainScreenAddToCart(product));
-              },
-            ),
-          )
+          // Expanded(
+          //   flex: 2,
+          //   child: OutlinedButton(
+          //     style: ButtonStyle(
+          //         foregroundColor: MaterialStateProperty.all(
+          //             Theme.of(context).backgroundColor)),
+          //     child: Row(
+          //         mainAxisAlignment: MainAxisAlignment.center,
+          //         children: [Icon(Icons.add), Icon(Icons.shopping_cart)]),
+          //     onPressed: () {
+          //       mainBloc.add(MainScreenAddToCart(product));
+          //     },
+          //   ),
+          // )
         ]),
       ),
     );

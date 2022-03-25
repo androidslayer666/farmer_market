@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../data/models/filter/filter.dart';
 import '../../../../data/models/product/product.dart';
+import '../../../../data/models/user/user.dart';
 
 abstract class MainEvent extends Equatable {
   const MainEvent();
@@ -38,11 +40,12 @@ class MainScreenTabChanged extends MainEvent{
 }
 
 class MainScreenAddToCart extends MainEvent{
-  const MainScreenAddToCart(this.product);
+  const MainScreenAddToCart(this.product, this.user);
   final Product product;
+  final User user;
 
   @override
-  List<Object> get props => [product];
+  List<Object> get props => [product, user];
 }
 
 class MainScreenRemoveFromCart extends MainEvent{
@@ -53,3 +56,14 @@ class MainScreenRemoveFromCart extends MainEvent{
   List<Object> get props => [product];
 }
 
+class MainScreenFilterToggled extends MainEvent{
+  const MainScreenFilterToggled();
+}
+
+class MainScreenFilterChanged extends MainEvent{
+  const MainScreenFilterChanged(this.filter);
+  final Filter filter;
+
+  @override
+  List<Object> get props => [filter];
+}

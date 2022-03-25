@@ -22,7 +22,8 @@ class _$UserTearOff {
   const _$UserTearOff();
 
   _Initial call(
-      {String? name,
+      {String? id,
+      String? name,
       String? phone,
       String? description,
       bool? isSeller,
@@ -32,8 +33,10 @@ class _$UserTearOff {
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
       List<String>? products,
+      List<String>? orders,
       List<String>? reviews}) {
     return _Initial(
+      id: id,
       name: name,
       phone: phone,
       description: description,
@@ -43,6 +46,7 @@ class _$UserTearOff {
       avatarUrl: avatarUrl,
       address: address,
       products: products,
+      orders: orders,
       reviews: reviews,
     );
   }
@@ -57,6 +61,7 @@ const $User = _$UserTearOff();
 
 /// @nodoc
 mixin _$User {
+  String? get id => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
@@ -68,6 +73,7 @@ mixin _$User {
   @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
   Address? get address => throw _privateConstructorUsedError;
   List<String>? get products => throw _privateConstructorUsedError;
+  List<String>? get orders => throw _privateConstructorUsedError;
   List<String>? get reviews => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -80,7 +86,8 @@ abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res>;
   $Res call(
-      {String? name,
+      {String? id,
+      String? name,
       String? phone,
       String? description,
       bool? isSeller,
@@ -90,6 +97,7 @@ abstract class $UserCopyWith<$Res> {
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
       List<String>? products,
+      List<String>? orders,
       List<String>? reviews});
 }
 
@@ -103,6 +111,7 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? name = freezed,
     Object? phone = freezed,
     Object? description = freezed,
@@ -112,9 +121,14 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
     Object? avatarUrl = freezed,
     Object? address = freezed,
     Object? products = freezed,
+    Object? orders = freezed,
     Object? reviews = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -150,6 +164,10 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
       products: products == freezed
           ? _value.products
           : products // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      orders: orders == freezed
+          ? _value.orders
+          : orders // ignore: cast_nullable_to_non_nullable
               as List<String>?,
       reviews: reviews == freezed
           ? _value.reviews
@@ -165,7 +183,8 @@ abstract class _$InitialCopyWith<$Res> implements $UserCopyWith<$Res> {
       __$InitialCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String? name,
+      {String? id,
+      String? name,
       String? phone,
       String? description,
       bool? isSeller,
@@ -175,6 +194,7 @@ abstract class _$InitialCopyWith<$Res> implements $UserCopyWith<$Res> {
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
       List<String>? products,
+      List<String>? orders,
       List<String>? reviews});
 }
 
@@ -189,6 +209,7 @@ class __$InitialCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? name = freezed,
     Object? phone = freezed,
     Object? description = freezed,
@@ -198,9 +219,14 @@ class __$InitialCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
     Object? avatarUrl = freezed,
     Object? address = freezed,
     Object? products = freezed,
+    Object? orders = freezed,
     Object? reviews = freezed,
   }) {
     return _then(_Initial(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -237,6 +263,10 @@ class __$InitialCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
           ? _value.products
           : products // ignore: cast_nullable_to_non_nullable
               as List<String>?,
+      orders: orders == freezed
+          ? _value.orders
+          : orders // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
       reviews: reviews == freezed
           ? _value.reviews
           : reviews // ignore: cast_nullable_to_non_nullable
@@ -249,7 +279,8 @@ class __$InitialCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Initial implements _Initial {
   const _$_Initial(
-      {this.name,
+      {this.id,
+      this.name,
       this.phone,
       this.description,
       this.isSeller,
@@ -258,11 +289,14 @@ class _$_Initial implements _Initial {
       this.avatarUrl,
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson) this.address,
       this.products,
+      this.orders,
       this.reviews});
 
   factory _$_Initial.fromJson(Map<String, dynamic> json) =>
       _$$_InitialFromJson(json);
 
+  @override
+  final String? id;
   @override
   final String? name;
   @override
@@ -283,11 +317,13 @@ class _$_Initial implements _Initial {
   @override
   final List<String>? products;
   @override
+  final List<String>? orders;
+  @override
   final List<String>? reviews;
 
   @override
   String toString() {
-    return 'User(name: $name, phone: $phone, description: $description, isSeller: $isSeller, longitude: $longitude, latitude: $latitude, avatarUrl: $avatarUrl, address: $address, products: $products, reviews: $reviews)';
+    return 'User(id: $id, name: $name, phone: $phone, description: $description, isSeller: $isSeller, longitude: $longitude, latitude: $latitude, avatarUrl: $avatarUrl, address: $address, products: $products, orders: $orders, reviews: $reviews)';
   }
 
   @override
@@ -295,6 +331,7 @@ class _$_Initial implements _Initial {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Initial &&
+            const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.phone, phone) &&
             const DeepCollectionEquality()
@@ -305,12 +342,14 @@ class _$_Initial implements _Initial {
             const DeepCollectionEquality().equals(other.avatarUrl, avatarUrl) &&
             const DeepCollectionEquality().equals(other.address, address) &&
             const DeepCollectionEquality().equals(other.products, products) &&
+            const DeepCollectionEquality().equals(other.orders, orders) &&
             const DeepCollectionEquality().equals(other.reviews, reviews));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(phone),
       const DeepCollectionEquality().hash(description),
@@ -320,6 +359,7 @@ class _$_Initial implements _Initial {
       const DeepCollectionEquality().hash(avatarUrl),
       const DeepCollectionEquality().hash(address),
       const DeepCollectionEquality().hash(products),
+      const DeepCollectionEquality().hash(orders),
       const DeepCollectionEquality().hash(reviews));
 
   @JsonKey(ignore: true)
@@ -335,7 +375,8 @@ class _$_Initial implements _Initial {
 
 abstract class _Initial implements User {
   const factory _Initial(
-      {String? name,
+      {String? id,
+      String? name,
       String? phone,
       String? description,
       bool? isSeller,
@@ -345,10 +386,13 @@ abstract class _Initial implements User {
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
       List<String>? products,
+      List<String>? orders,
       List<String>? reviews}) = _$_Initial;
 
   factory _Initial.fromJson(Map<String, dynamic> json) = _$_Initial.fromJson;
 
+  @override
+  String? get id;
   @override
   String? get name;
   @override
@@ -368,6 +412,8 @@ abstract class _Initial implements User {
   Address? get address;
   @override
   List<String>? get products;
+  @override
+  List<String>? get orders;
   @override
   List<String>? get reviews;
   @override

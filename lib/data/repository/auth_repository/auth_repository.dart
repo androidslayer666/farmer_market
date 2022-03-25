@@ -85,7 +85,7 @@ class AuthRepository {
     }
   }
 
-  Future<String?> getUserId() async {
+ String? getUserId() {
     return _auth.currentUser?.uid;
   }
 

@@ -88,10 +88,6 @@ class MockAuthRepository extends _i1.Mock implements _i7.AuthRepository {
                   _FakeResult_0<_i9.User, String>()))
           as _i4.Future<_i2.Result<_i9.User, String>>);
   @override
-  _i4.Future<String?> getUserId() =>
-      (super.noSuchMethod(Invocation.method(#getUserId, []),
-          returnValue: Future<String?>.value()) as _i4.Future<String?>);
-  @override
   _i4.Future<_i2.Result<dynamic, dynamic>> signOut() =>
       (super.noSuchMethod(Invocation.method(#signOut, []),
               returnValue: Future<_i2.Result<dynamic, dynamic>>.value(

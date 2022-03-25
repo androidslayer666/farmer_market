@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
 import 'package:bloc/bloc.dart';
 import 'package:farmer_market/data/repository/cart_repository/cart_repository.dart';
 import 'package:farmer_market/data/repository/success_failure.dart';
@@ -6,9 +8,9 @@ import '../../../../data/models/cart/cart_item.dart';
 import '../../../../data/models/product/product.dart';
 import '../../../../data/models/user/user.dart';
 import '../../../../data/repository/auth_repository/auth_repository.dart';
-import '../../../../data/repository/products/product_repository.dart';
-import 'main_state.dart';
+import '../../../../data/repository/product_repository/product_repository.dart';
 import 'main_event.dart';
+import 'main_state.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {
   MainBloc(
@@ -27,6 +29,8 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<MainScreenBackButtonPressed>(_onBackButtonPressed);
     on<MainScreenAddToCart>(_onAddToCart);
     on<MainScreenRemoveFromCart>(_onRemoveFromCart);
+    on<MainScreenFilterToggled>(_onFilterToggled);
+    on<MainScreenFilterChanged>(_onFilterChanged);
   }
 
   final ProductRepository _productRepository;
@@ -34,24 +38,26 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   final CartRepository _cartRepository;
 
   void _mainScreenInit(MainScreenInit event, Emitter<MainState> emit) async {
-    print('_mainScreenInit');
+    //print('_mainScreenInit');
     _refreshListProducts();
     _fetchUserProducts();
   }
 
   void _onUpdateListProductRequested(MainScreenUpdateListProductRequested event,
       Emitter<MainState> emit) async {
-    print('_onUpdateListProductRequested');
+    //print('_onUpdateListProductRequested');
     _refreshListProducts();
   }
 
   void _onTabChanged(MainScreenTabChanged event, Emitter<MainState> emit) {
-    final pageStack = [...state.pageStack, event.tabIndex];
-    if (pageStack.length > 3) {
-      pageStack.removeAt(0);
+    if(event.tabIndex != state.pageStack.last) {
+      final pageStack = [...state.pageStack, event.tabIndex];
+      if (pageStack.length > 3) {
+        pageStack.removeAt(0);
+      }
+      emit(state.copyWith(
+          pageStack: pageStack, backButtonPressedWhenStackIsClear: false));
     }
-    emit(state.copyWith(
-        pageStack: pageStack, backButtonPressedWhenStackIsClear: false));
   }
 
   void _onBackButtonPressed(
@@ -69,6 +75,13 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     emit(state.copyWith(backButtonPressedWhenStackIsClear: true));
   }
 
+  void _onFilterChanged(
+      MainScreenFilterChanged event,
+      Emitter<MainState> emit
+      ){
+    emit(state.copyWith(filter: event.filter));
+  }
+
   void _onAddToCart(MainScreenAddToCart event, Emitter<MainState> emit) async {
     final listProducts = state.cart.cartItems.map((e) => e.product).toList();
     if (!listProducts.contains(event.product)) {
@@ -84,9 +97,14 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       items.removeAt(index);
       items.insert(index, cartItem.copyWith(qty: (cartItem.qty) + 1));
       emit(state.copyWith(cart: state.cart.copyWith(cartItems: [...items])));
-      final listUserIDs = state.cart.cartItems.map((e) => e.product?.userID).toSet().toList();
       await _cartRepository.saveCart(cart: state.cart);
     }
+  }
+
+  void _onFilterToggled(
+      MainScreenFilterToggled event, Emitter<MainState> emit
+      ){
+    emit(state.copyWith(filterSwitchedOn: !state.filterSwitchedOn));
   }
 
   void _onRemoveFromCart(
@@ -100,11 +118,11 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         items.removeAt(index);
         items.insert(index, cartItem.copyWith(qty: (cartItem.qty) - 1));
         emit(state.copyWith(cart: state.cart.copyWith(cartItems: [...items])));
-        print(state.cart.cartItems);
+        //print(state.cart.cartItems);
       } else {
         items.removeAt(index);
         emit(state.copyWith(cart: state.cart.copyWith(cartItems: items)));
-        print(state.cart.cartItems);
+        //print(state.cart.cartItems);
       }
       _cartRepository.saveCart(cart: state.cart);
     }
@@ -118,7 +136,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     } else if (result is Failure<User, String>) {
       emit(state.copyWith(errorWhileFetchingProducts: result.error));
     }
-    final productsResult = await _productRepository.getAllProducts();
+    final productsResult = await _productRepository.getAllProducts(state.filter);
     if (productsResult is Success<List<Product>, String>) {
       if (productsResult.data != null) {
         emit(state.copyWith(
@@ -131,7 +149,8 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   void _fetchUserProducts() async {
     emit(state.copyWith(isLoading: true));
-    final productsResult = await _productRepository.getUserProducts();
+    final userId = _authRepository.getUserId();
+    final productsResult = await _productRepository.getUserProducts(userId ?? '');
     if (productsResult is Success<List<Product>, String>) {
       if (productsResult.data != null) {
         emit(state.copyWith(

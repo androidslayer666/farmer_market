@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../convertors.dart';
 import 'cart_item.dart';
 
 part 'cart.freezed.dart';
@@ -11,7 +12,7 @@ class Cart with _$Cart {
   const factory Cart(
       {String? id,
       String? userId,
-      @JsonKey(toJson: _listCartItemsToJson)
+      @JsonKey(toJson: listCartItemsToJson)
       @Default([])
           List<CartItem> cartItems,
       DateTime? dateCreated}) = _Initial;
@@ -20,9 +21,3 @@ class Cart with _$Cart {
 }
 
 
-List<Map<String, dynamic>>? _listCartItemsToJson(List<CartItem>? listCartItems) {
-  if(listCartItems != null) {
-    return listCartItems.map((cartItem) => cartItem.toJson()).toList();
-  }
-  return null;
-}

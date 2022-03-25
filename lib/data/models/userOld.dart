@@ -20,7 +20,7 @@
 //   final Address? address;
 //   final double? longitude;
 //   final double? latitude;
-//   final List<String>? products;
+//   final List<String>? product_repository;
 //   final List<String>? reviews;
 //
 //   User({
@@ -32,7 +32,7 @@
 //     this.latitude,
 //     this.avatarUrl,
 //     this.address,
-//     this.products,
+//     this.product_repository,
 //     this.reviews,
 //   });
 //
@@ -63,7 +63,7 @@
 //         longitude,
 //         isSeller,
 //         avatarUrl,
-//         products,
+//         product_repository,
 //         reviews
 //       ];
 // }

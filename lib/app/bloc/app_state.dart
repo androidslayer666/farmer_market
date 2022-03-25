@@ -1,19 +1,21 @@
-import 'dart:typed_data';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:equatable/equatable.dart';
 
-class AppState extends Equatable {
-  const AppState(
-      {required this.authenticated});
+import '../../data/models/cart/cart.dart';
+import '../../data/models/order/order.dart';
+import '../../data/models/user/user.dart';
 
-  final bool authenticated;
+part 'app_state.freezed.dart';
 
-  AppState copyWith({bool? authenticated}) {
-    return AppState(
-      authenticated: authenticated ?? this.authenticated,
-    );
-  }
-
-  @override
-  List<Object?> get props => [authenticated];
+@freezed
+class AppState with _$AppState {
+  const factory AppState(
+      {
+        @Default(false) bool authenticated,
+        @Default(Cart()) Cart cart,
+        @Default([]) List<Order> listOrders,
+        User? currentUser,
+        bool? orderUpdateResult
+      }) = _Initial;
 }

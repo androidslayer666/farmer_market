@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../product/product.dart';
+import '../user/user.dart';
 
 part 'cart_item.freezed.dart';
 
@@ -12,6 +13,8 @@ class CartItem with _$CartItem {
     @JsonKey(toJson: productToJson)
     Product? product,
     @Default(1) int qty,
+    @JsonKey(toJson: userToJson)
+    User? user
   }) = _Initial;
 
   factory CartItem.fromJson(Map<String, dynamic> json) =>
@@ -21,4 +24,8 @@ class CartItem with _$CartItem {
 
 Map<String, dynamic>? productToJson(Product? product) {
   return product?.toJson();
+}
+
+Map<String, dynamic>? userToJson(User? user) {
+  return user?.toJson();
 }

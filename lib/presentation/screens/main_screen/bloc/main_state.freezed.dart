@@ -25,6 +25,8 @@ class _$MainStateTearOff {
       String? errorWhileFetchingProducts,
       bool? backButtonPressedWhenStackIsClear,
       List<int> pageStack = const [0],
+      Filter filter = const Filter(),
+      bool filterSwitchedOn = false,
       bool? isLoading}) {
     return _Initial(
       user: user,
@@ -34,6 +36,8 @@ class _$MainStateTearOff {
       errorWhileFetchingProducts: errorWhileFetchingProducts,
       backButtonPressedWhenStackIsClear: backButtonPressedWhenStackIsClear,
       pageStack: pageStack,
+      filter: filter,
+      filterSwitchedOn: filterSwitchedOn,
       isLoading: isLoading,
     );
   }
@@ -52,6 +56,8 @@ mixin _$MainState {
   bool? get backButtonPressedWhenStackIsClear =>
       throw _privateConstructorUsedError;
   List<int> get pageStack => throw _privateConstructorUsedError;
+  Filter get filter => throw _privateConstructorUsedError;
+  bool get filterSwitchedOn => throw _privateConstructorUsedError;
   bool? get isLoading => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -71,10 +77,13 @@ abstract class $MainStateCopyWith<$Res> {
       String? errorWhileFetchingProducts,
       bool? backButtonPressedWhenStackIsClear,
       List<int> pageStack,
+      Filter filter,
+      bool filterSwitchedOn,
       bool? isLoading});
 
   $UserCopyWith<$Res>? get user;
   $CartCopyWith<$Res> get cart;
+  $FilterCopyWith<$Res> get filter;
 }
 
 /// @nodoc
@@ -94,6 +103,8 @@ class _$MainStateCopyWithImpl<$Res> implements $MainStateCopyWith<$Res> {
     Object? errorWhileFetchingProducts = freezed,
     Object? backButtonPressedWhenStackIsClear = freezed,
     Object? pageStack = freezed,
+    Object? filter = freezed,
+    Object? filterSwitchedOn = freezed,
     Object? isLoading = freezed,
   }) {
     return _then(_value.copyWith(
@@ -126,6 +137,14 @@ class _$MainStateCopyWithImpl<$Res> implements $MainStateCopyWith<$Res> {
           ? _value.pageStack
           : pageStack // ignore: cast_nullable_to_non_nullable
               as List<int>,
+      filter: filter == freezed
+          ? _value.filter
+          : filter // ignore: cast_nullable_to_non_nullable
+              as Filter,
+      filterSwitchedOn: filterSwitchedOn == freezed
+          ? _value.filterSwitchedOn
+          : filterSwitchedOn // ignore: cast_nullable_to_non_nullable
+              as bool,
       isLoading: isLoading == freezed
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -150,6 +169,13 @@ class _$MainStateCopyWithImpl<$Res> implements $MainStateCopyWith<$Res> {
       return _then(_value.copyWith(cart: value));
     });
   }
+
+  @override
+  $FilterCopyWith<$Res> get filter {
+    return $FilterCopyWith<$Res>(_value.filter, (value) {
+      return _then(_value.copyWith(filter: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -165,12 +191,16 @@ abstract class _$InitialCopyWith<$Res> implements $MainStateCopyWith<$Res> {
       String? errorWhileFetchingProducts,
       bool? backButtonPressedWhenStackIsClear,
       List<int> pageStack,
+      Filter filter,
+      bool filterSwitchedOn,
       bool? isLoading});
 
   @override
   $UserCopyWith<$Res>? get user;
   @override
   $CartCopyWith<$Res> get cart;
+  @override
+  $FilterCopyWith<$Res> get filter;
 }
 
 /// @nodoc
@@ -191,6 +221,8 @@ class __$InitialCopyWithImpl<$Res> extends _$MainStateCopyWithImpl<$Res>
     Object? errorWhileFetchingProducts = freezed,
     Object? backButtonPressedWhenStackIsClear = freezed,
     Object? pageStack = freezed,
+    Object? filter = freezed,
+    Object? filterSwitchedOn = freezed,
     Object? isLoading = freezed,
   }) {
     return _then(_Initial(
@@ -223,6 +255,14 @@ class __$InitialCopyWithImpl<$Res> extends _$MainStateCopyWithImpl<$Res>
           ? _value.pageStack
           : pageStack // ignore: cast_nullable_to_non_nullable
               as List<int>,
+      filter: filter == freezed
+          ? _value.filter
+          : filter // ignore: cast_nullable_to_non_nullable
+              as Filter,
+      filterSwitchedOn: filterSwitchedOn == freezed
+          ? _value.filterSwitchedOn
+          : filterSwitchedOn // ignore: cast_nullable_to_non_nullable
+              as bool,
       isLoading: isLoading == freezed
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -242,6 +282,8 @@ class _$_Initial implements _Initial {
       this.errorWhileFetchingProducts,
       this.backButtonPressedWhenStackIsClear,
       this.pageStack = const [0],
+      this.filter = const Filter(),
+      this.filterSwitchedOn = false,
       this.isLoading});
 
   @override
@@ -262,12 +304,18 @@ class _$_Initial implements _Initial {
   @JsonKey()
   @override
   final List<int> pageStack;
+  @JsonKey()
+  @override
+  final Filter filter;
+  @JsonKey()
+  @override
+  final bool filterSwitchedOn;
   @override
   final bool? isLoading;
 
   @override
   String toString() {
-    return 'MainState(user: $user, listProducts: $listProducts, listUserProducts: $listUserProducts, cart: $cart, errorWhileFetchingProducts: $errorWhileFetchingProducts, backButtonPressedWhenStackIsClear: $backButtonPressedWhenStackIsClear, pageStack: $pageStack, isLoading: $isLoading)';
+    return 'MainState(user: $user, listProducts: $listProducts, listUserProducts: $listUserProducts, cart: $cart, errorWhileFetchingProducts: $errorWhileFetchingProducts, backButtonPressedWhenStackIsClear: $backButtonPressedWhenStackIsClear, pageStack: $pageStack, filter: $filter, filterSwitchedOn: $filterSwitchedOn, isLoading: $isLoading)';
   }
 
   @override
@@ -287,6 +335,9 @@ class _$_Initial implements _Initial {
                 other.backButtonPressedWhenStackIsClear,
                 backButtonPressedWhenStackIsClear) &&
             const DeepCollectionEquality().equals(other.pageStack, pageStack) &&
+            const DeepCollectionEquality().equals(other.filter, filter) &&
+            const DeepCollectionEquality()
+                .equals(other.filterSwitchedOn, filterSwitchedOn) &&
             const DeepCollectionEquality().equals(other.isLoading, isLoading));
   }
 
@@ -300,6 +351,8 @@ class _$_Initial implements _Initial {
       const DeepCollectionEquality().hash(errorWhileFetchingProducts),
       const DeepCollectionEquality().hash(backButtonPressedWhenStackIsClear),
       const DeepCollectionEquality().hash(pageStack),
+      const DeepCollectionEquality().hash(filter),
+      const DeepCollectionEquality().hash(filterSwitchedOn),
       const DeepCollectionEquality().hash(isLoading));
 
   @JsonKey(ignore: true)
@@ -317,6 +370,8 @@ abstract class _Initial implements MainState {
       String? errorWhileFetchingProducts,
       bool? backButtonPressedWhenStackIsClear,
       List<int> pageStack,
+      Filter filter,
+      bool filterSwitchedOn,
       bool? isLoading}) = _$_Initial;
 
   @override
@@ -333,6 +388,10 @@ abstract class _Initial implements MainState {
   bool? get backButtonPressedWhenStackIsClear;
   @override
   List<int> get pageStack;
+  @override
+  Filter get filter;
+  @override
+  bool get filterSwitchedOn;
   @override
   bool? get isLoading;
   @override

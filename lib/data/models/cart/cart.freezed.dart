@@ -24,8 +24,7 @@ class _$CartTearOff {
   _Initial call(
       {String? id,
       String? userId,
-      @JsonKey(toJson: _listCartItemsToJson)
-          List<CartItem> cartItems = const [],
+      @JsonKey(toJson: listCartItemsToJson) List<CartItem> cartItems = const [],
       DateTime? dateCreated}) {
     return _Initial(
       id: id,
@@ -47,7 +46,7 @@ const $Cart = _$CartTearOff();
 mixin _$Cart {
   String? get id => throw _privateConstructorUsedError;
   String? get userId => throw _privateConstructorUsedError;
-  @JsonKey(toJson: _listCartItemsToJson)
+  @JsonKey(toJson: listCartItemsToJson)
   List<CartItem> get cartItems => throw _privateConstructorUsedError;
   DateTime? get dateCreated => throw _privateConstructorUsedError;
 
@@ -63,7 +62,7 @@ abstract class $CartCopyWith<$Res> {
   $Res call(
       {String? id,
       String? userId,
-      @JsonKey(toJson: _listCartItemsToJson) List<CartItem> cartItems,
+      @JsonKey(toJson: listCartItemsToJson) List<CartItem> cartItems,
       DateTime? dateCreated});
 }
 
@@ -111,7 +110,7 @@ abstract class _$InitialCopyWith<$Res> implements $CartCopyWith<$Res> {
   $Res call(
       {String? id,
       String? userId,
-      @JsonKey(toJson: _listCartItemsToJson) List<CartItem> cartItems,
+      @JsonKey(toJson: listCartItemsToJson) List<CartItem> cartItems,
       DateTime? dateCreated});
 }
 
@@ -158,7 +157,7 @@ class _$_Initial implements _Initial {
   const _$_Initial(
       {this.id,
       this.userId,
-      @JsonKey(toJson: _listCartItemsToJson) this.cartItems = const [],
+      @JsonKey(toJson: listCartItemsToJson) this.cartItems = const [],
       this.dateCreated});
 
   factory _$_Initial.fromJson(Map<String, dynamic> json) =>
@@ -169,7 +168,7 @@ class _$_Initial implements _Initial {
   @override
   final String? userId;
   @override
-  @JsonKey(toJson: _listCartItemsToJson)
+  @JsonKey(toJson: listCartItemsToJson)
   final List<CartItem> cartItems;
   @override
   final DateTime? dateCreated;
@@ -214,7 +213,7 @@ abstract class _Initial implements Cart {
   const factory _Initial(
       {String? id,
       String? userId,
-      @JsonKey(toJson: _listCartItemsToJson) List<CartItem> cartItems,
+      @JsonKey(toJson: listCartItemsToJson) List<CartItem> cartItems,
       DateTime? dateCreated}) = _$_Initial;
 
   factory _Initial.fromJson(Map<String, dynamic> json) = _$_Initial.fromJson;
@@ -224,7 +223,7 @@ abstract class _Initial implements Cart {
   @override
   String? get userId;
   @override
-  @JsonKey(toJson: _listCartItemsToJson)
+  @JsonKey(toJson: listCartItemsToJson)
   List<CartItem> get cartItems;
   @override
   DateTime? get dateCreated;

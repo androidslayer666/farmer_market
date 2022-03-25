@@ -22,6 +22,6 @@ Map<String, dynamic> _$$_InitialToJson(_$_Initial instance) =>
     <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,
-      'cartItems': _listCartItemsToJson(instance.cartItems),
+      'cartItems': listCartItemsToJson(instance.cartItems),
       'dateCreated': instance.dateCreated?.toIso8601String(),
     };

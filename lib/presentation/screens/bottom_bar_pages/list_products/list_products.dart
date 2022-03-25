@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../shared/product_grid_item.dart';
-import '../../main_screen/bloc/main_state.dart';
 import '../../main_screen/bloc/main_bloc.dart';
-import '../../main_screen/main_screen.dart';
+import '../../main_screen/bloc/main_state.dart';
 
 class ListProductsPage extends StatelessWidget {
   const ListProductsPage({Key? key}) : super(key: key);

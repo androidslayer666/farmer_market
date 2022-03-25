@@ -22,10 +22,13 @@ class _$CartItemTearOff {
   const _$CartItemTearOff();
 
   _Initial call(
-      {@JsonKey(toJson: productToJson) Product? product, int qty = 1}) {
+      {@JsonKey(toJson: productToJson) Product? product,
+      int qty = 1,
+      @JsonKey(toJson: userToJson) User? user}) {
     return _Initial(
       product: product,
       qty: qty,
+      user: user,
     );
   }
 
@@ -42,6 +45,8 @@ mixin _$CartItem {
   @JsonKey(toJson: productToJson)
   Product? get product => throw _privateConstructorUsedError;
   int get qty => throw _privateConstructorUsedError;
+  @JsonKey(toJson: userToJson)
+  User? get user => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -53,9 +58,13 @@ mixin _$CartItem {
 abstract class $CartItemCopyWith<$Res> {
   factory $CartItemCopyWith(CartItem value, $Res Function(CartItem) then) =
       _$CartItemCopyWithImpl<$Res>;
-  $Res call({@JsonKey(toJson: productToJson) Product? product, int qty});
+  $Res call(
+      {@JsonKey(toJson: productToJson) Product? product,
+      int qty,
+      @JsonKey(toJson: userToJson) User? user});
 
   $ProductCopyWith<$Res>? get product;
+  $UserCopyWith<$Res>? get user;
 }
 
 /// @nodoc
@@ -70,6 +79,7 @@ class _$CartItemCopyWithImpl<$Res> implements $CartItemCopyWith<$Res> {
   $Res call({
     Object? product = freezed,
     Object? qty = freezed,
+    Object? user = freezed,
   }) {
     return _then(_value.copyWith(
       product: product == freezed
@@ -80,6 +90,10 @@ class _$CartItemCopyWithImpl<$Res> implements $CartItemCopyWith<$Res> {
           ? _value.qty
           : qty // ignore: cast_nullable_to_non_nullable
               as int,
+      user: user == freezed
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as User?,
     ));
   }
 
@@ -93,6 +107,17 @@ class _$CartItemCopyWithImpl<$Res> implements $CartItemCopyWith<$Res> {
       return _then(_value.copyWith(product: value));
     });
   }
+
+  @override
+  $UserCopyWith<$Res>? get user {
+    if (_value.user == null) {
+      return null;
+    }
+
+    return $UserCopyWith<$Res>(_value.user!, (value) {
+      return _then(_value.copyWith(user: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -100,10 +125,15 @@ abstract class _$InitialCopyWith<$Res> implements $CartItemCopyWith<$Res> {
   factory _$InitialCopyWith(_Initial value, $Res Function(_Initial) then) =
       __$InitialCopyWithImpl<$Res>;
   @override
-  $Res call({@JsonKey(toJson: productToJson) Product? product, int qty});
+  $Res call(
+      {@JsonKey(toJson: productToJson) Product? product,
+      int qty,
+      @JsonKey(toJson: userToJson) User? user});
 
   @override
   $ProductCopyWith<$Res>? get product;
+  @override
+  $UserCopyWith<$Res>? get user;
 }
 
 /// @nodoc
@@ -119,6 +149,7 @@ class __$InitialCopyWithImpl<$Res> extends _$CartItemCopyWithImpl<$Res>
   $Res call({
     Object? product = freezed,
     Object? qty = freezed,
+    Object? user = freezed,
   }) {
     return _then(_Initial(
       product: product == freezed
@@ -129,6 +160,10 @@ class __$InitialCopyWithImpl<$Res> extends _$CartItemCopyWithImpl<$Res>
           ? _value.qty
           : qty // ignore: cast_nullable_to_non_nullable
               as int,
+      user: user == freezed
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as User?,
     ));
   }
 }
@@ -137,7 +172,9 @@ class __$InitialCopyWithImpl<$Res> extends _$CartItemCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Initial implements _Initial {
   const _$_Initial(
-      {@JsonKey(toJson: productToJson) this.product, this.qty = 1});
+      {@JsonKey(toJson: productToJson) this.product,
+      this.qty = 1,
+      @JsonKey(toJson: userToJson) this.user});
 
   factory _$_Initial.fromJson(Map<String, dynamic> json) =>
       _$$_InitialFromJson(json);
@@ -148,10 +185,13 @@ class _$_Initial implements _Initial {
   @JsonKey()
   @override
   final int qty;
+  @override
+  @JsonKey(toJson: userToJson)
+  final User? user;
 
   @override
   String toString() {
-    return 'CartItem(product: $product, qty: $qty)';
+    return 'CartItem(product: $product, qty: $qty, user: $user)';
   }
 
   @override
@@ -160,14 +200,16 @@ class _$_Initial implements _Initial {
         (other.runtimeType == runtimeType &&
             other is _Initial &&
             const DeepCollectionEquality().equals(other.product, product) &&
-            const DeepCollectionEquality().equals(other.qty, qty));
+            const DeepCollectionEquality().equals(other.qty, qty) &&
+            const DeepCollectionEquality().equals(other.user, user));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(product),
-      const DeepCollectionEquality().hash(qty));
+      const DeepCollectionEquality().hash(qty),
+      const DeepCollectionEquality().hash(user));
 
   @JsonKey(ignore: true)
   @override
@@ -182,7 +224,9 @@ class _$_Initial implements _Initial {
 
 abstract class _Initial implements CartItem {
   const factory _Initial(
-      {@JsonKey(toJson: productToJson) Product? product, int qty}) = _$_Initial;
+      {@JsonKey(toJson: productToJson) Product? product,
+      int qty,
+      @JsonKey(toJson: userToJson) User? user}) = _$_Initial;
 
   factory _Initial.fromJson(Map<String, dynamic> json) = _$_Initial.fromJson;
 
@@ -191,6 +235,9 @@ abstract class _Initial implements CartItem {
   Product? get product;
   @override
   int get qty;
+  @override
+  @JsonKey(toJson: userToJson)
+  User? get user;
   @override
   @JsonKey(ignore: true)
   _$InitialCopyWith<_Initial> get copyWith =>

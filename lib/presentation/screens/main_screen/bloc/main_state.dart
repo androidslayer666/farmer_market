@@ -1,4 +1,5 @@
 import 'package:farmer_market/data/models/cart/cart.dart';
+import 'package:farmer_market/data/models/filter/filter.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../data/models/product/product.dart';
@@ -16,5 +17,7 @@ class MainState with _$MainState {
       String? errorWhileFetchingProducts,
       bool? backButtonPressedWhenStackIsClear,
       @Default([0]) List<int> pageStack,
+          @Default(Filter()) Filter filter,
+      @Default(false) bool filterSwitchedOn,
       bool? isLoading}) = _Initial;
 }

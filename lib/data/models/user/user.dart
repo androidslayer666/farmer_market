@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../address_convertors.dart';
+import '../convertors.dart';
 import '../api/address.dart';
 
 part 'user.freezed.dart';
@@ -10,6 +10,7 @@ part 'user.g.dart';
 @freezed
 class User with _$User {
   const factory User({
+    String? id,
     String? name,
     String? phone,
     String? description,
@@ -20,6 +21,7 @@ class User with _$User {
     // ignore: invalid_annotation_target
     @JsonKey(fromJson: addressFromJson, toJson: addressToJson) Address? address,
     List<String>? products,
+    List<String>? orders,
     List<String>? reviews,
   }) = _Initial;
 
