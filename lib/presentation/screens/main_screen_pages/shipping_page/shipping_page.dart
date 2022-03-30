@@ -8,15 +8,21 @@ import '../../../../app/bloc/app_event.dart';
 import '../../../../app/bloc/app_state.dart';
 import '../../../../data/models/order/order.dart';
 import '../../../../data/models/user/user.dart';
+import 'bloc/shipping_bloc.dart';
+import 'bloc/shipping_state.dart';
 
 class ShippingPage extends StatelessWidget {
   const ShippingPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppBloc, AppState>(builder: (context, state) {
-      return ShippingPageBody(
-          listOrders: state.listOrders, user: state.currentUser);
+    return BlocBuilder<AppBloc, AppState>(builder: (context, appState) {
+      return BlocBuilder<ShippingBloc, ShippingState>(
+        builder: (context, shippingState) {
+          return ShippingPageBody(
+              listOrders: shippingState.listOrders, user: appState.currentUser);
+        },
+      );
     });
   }
 }
@@ -31,6 +37,7 @@ class ShippingPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('ShippingPageBody rebuild');
     return ListView.builder(
         itemCount: listOrders.length,
         itemBuilder: (context, index) =>
@@ -65,16 +72,16 @@ class ListOrdersItemWidget extends StatelessWidget {
                             child: Row(
                               children: [
                                 order.cartItems[index].product?.pictureUrl !=
-                                        null
+                                    null
                                     ? CachedNetworkImage(
-                                        imageUrl: order.cartItems[index]
-                                            .product!.pictureUrl!,
-                                        height: 100,
-                                      )
+                                  imageUrl: order.cartItems[index]
+                                      .product!.pictureUrl!,
+                                  height: 100,
+                                )
                                     : Image.asset(
-                                        'assets/images/placeholder-image.png'),
+                                    'assets/images/placeholder-image.png'),
                                 Text((order.cartItems[index].product?.name ??
-                                        '') +
+                                    '') +
                                     ' x ' +
                                     order.cartItems[index].qty.toString())
                               ],
@@ -84,10 +91,11 @@ class ListOrdersItemWidget extends StatelessWidget {
           ),
           order.confirmedShippingDate != null
               ? Text(
-                  'Shipping date confirmed on ${DateFormat('dd.MM.yyyy').format(order.confirmedShippingDate!)}')
+              'Shipping date confirmed on ${DateFormat('dd.MM.yyyy').format(
+                  order.confirmedShippingDate!)}')
               : user?.isSeller == true
-                  ? Text('Please confirm a shipping date for this order')
-                  : Container(),
+              ? Text('Please confirm a shipping date for this order')
+              : Container(),
           if (user?.isSeller == true)
             ElevatedButton(
                 onPressed: () {
@@ -100,7 +108,7 @@ class ListOrdersItemWidget extends StatelessWidget {
   }
 
   void _selectDate(BuildContext context, DateTime date, Order order) async {
-    AppBloc appBloc = context.read<AppBloc>();
+    ShippingBloc appBloc = context.read<ShippingBloc>();
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: date, // Refer step 1
@@ -108,7 +116,7 @@ class ListOrdersItemWidget extends StatelessWidget {
       lastDate: DateTime(2025),
     );
     if (picked != null && picked != date) {
-      appBloc.add(AppStateConfirmDateShipping(order, picked));
+      appBloc.add(ShippingEventConfirmDateShipping(order, picked));
     }
   }
 }

@@ -17,10 +17,12 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$ChatScreenStateTearOff {
   const _$ChatScreenStateTearOff();
 
-  _Initial call({User? user, Chat chat = const Chat()}) {
+  _Initial call(
+      {User? user, Chat chat = const Chat(), String messageString = ''}) {
     return _Initial(
       user: user,
       chat: chat,
+      messageString: messageString,
     );
   }
 }
@@ -32,6 +34,7 @@ const $ChatScreenState = _$ChatScreenStateTearOff();
 mixin _$ChatScreenState {
   User? get user => throw _privateConstructorUsedError;
   Chat get chat => throw _privateConstructorUsedError;
+  String get messageString => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ChatScreenStateCopyWith<ChatScreenState> get copyWith =>
@@ -43,7 +46,7 @@ abstract class $ChatScreenStateCopyWith<$Res> {
   factory $ChatScreenStateCopyWith(
           ChatScreenState value, $Res Function(ChatScreenState) then) =
       _$ChatScreenStateCopyWithImpl<$Res>;
-  $Res call({User? user, Chat chat});
+  $Res call({User? user, Chat chat, String messageString});
 
   $UserCopyWith<$Res>? get user;
   $ChatCopyWith<$Res> get chat;
@@ -62,6 +65,7 @@ class _$ChatScreenStateCopyWithImpl<$Res>
   $Res call({
     Object? user = freezed,
     Object? chat = freezed,
+    Object? messageString = freezed,
   }) {
     return _then(_value.copyWith(
       user: user == freezed
@@ -72,6 +76,10 @@ class _$ChatScreenStateCopyWithImpl<$Res>
           ? _value.chat
           : chat // ignore: cast_nullable_to_non_nullable
               as Chat,
+      messageString: messageString == freezed
+          ? _value.messageString
+          : messageString // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 
@@ -100,7 +108,7 @@ abstract class _$InitialCopyWith<$Res>
   factory _$InitialCopyWith(_Initial value, $Res Function(_Initial) then) =
       __$InitialCopyWithImpl<$Res>;
   @override
-  $Res call({User? user, Chat chat});
+  $Res call({User? user, Chat chat, String messageString});
 
   @override
   $UserCopyWith<$Res>? get user;
@@ -121,6 +129,7 @@ class __$InitialCopyWithImpl<$Res> extends _$ChatScreenStateCopyWithImpl<$Res>
   $Res call({
     Object? user = freezed,
     Object? chat = freezed,
+    Object? messageString = freezed,
   }) {
     return _then(_Initial(
       user: user == freezed
@@ -131,6 +140,10 @@ class __$InitialCopyWithImpl<$Res> extends _$ChatScreenStateCopyWithImpl<$Res>
           ? _value.chat
           : chat // ignore: cast_nullable_to_non_nullable
               as Chat,
+      messageString: messageString == freezed
+          ? _value.messageString
+          : messageString // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -138,17 +151,21 @@ class __$InitialCopyWithImpl<$Res> extends _$ChatScreenStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Initial implements _Initial {
-  const _$_Initial({this.user, this.chat = const Chat()});
+  const _$_Initial(
+      {this.user, this.chat = const Chat(), this.messageString = ''});
 
   @override
   final User? user;
   @JsonKey()
   @override
   final Chat chat;
+  @JsonKey()
+  @override
+  final String messageString;
 
   @override
   String toString() {
-    return 'ChatScreenState(user: $user, chat: $chat)';
+    return 'ChatScreenState(user: $user, chat: $chat, messageString: $messageString)';
   }
 
   @override
@@ -157,14 +174,17 @@ class _$_Initial implements _Initial {
         (other.runtimeType == runtimeType &&
             other is _Initial &&
             const DeepCollectionEquality().equals(other.user, user) &&
-            const DeepCollectionEquality().equals(other.chat, chat));
+            const DeepCollectionEquality().equals(other.chat, chat) &&
+            const DeepCollectionEquality()
+                .equals(other.messageString, messageString));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(user),
-      const DeepCollectionEquality().hash(chat));
+      const DeepCollectionEquality().hash(chat),
+      const DeepCollectionEquality().hash(messageString));
 
   @JsonKey(ignore: true)
   @override
@@ -173,12 +193,15 @@ class _$_Initial implements _Initial {
 }
 
 abstract class _Initial implements ChatScreenState {
-  const factory _Initial({User? user, Chat chat}) = _$_Initial;
+  const factory _Initial({User? user, Chat chat, String messageString}) =
+      _$_Initial;
 
   @override
   User? get user;
   @override
   Chat get chat;
+  @override
+  String get messageString;
   @override
   @JsonKey(ignore: true)
   _$InitialCopyWith<_Initial> get copyWith =>

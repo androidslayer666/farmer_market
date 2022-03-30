@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:farmer_market/presentation/screens/main_screen_pages/shipping_page/bloc/shipping_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -10,6 +11,8 @@ import '../../../../data/models/cart/cart_item.dart';
 import '../../../../data/models/product/product.dart';
 import '../../../../data/models/user/user.dart';
 import '../../../shared/utils.dart';
+import 'bloc/cart_bloc.dart';
+import 'bloc/cart_state.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({Key? key}) : super(key: key);
@@ -25,7 +28,8 @@ class CartPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppBloc, AppState>(builder: (context, state) {
+    print('CartPageBody rebuild');
+    return BlocBuilder<CartBloc, CartState>(builder: (context, state) {
       return Column(children: [
         CartList(
           listCartItems: state.cart.cartItems,
@@ -42,7 +46,7 @@ class CartList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appBloc = context.read<AppBloc>();
+    final shippingBloc = context.read<ShippingBloc>();
     final listUserIDs = listCartItems.map((e) => e.user).toSet().toList();
     final Map<User?, List<CartItem>> map = {};
     for (final user in listUserIDs) {
@@ -60,7 +64,7 @@ class CartList extends StatelessWidget {
                     ...e.value.map((e) => CartItemWidget(item: e)),
                     ElevatedButton(
                         onPressed: () {
-                          appBloc.add(AppStateCreateOrderClicked(
+                          shippingBloc.add(ShippingEventCreateOrderClicked(
                               listCartItems,
                               e.key ?? User(),
                               e.value.first.product?.userID ?? ''));
@@ -80,7 +84,7 @@ class CartItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Locale locale = Localizations.localeOf(context);
-    final bloc = context.read<AppBloc>();
+    final bloc = context.read<CartBloc>();
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -106,14 +110,14 @@ class CartItemWidget extends StatelessWidget {
                     child: Row(children: [
                       IconButton(
                           onPressed: () {
-                            bloc.add(AppStateRemoveFromCart(item.product!));
+                            bloc.add(CartEventRemoveFromCart(item.product!));
                           },
                           icon: const Icon(Icons.remove)),
                       Text(item.qty.toString()),
                       IconButton(
                           onPressed: () {
                             bloc.add(
-                                AppStateAddToCart(item.product!, item.user!));
+                                CartEventAddToCart(item.product!, item.user!));
                           },
                           icon: const Icon(Icons.add)),
                     ]))

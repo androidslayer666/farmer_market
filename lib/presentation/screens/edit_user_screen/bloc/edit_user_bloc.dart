@@ -45,6 +45,7 @@ class EditUserBloc extends Bloc<EditUserEvent, EditUserState> {
           name: event.user?.name,
           addressQuery: event.user?.address.toString(),
           description: event.user?.description,
+          address: event.user?.address,
           isLoading: false));
       emit(state.copyWith(
           avatarFile: await urlToUint8List(

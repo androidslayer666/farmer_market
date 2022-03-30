@@ -14,8 +14,8 @@ import '../../navigation/arguments.dart';
 import '../../navigation/navigation_wrapper.dart';
 import '../../shared/app_bar.dart';
 import '../../shared/utils.dart';
-import '../main_screen/bloc/main_bloc.dart';
-import '../main_screen/bloc/main_event.dart';
+import '../main_screen/bloc/main_state.dart';
+import '../main_screen_pages/cart_page/bloc/cart_bloc.dart';
 import 'bloc/product_detail_screen_bloc.dart';
 import 'bloc/product_detail_screen_event.dart';
 import 'bloc/product_detail_screen_state.dart';
@@ -46,81 +46,81 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               const ProductDetailScreenState(), locator<UserRepository>())
             ..add(ProductDetailScreenOnInit(product?.userID ?? ''));
         },
-        child: ProductDetailScreenBody(product: product));
+        child: BlocBuilder<AppBloc, AppState>(
+            builder: (context, appState) =>
+                BlocConsumer<ProductDetailScreenBloc, ProductDetailScreenState>(
+                    listener: (context, state) {},
+                    builder: (context, state) => ProductDetailScreenBody(
+                          product: product,
+                          appState: appState,
+                          state: state,
+                        ))));
   }
 }
 
-class ProductDetailScreenBody extends StatefulWidget {
-  const ProductDetailScreenBody({Key? key, this.product}) : super(key: key);
-
+class ProductDetailScreenBody extends StatelessWidget {
+  const ProductDetailScreenBody(
+      {Key? key, this.product, required this.state, required this.appState})
+      : super(key: key);
+  final ProductDetailScreenState state;
   final Product? product;
+  final AppState appState;
 
-  @override
-  State<ProductDetailScreenBody> createState() =>
-      _ProductDetailScreenBodyState();
-}
-
-class _ProductDetailScreenBodyState extends State<ProductDetailScreenBody> {
   @override
   Widget build(BuildContext context) {
-    final appBloc = context.read<AppBloc>();
+    final cartBloc = context.read<CartBloc>();
     final locale = Localizations.localeOf(context);
-    return BlocBuilder<AppBloc, AppState>(
-        builder: (context, appState) => BlocConsumer<ProductDetailScreenBloc, ProductDetailScreenState>(
-      listener: (context, state) {},
-      builder: (context, state) => Scaffold(
-        body: Scaffold(
-          appBar: CustomAppBar(user: appState.currentUser),
-          body: Column(
-            children: [
-              widget.product?.pictureUrl != null
-                  ? CachedNetworkImage(imageUrl: widget.product!.pictureUrl!)
-                  : Image.asset('assets/images/placeholder-image.png'),
-              _productDescriptionBuilder(widget.product!, locale),
-              GestureDetector(
-                onTap: () {
-                  // navigate to account screen
+    return Scaffold(
+      body: Scaffold(
+        appBar: CustomAppBar(user: appState.currentUser),
+        body: Column(
+          children: [
+            product?.pictureUrl != null
+                ? CachedNetworkImage(imageUrl: product!.pictureUrl!)
+                : Image.asset('assets/images/placeholder-image.png'),
+            _productDescriptionBuilder(product!, locale),
+            GestureDetector(
+              onTap: () {
+                // navigate to account screen
 
-                  navigateToUserDetailScreen(context,
-                      arguments: UserDetailArguments(user: state.user));
-                },
-                child: Row(children: [
-                  CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      backgroundImage: state.user?.avatarUrl != null
-                          ? NetworkImage(state.user!.avatarUrl!)
-                          : null),
-                  Center(
-                    child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          state.user?.name ?? '',
-                          style: const TextStyle(color: Colors.white),
-                        )),
-                  ),
-                  OutlinedButton(
-                    style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all(
-                            Theme.of(context).backgroundColor)),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(Icons.add),
-                          Icon(Icons.shopping_cart)
-                        ]),
-                    onPressed: () {
-                      appBloc.add(AppStateAddToCart(
-                          widget.product ?? const Product(),
-                          state.user ?? const User()));
-                    },
-                  )
-                ]),
-              ),
-            ],
-          ),
+                navigateToUserDetailScreen(context,
+                    arguments: UserDetailArguments(user: state.user));
+              },
+              child: Row(children: [
+                CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    backgroundImage: state.user?.avatarUrl != null
+                        ? NetworkImage(state.user!.avatarUrl!)
+                        : null),
+                Center(
+                  child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        state.user?.name ?? '',
+                        style: const TextStyle(color: Colors.white),
+                      )),
+                ),
+                OutlinedButton(
+                  style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.all(
+                          Theme.of(context).backgroundColor)),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.add),
+                        Icon(Icons.shopping_cart)
+                      ]),
+                  onPressed: () {
+                    cartBloc.add(CartEventAddToCart(product ?? const Product(),
+                        state.user ?? const User()));
+                  },
+                )
+              ]),
+            ),
+          ],
         ),
       ),
-    ));
+    );
   }
 }
 

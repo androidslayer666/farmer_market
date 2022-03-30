@@ -21,80 +21,95 @@ class ChatScreen extends StatelessWidget {
 
     return BlocBuilder<AppBloc, AppState>(
       builder: (context, appState) => BlocProvider<ChatScreenCubit>(
-        create: (context) => ChatScreenCubit(_chatRepository),
-        child: Scaffold(
-          appBar: CustomAppBar(user: appState.currentUser),
-          body: ChatScreenBody(
-              args: args, userId: appState.currentUser?.id ?? ''),
-        ),
+        create: (context) =>
+            ChatScreenCubit(_chatRepository)..onInit(args?.user),
+        child: BlocBuilder<ChatScreenCubit, ChatScreenState>(
+            builder: (context, state) {
+          return Scaffold(
+            appBar: CustomAppBar(user: appState.currentUser),
+            body: ChatScreenBody(
+                state: state,
+                args: args,
+                userId: appState.currentUser?.id ?? ''),
+          );
+        }),
       ),
     );
   }
 }
 
-class ChatScreenBody extends StatefulWidget {
-  const ChatScreenBody({Key? key, this.args, required this.userId})
+class ChatScreenBody extends StatelessWidget {
+  const ChatScreenBody(
+      {Key? key, this.args, required this.userId, required this.state})
       : super(key: key);
 
   final UserDetailArguments? args;
   final String userId;
-
-  @override
-  State<ChatScreenBody> createState() => _ChatScreenBodyState();
-}
-
-class _ChatScreenBodyState extends State<ChatScreenBody> {
-  final textController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    final chatScreenCubit = context.read<ChatScreenCubit>();
-    if (widget.args?.user != null) chatScreenCubit.onInit(widget.args!.user!);
-  }
+  final ChatScreenState state;
 
   @override
   Widget build(BuildContext context) {
     final chatScreenCubit = context.read<ChatScreenCubit>();
-
-    return BlocBuilder<ChatScreenCubit, ChatScreenState>(
-        builder: (context, state) {
-      return Column(
+    return SafeArea(
+      child: Column(
         children: [
-          Row(
-            children: [
-              CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  backgroundImage: state.user?.avatarUrl != null
-                      ? NetworkImage(state.user?.avatarUrl ?? '')
-                      : null),
-              Text(state.user?.name ?? ''),
-            ],
-          ),
-          MessageList(
-              userId: widget.userId, listMessages: state.chat.listMessages),
-          Row(
-            children: [
-              Expanded(
-                  child: TextField(
-                controller: textController,
-              )),
-              IconButton(
-                  onPressed: () {
-                    chatScreenCubit.sendMessage(
-                        state.user, textController.text);
-                  },
-                  icon: const Icon(Icons.send))
-            ],
-          )
+          ChatScreenAvatarBloc(state: state),
+          ChatScreenMessageList(
+              userId: userId, listMessages: state.chat.listMessages),
+          ChatScreenTextInput(chatScreenCubit: chatScreenCubit)
         ],
-      );
-    });
+      ),
+    );
   }
 }
 
-class MessageList extends StatefulWidget {
-  const MessageList(
+class ChatScreenTextInput extends StatelessWidget {
+  const ChatScreenTextInput({Key? key, required this.chatScreenCubit}) : super(key: key);
+
+  final ChatScreenCubit chatScreenCubit;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+            child: TextField(
+              onChanged: (value) => chatScreenCubit.onChangeTextInput(value),
+            )),
+        IconButton(
+            onPressed: () {
+              chatScreenCubit.sendMessage();
+            },
+            icon: const Icon(Icons.send))
+      ],
+    );
+  }
+}
+
+
+class ChatScreenAvatarBloc extends StatelessWidget {
+  const ChatScreenAvatarBloc({Key? key, required this.state }) : super(key: key);
+
+  final ChatScreenState state;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        CircleAvatar(
+            backgroundColor: Colors.transparent,
+            backgroundImage: state.user?.avatarUrl != null
+                ? NetworkImage(state.user?.avatarUrl ?? '')
+                : null),
+        Text(state.user?.name ?? ''),
+      ],
+    );
+  }
+}
+
+
+class ChatScreenMessageList extends StatefulWidget {
+  const ChatScreenMessageList(
       {Key? key, required this.listMessages, required this.userId})
       : super(key: key);
 
@@ -102,33 +117,37 @@ class MessageList extends StatefulWidget {
   final String userId;
 
   @override
-  State<MessageList> createState() => _MessageListState();
+  State<ChatScreenMessageList> createState() => _ChatScreenMessageListState();
 }
 
-class _MessageListState extends State<MessageList> {
+class _ChatScreenMessageListState extends State<ChatScreenMessageList> {
   Message? clickedMessage;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ...?widget.listMessages?.map((e) => GestureDetector(
-              onTap: () {
-                e.id == clickedMessage?.id
-                    ? setState(() {
-                        clickedMessage = null;
-                      })
-                    : setState(() {
-                        clickedMessage = e;
-                      });
-              },
-              child: MessageItemWidget(
-                message: e,
-                userId: widget.userId,
-                clickedMessage: clickedMessage,
-              ),
-            ))
-      ],
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            ...?widget.listMessages?.map((e) => GestureDetector(
+                  onTap: () {
+                    e.id == clickedMessage?.id
+                        ? setState(() {
+                            clickedMessage = null;
+                          })
+                        : setState(() {
+                            clickedMessage = e;
+                          });
+                  },
+                  child: MessageItemWidget(
+                    message: e,
+                    userId: widget.userId,
+                    clickedMessage: clickedMessage,
+                  ),
+                ))
+          ],
+        ),
+      ),
     );
   }
 }

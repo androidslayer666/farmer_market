@@ -37,7 +37,7 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
     Emitter<AddProductState> emit,
   ) async {
     if (event.args != null) {
-      print(event.args);
+      print(event.args?.product);
       final product = event.args!.product;
       emit(state.copyWith(
           name: product?.name,

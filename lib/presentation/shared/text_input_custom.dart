@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class TextInputCustom extends StatelessWidget {
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final Icon? icon;
   final int? lines;
   final String hint;
+  final String? initialValue;
   final bool isPass;
   final FocusNode? node;
   final TextInputType? textInputType;
@@ -16,20 +17,22 @@ class TextInputCustom extends StatelessWidget {
   const TextInputCustom({Key? key,
     this.icon,
     this.node,
-    required this.controller,
+    this.controller,
     this.lines = 1,
     this.textInputType,
     required this.hint,
     this.isPass = false,
     required this.onChanged,
-    this.textInputFormatter})
+    this.textInputFormatter,
+    this.initialValue})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      child: TextField(
+      child: TextFormField(
+        initialValue: initialValue,
         style: const TextStyle(fontSize: 20, fontFamily: 'Roboto'),
         controller: controller,
         keyboardType: textInputType,
@@ -39,10 +42,10 @@ class TextInputCustom extends StatelessWidget {
         onChanged: (String value) => onChanged(value),
         obscureText: isPass,
         decoration: InputDecoration(
-            icon: icon,
-            border: const UnderlineInputBorder(),
-            labelText: hint,
-            ),
+          icon: icon,
+          border: const UnderlineInputBorder(),
+          labelText: hint,
+        ),
       ),
     );
   }

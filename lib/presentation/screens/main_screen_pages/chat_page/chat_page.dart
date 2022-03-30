@@ -1,8 +1,8 @@
 import 'package:farmer_market/presentation/navigation/arguments.dart';
 import 'package:farmer_market/presentation/navigation/navigation_wrapper.dart';
-import 'package:farmer_market/presentation/screens/bottom_bar_pages/chat_page/bloc/chat_bloc.dart';
-import 'package:farmer_market/presentation/screens/bottom_bar_pages/chat_page/bloc/chat_event.dart';
-import 'package:farmer_market/presentation/screens/bottom_bar_pages/chat_page/bloc/chat_state.dart';
+import 'package:farmer_market/presentation/screens/main_screen_pages/chat_page/bloc/chat_bloc.dart';
+import 'package:farmer_market/presentation/screens/main_screen_pages/chat_page/bloc/chat_event.dart';
+import 'package:farmer_market/presentation/screens/main_screen_pages/chat_page/bloc/chat_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,6 +38,7 @@ class ChatPageBody extends StatefulWidget {
 class _ChatPageBodyState extends State<ChatPageBody> {
   @override
   Widget build(BuildContext context) {
+    print('ChatPageBody rebuild');
     return BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
       return Padding(
         padding: const EdgeInsets.all(8.0),

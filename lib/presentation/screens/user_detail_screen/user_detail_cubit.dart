@@ -11,14 +11,15 @@ part 'user_detail_cubit.freezed.dart';
 
 @freezed
 class UserDetailState with _$UserDetailState {
-  const factory UserDetailState({bool? sendMessageIsClicked,
-  User? user,
-    List<Product>? listProducts
-  }) = _Initial;
+  const factory UserDetailState(
+      {bool? sendMessageIsClicked,
+      User? user,
+      List<Product>? listProducts}) = _Initial;
 }
 
 class UserDetailCubit extends Cubit<UserDetailState> {
-  UserDetailCubit(UserRepository userRepository, ProductRepository productRepository)
+  UserDetailCubit(
+      UserRepository userRepository, ProductRepository productRepository)
       : _userRepository = userRepository,
         _productRepository = productRepository,
         super(const UserDetailState());
@@ -30,17 +31,16 @@ class UserDetailCubit extends Cubit<UserDetailState> {
     emit(state.copyWith(sendMessageIsClicked: true));
   }
 
-  void onInit(String userId) async{
-
-    final resultUser = await _userRepository.getUserById(userId);
-    final resultProducts = await _productRepository.getUserProducts(userId);
-    if(resultUser is Success<User, String>) {
-      emit(state.copyWith(user: resultUser.data));
-      if(resultProducts is Success<List<Product>, String>){
-        emit(state.copyWith(listProducts: resultProducts.data));
-
+  void onInit(String? userId) async {
+    if (userId != null) {
+      final resultUser = await _userRepository.getUserById(userId);
+      final resultProducts = await _productRepository.getUserProducts(userId);
+      if (resultUser is Success<User, String>) {
+        emit(state.copyWith(user: resultUser.data));
+        if (resultProducts is Success<List<Product>, String>) {
+          emit(state.copyWith(listProducts: resultProducts.data));
+        }
       }
     }
-
   }
 }

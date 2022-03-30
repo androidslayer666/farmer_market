@@ -12,6 +12,7 @@ class UserProductsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('UserProductsPage rebuild');
     return BlocConsumer<MainBloc, MainState>(
         listener: (context, state) {},
         builder: (context, state) {

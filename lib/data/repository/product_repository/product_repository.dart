@@ -52,7 +52,7 @@ class ProductRepository {
           product = product.copyWith(address: address.data);
         }
 
-        if(product.id == null) {
+        if (product.id == null) {
           product = product.copyWith(id: const Uuid().v1());
         }
 
@@ -76,9 +76,25 @@ class ProductRepository {
       final _query = firestoreQueryFilteringBuilder(_firestore, filter);
       final result = await _query.get();
       return Success(
-          data: (result.docs
-              .map((e) => Product.fromJson(e.data()))
-              .toList()));
+          data: (result.docs.map((e) => Product.fromJson(e.data())).toList()));
+    } catch (e) {
+      print('getAllProducts   ' + e.toString());
+      return Failure();
+    }
+  }
+
+  Future<Result<List<Product>, String>> getPageOfProducts(
+      Filter filter, String? lastDocument) async {
+    try {
+      Query<Map<String, dynamic>> _query =
+          firestoreQueryFilteringBuilder(_firestore, filter).orderBy('id');
+      if (lastDocument != null) {
+        _query = _query.startAfter([lastDocument]);
+      }
+      _query = _query.limit(10);
+      final result = await _query.get();
+      return Success(
+          data: (result.docs.map((e) => Product.fromJson(e.data())).toList()));
     } catch (e) {
       print('getAllProducts   ' + e.toString());
       return Failure();
@@ -102,14 +118,14 @@ class ProductRepository {
   }
 
   Future<Result> deleteProducts(String productUid) async {
-    try{
+    try {
       await _firestore
           .collection(fireStoreNameProductTable)
           .doc(productUid)
           .delete();
       print("Success()");
-      return(Success());
-    }catch(e){
+      return (Success());
+    } catch (e) {
       print(e);
       return Failure(error: e.toString());
     }

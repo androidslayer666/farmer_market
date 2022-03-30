@@ -25,74 +25,42 @@ class AddProductScreen extends StatelessWidget {
     final args =
         ModalRoute.of(context)!.settings.arguments as AddProductArguments?;
 
-    return Scaffold(
-        body: BlocProvider(
-      create: (context) {
-        return AddProductBloc(
-            authRepository: locator<AuthRepository>(),
-            productRepository: locator<ProductRepository>())
-          ..add(AddProductInit(args));
-      },
-      child: AddProductScreenBody(args: args),
-    ));
+    return  BlocProvider(
+      create: (context) => AddProductBloc(
+          authRepository: locator<AuthRepository>(),
+          productRepository: locator<ProductRepository>())
+        ..add(AddProductInit(args)),
+      child: BlocConsumer<AddProductBloc, AddProductState>(
+        listener: (context, state) {
+          if (state.deletingIsSuccessful == true) {
+            navigateToMainScreen(context);
+          }
+          if (state.addingIsSuccessful == true) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Product added successfully"),
+              duration: Duration(seconds: 1),
+            ));
+            Navigator.of(context).pop();
+          }
+        },
+        builder: (context, state) {
+          return AddProductScreenBody(args: args, state: state);
+        },
+      ),
+    );
   }
 }
 
-class AddProductScreenBody extends StatefulWidget {
-  const AddProductScreenBody({Key? key, this.args}) : super(key: key);
+class AddProductScreenBody extends StatelessWidget {
+  const AddProductScreenBody({Key? key, this.args, required this.state}) : super(key: key);
 
   final AddProductArguments? args;
-
-  @override
-  State<AddProductScreenBody> createState() => _AddProductScreenBodyState();
-}
-
-class _AddProductScreenBodyState extends State<AddProductScreenBody> {
-  late TextEditingController nameController;
-  late TextEditingController descriptionController;
-  late TextEditingController priceController;
-  late TextEditingController unitController;
-  DateTime selectedDate = DateTime.now();
-
-  @override
-  void initState() {
-    super.initState();
-    final Product? product = widget.args?.product;
-    nameController = TextEditingController(text: product?.name ?? '');
-    descriptionController =
-        TextEditingController(text: product?.description ?? '');
-    priceController =
-        TextEditingController(text: product?.price.toString() ?? '');
-    unitController =
-        TextEditingController(text: product?.unit.toString() ?? '');
-  }
-
-  @override
-  void dispose() {
-    nameController.dispose();
-    descriptionController.dispose();
-    priceController.dispose();
-    unitController.dispose();
-    super.dispose();
-  }
+  final AddProductState state;
 
   @override
   Widget build(BuildContext context) {
     final _addProductBloc = context.read<AddProductBloc>();
-    return BlocConsumer<AddProductBloc, AddProductState>(
-      listener: (context, state) {
-        if (state.deletingIsSuccessful == true) {
-          navigateToMainScreen(context);
-        }
-        if (state.addingIsSuccessful == true) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text("Product added successfully"),
-            duration: Duration(seconds: 1),
-          ));
-          navigateToMainScreen(context);
-        }
-      },
-      builder: (context, state) => Scaffold(
+    return  Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).backgroundColor,
           title: Text(S.of(context).addProductScreen_addProduct),
@@ -100,20 +68,44 @@ class _AddProductScreenBodyState extends State<AddProductScreenBody> {
         body: SingleChildScrollView(
             reverse: true,
             child: Column(children: [
-              _textInputs(_addProductBloc),
+              TextInputCustom(
+                initialValue: args?.product?.name,
+                icon: const Icon(Icons.person),
+                hint: S.of(context).addProductScreen_product,
+                onChanged: (value) {
+                  _addProductBloc.add(AddProductNameChanged(value));
+                },
+              ),
+              TextInputCustom(
+                initialValue: args?.product?.description,
+                icon: const Icon(Icons.text_snippet),
+                hint: S.of(context).addProductScreen_description,
+                onChanged: (value) {
+                  _addProductBloc.add(AddProductDescriptionChanged(value));
+                },
+              ),
+              TextInputCustom(
+                initialValue: args?.product?.price.toString(),
+                icon: const Icon(Icons.monetization_on),
+                textInputType: TextInputType.number,
+                hint: S.of(context).addProductScreen_price,
+                onChanged: (value) {
+                  _addProductBloc.add(AddProductPriceChanged(value));
+                },
+              ),
               _unitDropdown(state.unit, _addProductBloc),
               _categoryDropDown(Category.milk, _addProductBloc),
               const Divider(height: 30),
               _addProductImageWidget(
                   state.isImageLoading, state.productImage, _addProductBloc),
               const Divider(height: 30),
-              _bottomButtonRow(state.isLoading, _addProductBloc)
+              _bottomButtonRow(state.isLoading, _addProductBloc, context)
             ])),
-      ),
-    );
+      )
+    ;
   }
 
-  Widget _bottomButtonRow(bool? isLoading, AddProductBloc addProductBloc) {
+  Widget _bottomButtonRow(bool? isLoading, AddProductBloc addProductBloc, BuildContext context) {
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -141,7 +133,7 @@ class _AddProductScreenBodyState extends State<AddProductScreenBody> {
     );
   }
 
-  Widget _unitDropdown(Unit? unit, AddProductBloc addProductBloc){
+  Widget _unitDropdown(Unit? unit, AddProductBloc addProductBloc) {
     return DropdownButton<Unit>(
       value: unit,
       items: <Unit>[Unit.litres, Unit.kilos].map((Unit value) {
@@ -156,10 +148,11 @@ class _AddProductScreenBodyState extends State<AddProductScreenBody> {
     );
   }
 
-  Widget _categoryDropDown(Category? category, AddProductBloc addProductBloc){
+  Widget _categoryDropDown(Category? category, AddProductBloc addProductBloc) {
     return DropdownButton<Category>(
       value: category,
-      items: <Category>[Category.cheese, Category.meat, Category.milk].map((Category value) {
+      items: <Category>[Category.cheese, Category.meat, Category.milk]
+          .map((Category value) {
         return DropdownMenuItem<Category>(
           value: value,
           child: Text(value.name),
@@ -169,51 +162,6 @@ class _AddProductScreenBodyState extends State<AddProductScreenBody> {
         addProductBloc.add(AddProductCategoryChanged(value!));
       },
     );
-  }
-
-
-  Widget _textInputs(AddProductBloc addProductBloc) {
-    return Column(children: [
-      TextInputCustom(
-        icon: const Icon(Icons.person),
-        controller: nameController,
-        hint: S.of(context).addProductScreen_product,
-        onChanged: (value) {
-          addProductBloc.add(AddProductNameChanged(value));
-        },
-      ),
-      TextInputCustom(
-        icon: const Icon(Icons.text_snippet),
-        controller: descriptionController,
-        hint: S.of(context).addProductScreen_description,
-        onChanged: (value) {
-          addProductBloc.add(AddProductDescriptionChanged(value));
-        },
-      ),
-      TextInputCustom(
-        icon: const Icon(Icons.monetization_on),
-        controller: priceController,
-        textInputType: TextInputType.number,
-        hint: S.of(context).addProductScreen_price,
-        onChanged: (value) {
-          addProductBloc.add(AddProductPriceChanged(value));
-        },
-      )
-    ]);
-  }
-
-  void _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate, // Refer step 1
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2025),
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
   }
 
   Widget _addProductImageWidget(bool? isImageLoading, Uint8List? productImage,
@@ -248,9 +196,8 @@ class _AddProductScreenBodyState extends State<AddProductScreenBody> {
     showConfirmationDialog(
         text: 'Are you sure you want to delete the product?',
         onConfirm: () {
-          bloc.add(AddProductDeleteSubmitted(widget.args?.product?.id ?? ''));
+          bloc.add(AddProductDeleteSubmitted(args?.product?.id ?? ''));
         },
         context: context);
   }
 }
-
