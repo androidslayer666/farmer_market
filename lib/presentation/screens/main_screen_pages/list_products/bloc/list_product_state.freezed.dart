@@ -21,12 +21,14 @@ class _$ListProductStateTearOff {
       {String? lastDocumentId,
       List<Product> listProducts = const [],
       bool? isNewPortionLoading,
-      bool? noMoreData}) {
+      bool? noMoreData,
+      Filter? filter}) {
     return _Initial(
       lastDocumentId: lastDocumentId,
       listProducts: listProducts,
       isNewPortionLoading: isNewPortionLoading,
       noMoreData: noMoreData,
+      filter: filter,
     );
   }
 }
@@ -40,6 +42,7 @@ mixin _$ListProductState {
   List<Product> get listProducts => throw _privateConstructorUsedError;
   bool? get isNewPortionLoading => throw _privateConstructorUsedError;
   bool? get noMoreData => throw _privateConstructorUsedError;
+  Filter? get filter => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ListProductStateCopyWith<ListProductState> get copyWith =>
@@ -55,7 +58,10 @@ abstract class $ListProductStateCopyWith<$Res> {
       {String? lastDocumentId,
       List<Product> listProducts,
       bool? isNewPortionLoading,
-      bool? noMoreData});
+      bool? noMoreData,
+      Filter? filter});
+
+  $FilterCopyWith<$Res>? get filter;
 }
 
 /// @nodoc
@@ -73,6 +79,7 @@ class _$ListProductStateCopyWithImpl<$Res>
     Object? listProducts = freezed,
     Object? isNewPortionLoading = freezed,
     Object? noMoreData = freezed,
+    Object? filter = freezed,
   }) {
     return _then(_value.copyWith(
       lastDocumentId: lastDocumentId == freezed
@@ -91,7 +98,22 @@ class _$ListProductStateCopyWithImpl<$Res>
           ? _value.noMoreData
           : noMoreData // ignore: cast_nullable_to_non_nullable
               as bool?,
+      filter: filter == freezed
+          ? _value.filter
+          : filter // ignore: cast_nullable_to_non_nullable
+              as Filter?,
     ));
+  }
+
+  @override
+  $FilterCopyWith<$Res>? get filter {
+    if (_value.filter == null) {
+      return null;
+    }
+
+    return $FilterCopyWith<$Res>(_value.filter!, (value) {
+      return _then(_value.copyWith(filter: value));
+    });
   }
 }
 
@@ -105,7 +127,11 @@ abstract class _$InitialCopyWith<$Res>
       {String? lastDocumentId,
       List<Product> listProducts,
       bool? isNewPortionLoading,
-      bool? noMoreData});
+      bool? noMoreData,
+      Filter? filter});
+
+  @override
+  $FilterCopyWith<$Res>? get filter;
 }
 
 /// @nodoc
@@ -123,6 +149,7 @@ class __$InitialCopyWithImpl<$Res> extends _$ListProductStateCopyWithImpl<$Res>
     Object? listProducts = freezed,
     Object? isNewPortionLoading = freezed,
     Object? noMoreData = freezed,
+    Object? filter = freezed,
   }) {
     return _then(_Initial(
       lastDocumentId: lastDocumentId == freezed
@@ -141,6 +168,10 @@ class __$InitialCopyWithImpl<$Res> extends _$ListProductStateCopyWithImpl<$Res>
           ? _value.noMoreData
           : noMoreData // ignore: cast_nullable_to_non_nullable
               as bool?,
+      filter: filter == freezed
+          ? _value.filter
+          : filter // ignore: cast_nullable_to_non_nullable
+              as Filter?,
     ));
   }
 }
@@ -152,7 +183,8 @@ class _$_Initial implements _Initial {
       {this.lastDocumentId,
       this.listProducts = const [],
       this.isNewPortionLoading,
-      this.noMoreData});
+      this.noMoreData,
+      this.filter});
 
   @override
   final String? lastDocumentId;
@@ -163,10 +195,12 @@ class _$_Initial implements _Initial {
   final bool? isNewPortionLoading;
   @override
   final bool? noMoreData;
+  @override
+  final Filter? filter;
 
   @override
   String toString() {
-    return 'ListProductState(lastDocumentId: $lastDocumentId, listProducts: $listProducts, isNewPortionLoading: $isNewPortionLoading, noMoreData: $noMoreData)';
+    return 'ListProductState(lastDocumentId: $lastDocumentId, listProducts: $listProducts, isNewPortionLoading: $isNewPortionLoading, noMoreData: $noMoreData, filter: $filter)';
   }
 
   @override
@@ -181,7 +215,8 @@ class _$_Initial implements _Initial {
             const DeepCollectionEquality()
                 .equals(other.isNewPortionLoading, isNewPortionLoading) &&
             const DeepCollectionEquality()
-                .equals(other.noMoreData, noMoreData));
+                .equals(other.noMoreData, noMoreData) &&
+            const DeepCollectionEquality().equals(other.filter, filter));
   }
 
   @override
@@ -190,7 +225,8 @@ class _$_Initial implements _Initial {
       const DeepCollectionEquality().hash(lastDocumentId),
       const DeepCollectionEquality().hash(listProducts),
       const DeepCollectionEquality().hash(isNewPortionLoading),
-      const DeepCollectionEquality().hash(noMoreData));
+      const DeepCollectionEquality().hash(noMoreData),
+      const DeepCollectionEquality().hash(filter));
 
   @JsonKey(ignore: true)
   @override
@@ -203,7 +239,8 @@ abstract class _Initial implements ListProductState {
       {String? lastDocumentId,
       List<Product> listProducts,
       bool? isNewPortionLoading,
-      bool? noMoreData}) = _$_Initial;
+      bool? noMoreData,
+      Filter? filter}) = _$_Initial;
 
   @override
   String? get lastDocumentId;
@@ -213,6 +250,8 @@ abstract class _Initial implements ListProductState {
   bool? get isNewPortionLoading;
   @override
   bool? get noMoreData;
+  @override
+  Filter? get filter;
   @override
   @JsonKey(ignore: true)
   _$InitialCopyWith<_Initial> get copyWith =>

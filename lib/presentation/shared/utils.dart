@@ -5,9 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
+import '../../data/models/review/review.dart';
+
 Future<Uint8List?> pickImage(ImageSource source) async {
   final ImagePicker _imagePicker = ImagePicker();
-  XFile? _file = await _imagePicker.pickImage(source: source);
+  XFile? _file = await _imagePicker.pickImage(source: source, maxHeight: 800, maxWidth: 600);
   if (_file != null) {
     return await _file.readAsBytes();
   }
@@ -124,8 +126,27 @@ String getCurrencySign(
     NumberFormat formatCurrency,
 Locale locale
 ){
+  // because of the ruble sign is not supported in intl 0.17.0 there is a custom function
   if(locale.toString() == 'ru') {
     return '\u20BD';
   }
   return formatCurrency.currencySymbol;
+}
+
+
+double getAverageRating(List<Review> listReviews) {
+  double result = 0.0;
+  final listRates = listReviews.map((e) => e.rate).whereType<double>();
+  if (listRates.isNotEmpty) {
+    result = listRates.reduce((value, element) => value + element) / listRates.length;
+  }
+  return result;
+}
+
+String reduceStringLengthTo(String? value, int length) {
+  String finalString = value?.length != null ? value! : '';
+  finalString = finalString.length > length
+      ? finalString.substring(0, length) + '...'
+      : finalString;
+  return finalString;
 }

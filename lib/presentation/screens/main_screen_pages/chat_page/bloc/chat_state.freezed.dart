@@ -17,9 +17,9 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$ChatStateTearOff {
   const _$ChatStateTearOff();
 
-  _Initial call({List<Chat>? chat}) {
+  _Initial call({List<Chat>? chats}) {
     return _Initial(
-      chat: chat,
+      chats: chats,
     );
   }
 }
@@ -29,7 +29,7 @@ const $ChatState = _$ChatStateTearOff();
 
 /// @nodoc
 mixin _$ChatState {
-  List<Chat>? get chat => throw _privateConstructorUsedError;
+  List<Chat>? get chats => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ChatStateCopyWith<ChatState> get copyWith =>
@@ -40,7 +40,7 @@ mixin _$ChatState {
 abstract class $ChatStateCopyWith<$Res> {
   factory $ChatStateCopyWith(ChatState value, $Res Function(ChatState) then) =
       _$ChatStateCopyWithImpl<$Res>;
-  $Res call({List<Chat>? chat});
+  $Res call({List<Chat>? chats});
 }
 
 /// @nodoc
@@ -53,12 +53,12 @@ class _$ChatStateCopyWithImpl<$Res> implements $ChatStateCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? chat = freezed,
+    Object? chats = freezed,
   }) {
     return _then(_value.copyWith(
-      chat: chat == freezed
-          ? _value.chat
-          : chat // ignore: cast_nullable_to_non_nullable
+      chats: chats == freezed
+          ? _value.chats
+          : chats // ignore: cast_nullable_to_non_nullable
               as List<Chat>?,
     ));
   }
@@ -69,7 +69,7 @@ abstract class _$InitialCopyWith<$Res> implements $ChatStateCopyWith<$Res> {
   factory _$InitialCopyWith(_Initial value, $Res Function(_Initial) then) =
       __$InitialCopyWithImpl<$Res>;
   @override
-  $Res call({List<Chat>? chat});
+  $Res call({List<Chat>? chats});
 }
 
 /// @nodoc
@@ -83,12 +83,12 @@ class __$InitialCopyWithImpl<$Res> extends _$ChatStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? chat = freezed,
+    Object? chats = freezed,
   }) {
     return _then(_Initial(
-      chat: chat == freezed
-          ? _value.chat
-          : chat // ignore: cast_nullable_to_non_nullable
+      chats: chats == freezed
+          ? _value.chats
+          : chats // ignore: cast_nullable_to_non_nullable
               as List<Chat>?,
     ));
   }
@@ -97,14 +97,14 @@ class __$InitialCopyWithImpl<$Res> extends _$ChatStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Initial implements _Initial {
-  const _$_Initial({this.chat});
+  const _$_Initial({this.chats});
 
   @override
-  final List<Chat>? chat;
+  final List<Chat>? chats;
 
   @override
   String toString() {
-    return 'ChatState(chat: $chat)';
+    return 'ChatState(chats: $chats)';
   }
 
   @override
@@ -112,12 +112,12 @@ class _$_Initial implements _Initial {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Initial &&
-            const DeepCollectionEquality().equals(other.chat, chat));
+            const DeepCollectionEquality().equals(other.chats, chats));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(chat));
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(chats));
 
   @JsonKey(ignore: true)
   @override
@@ -126,10 +126,10 @@ class _$_Initial implements _Initial {
 }
 
 abstract class _Initial implements ChatState {
-  const factory _Initial({List<Chat>? chat}) = _$_Initial;
+  const factory _Initial({List<Chat>? chats}) = _$_Initial;
 
   @override
-  List<Chat>? get chat;
+  List<Chat>? get chats;
   @override
   @JsonKey(ignore: true)
   _$InitialCopyWith<_Initial> get copyWith =>

@@ -1,6 +1,6 @@
 // DO NOT EDIT. This is code generated via package:intl/generate_localized.dart
 // This is a library that provides messages for a ru locale. All the
-// messages from the main_screen program should be duplicated here with the same
+// messages from the main program should be duplicated here with the same
 // function name.
 
 // Ignore issues from commonly used lints in this file.

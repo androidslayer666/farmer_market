@@ -1,8 +1,10 @@
 import 'package:farmer_market/app/bloc/app_bloc.dart';
 import 'package:farmer_market/app/bloc/app_state.dart';
+import 'package:farmer_market/presentation/navigation/arguments.dart';
 import 'package:farmer_market/presentation/shared/app_bar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../data/models/product/category.dart' as models;
@@ -13,8 +15,9 @@ class FilterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as FilterArguments?;
     return BlocProvider(
-      create: (context) => FilterScreenCubit(),
+      create: (context) => FilterScreenCubit(args?.filter),
       child: BlocBuilder<AppBloc, AppState>(builder: (context, appState) {
         return BlocBuilder<FilterScreenCubit, FilterScreenState>(
             builder: (context, filterState) {
@@ -48,11 +51,25 @@ class FilterScreenBody extends StatelessWidget {
             state: state,
             cubit: cubit,
           ),
-          ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop(state.filter);
-              },
-              child: const Text('confirm'))
+          const Divider(height: 50),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              if (state.filter.categories?.isNotEmpty == true ||
+                  state.filter.topPrice != null ||
+                  state.filter.bottomPrice != null)
+                ElevatedButton(
+                    onPressed: () {
+                      cubit.clearFilters();
+                    },
+                    child: const Text('Clear')),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(state.filter);
+                  },
+                  child: const Text('confirm')),
+            ],
+          )
         ],
       ),
     );
@@ -70,18 +87,36 @@ class FilterScreenPriceInputs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: const [
-        Text('Price from '),
+      children: [
+        const Text('Price from '),
         SizedBox(
             width: 100,
-            child: TextField(
+            child: TextFormField(
+              initialValue: state.filter.bottomPrice != null
+                  ? state.filter.bottomPrice.toString()
+                  : '',
               keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              onChanged: (value) {
+                cubit.setBottomPrice(int.parse(value));
+              },
             )),
-        Text('  to '),
+        const Text('  to '),
         SizedBox(
             width: 100,
-            child: TextField(
+            child: TextFormField(
+              initialValue: state.filter.topPrice != null
+                  ? state.filter.topPrice.toString()
+                  : '',
               keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              onChanged: (value) {
+                cubit.setTopPrice(int.parse(value));
+              },
             )),
       ],
     );
@@ -110,6 +145,11 @@ class FilterScreenCategoryGrid extends StatelessWidget {
                     cubit.addOrRemoveCategory(models.Category.values[index]),
                 child: Center(
                   child: Card(
+                    color: state.filter.categories?.contains(
+                        models.Category.values[index]) ==
+                        true
+                        ? Theme.of(context).bottomAppBarColor
+                        : Theme.of(context).backgroundColor,
                     child: SizedBox(
                       height: 50,
                       width: 100,
@@ -120,8 +160,8 @@ class FilterScreenCategoryGrid extends StatelessWidget {
                               color: state.filter.categories?.contains(
                                           models.Category.values[index]) ==
                                       true
-                                  ? Theme.of(context).primaryColor
-                                  : Theme.of(context).backgroundColor),
+                                  ? Theme.of(context).indicatorColor
+                                  : Theme.of(context).focusColor),
                         ),
                       ),
                     ),

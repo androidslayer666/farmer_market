@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../app/bloc/app_bloc.dart';
-import '../../../../app/bloc/app_event.dart';
 import '../../../../app/bloc/app_state.dart';
 import '../../../../data/models/order/order.dart';
 import '../../../../data/models/user/user.dart';
@@ -37,7 +36,6 @@ class ShippingPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('ShippingPageBody rebuild');
     return ListView.builder(
         itemCount: listOrders.length,
         itemBuilder: (context, index) =>
@@ -55,54 +53,69 @@ class ListOrdersItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          Text(order.id?.substring(0, order.id?.indexOf('-') ?? 0) ?? ''),
-          SizedBox(
-            height: 100,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: order.cartItems.length,
-                itemBuilder: (context, index) =>
-                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                      SizedBox(
-                          width: 300,
-                          child: Card(
-                            child: Row(
-                              children: [
-                                order.cartItems[index].product?.pictureUrl !=
-                                    null
-                                    ? CachedNetworkImage(
-                                  imageUrl: order.cartItems[index]
-                                      .product!.pictureUrl!,
-                                  height: 100,
-                                )
-                                    : Image.asset(
-                                    'assets/images/placeholder-image.png'),
-                                Text((order.cartItems[index].product?.name ??
-                                    '') +
-                                    ' x ' +
-                                    order.cartItems[index].qty.toString())
-                              ],
-                            ),
-                          )),
-                    ])),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  const Text('Order # '),
+                  Text(
+                    order.id?.substring(0, order.id?.indexOf('-') ?? 0) ?? '',
+                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
+                ],
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ...order.cartItems.map((e) => Text(
+                          (e.product?.name ?? '') +
+                              '.....' +
+                              e.qty.toString() +
+                              ' pcs.'))
+                    ]),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              if (order.confirmedShippingDate != null)
+                Row(
+                  children: [
+                    Text('Shipping date confirmed on '),
+                    Text(
+                      DateFormat('dd.MM.yyyy')
+                          .format(order.confirmedShippingDate!),
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
+                    const Spacer(),
+                    GestureDetector(
+                        onTap: () {
+                          _selectDate(context, DateTime.now(), order);
+                        },
+                        child: const Icon(Icons.edit))
+                  ],
+                ),
+              if (user?.isSeller == true && order.confirmedShippingDate == null)
+                GestureDetector(
+                    onTap: () {
+                      _selectDate(context, DateTime.now(), order);
+                    },
+                    child: SizedBox(
+                        width: double.infinity,
+                        child: Container(
+                          child: const Center(
+                              child: Text('Confirm shipping date')),
+                          color: Colors.grey.shade400,
+                        )))
+            ],
           ),
-          order.confirmedShippingDate != null
-              ? Text(
-              'Shipping date confirmed on ${DateFormat('dd.MM.yyyy').format(
-                  order.confirmedShippingDate!)}')
-              : user?.isSeller == true
-              ? Text('Please confirm a shipping date for this order')
-              : Container(),
-          if (user?.isSeller == true)
-            ElevatedButton(
-                onPressed: () {
-                  _selectDate(context, DateTime.now(), order);
-                },
-                child: const Text('Confirm shipping date'))
-        ],
+        ),
       ),
     );
   }

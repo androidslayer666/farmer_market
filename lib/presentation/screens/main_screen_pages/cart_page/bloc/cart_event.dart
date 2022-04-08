@@ -27,3 +27,11 @@ class CartEventRemoveFromCart extends CartEvent{
   @override
   List<Object> get props => [product];
 }
+
+class CartEventCreateOrderClicked extends CartEvent{
+  const CartEventCreateOrderClicked(this.user);
+  final User? user;
+
+  @override
+  List<Object?> get props => [user];
+}

@@ -18,7 +18,6 @@ class ProductGridItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Locale locale = Localizations.localeOf(context);
-    final mainBloc = context.read<MainBloc>();
     return GestureDetector(
       onTap: () {
         navigateToProductDetailScreen(context,
@@ -32,24 +31,47 @@ class ProductGridItem extends StatelessWidget {
           Expanded(
               flex: 5,
               child: product.pictureUrl != null
-                  ? CachedNetworkImage(imageUrl: product.pictureUrl!)
+                  ? CachedNetworkImage(
+                      imageBuilder: (context, imageProvider) => Container(
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10)),
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                      imageUrl: product.pictureUrl!)
                   : Image.asset('assets/images/placeholder-image.png')),
-          Expanded(flex: 2, child: _productDescriptionBuilder(product, locale)),
+          Expanded(
+              flex: 2,
+              child: _productDescriptionBuilder(product, locale, context)),
         ]),
       ),
     );
   }
 }
 
-Widget _productDescriptionBuilder(Product product, Locale locale) {
+Widget _productDescriptionBuilder(
+    Product product, Locale locale, BuildContext context) {
   final formatCurrency = NumberFormat.simpleCurrency(locale: locale.toString());
-  return Center(
-      child: Wrap(children: [
-    Text((product.name ?? '') +
-        ', ' +
-        product.price.toString() +
-        // because of the ruble sign is not supported in intl 0.17.0 there is a custom function
-        getCurrencySign(formatCurrency, locale)),
-    if (product.address?.city != null) Text('${product.address?.city}')
-  ]));
+  String productName = reduceStringLengthTo(product.name, 15);
+  // because of the ruble sign is not supported in intl 0.17.0 there is a custom function
+  String price = reduceStringLengthTo(
+          product.price != null ? product.price.toString() : '', 10) +
+      (product.price != null ? getCurrencySign(formatCurrency, locale) : '');
+  return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+    Text(
+  productName + ', ' + price,
+  style: TextStyle(fontSize: 14, color: Theme.of(context).indicatorColor),
+    ),
+    if (product.address?.city != null)
+  Text('${product.address?.city}',
+      style: TextStyle(fontSize: 14, color: Theme.of(context).primaryColor))
+  ]);
 }

@@ -25,6 +25,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<CartEventAddToCart>(_onAddToCart);
     on<CartEventRemoveFromCart>(_onRemoveFromCart);
     on<CartEventInit>(_onInit);
+    on<CartEventCreateOrderClicked>(_onCreateOrderClicked);
   }
 
   final CartRepository _cartRepository;
@@ -74,5 +75,15 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       }
       _cartRepository.saveCart(cart: state.cart);
     }
+  }
+
+  _onCreateOrderClicked(
+      CartEventCreateOrderClicked event, Emitter<CartState> emit
+      ){
+    final cartItems = [...state.cart.cartItems]
+        .where((element) => element.user?.id != event.user?.id)
+        .toList();
+    emit(state.copyWith(cart: state.cart.copyWith(cartItems: cartItems)));
+    _cartRepository.saveCart(cart: state.cart);
   }
 }

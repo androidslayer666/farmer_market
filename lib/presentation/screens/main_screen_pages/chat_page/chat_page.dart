@@ -28,38 +28,36 @@ class ChatPage extends StatelessWidget {
   }
 }
 
-class ChatPageBody extends StatefulWidget {
+class ChatPageBody extends StatelessWidget {
   const ChatPageBody({Key? key}) : super(key: key);
 
   @override
-  State<ChatPageBody> createState() => _ChatPageBodyState();
-}
-
-class _ChatPageBodyState extends State<ChatPageBody> {
-  @override
   Widget build(BuildContext context) {
-    print('ChatPageBody rebuild');
     return BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
       return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            ...?state.chat?.map((e) => GestureDetector(
-                onTap: () {
-                  navigateToChatScreen(context,
-                      arguments: UserDetailArguments(user: e.user));
-                },
-                child: Row(children: [
-                  CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      backgroundImage: e.user?.avatarUrl != null
-                          ? NetworkImage(e.user?.avatarUrl ?? '')
-                          : null),
-                  Text(e.user?.name ?? '')
-                ])))
-          ],
-        ),
-      );
+          padding: const EdgeInsets.all(16.0),
+          child: ListView.builder(
+            itemCount: state.chats?.length,
+              itemBuilder: (context, index) => GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                  onTap: () {
+                    navigateToChatScreen(context,
+                        arguments:
+                            UserDetailArguments(user: state.chats?[index].user));
+                  },
+                  child: Row(children: [
+                    CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        backgroundImage:
+                            state.chats?[index].user?.avatarUrl != null
+                                ? NetworkImage(
+                                    state.chats?[index].user?.avatarUrl ?? '')
+                                : null),
+                    const SizedBox(width: 16,),
+                    Text(state.chats?[index].user?.name ?? ''),
+                    const Spacer(),
+                    Icon(Icons.arrow_forward, color: Theme.of(context).primaryColor,)
+                  ]))));
     });
   }
 }

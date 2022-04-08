@@ -1,33 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../shared/product_grid_item.dart';
 import '../../../shared/product_list_item.dart';
-import '../../main_screen/bloc/main_state.dart';
-import '../../main_screen/bloc/main_bloc.dart';
-import '../../main_screen/main_screen.dart';
+import 'bloc/user_products_bloc.dart';
+import 'bloc/user_products_state.dart';
 
 class UserProductsPage extends StatelessWidget {
   const UserProductsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print('UserProductsPage rebuild');
-    return BlocConsumer<MainBloc, MainState>(
+
+    final bloc = context.read<UserProductsBloc>();
+    return BlocConsumer<UserProductsBloc, UserProductsState>(
         listener: (context, state) {},
         builder: (context, state) {
           return Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               child: RefreshIndicator(
                 color: Theme.of(context).backgroundColor,
                 onRefresh: () async {
-                  //bloc.add(const UpdateListProductRequested());
+                  bloc.add(const UserProductsEventUpdateList());
                 },
                 child:
                     ListView.builder(
-                      itemCount: state.listUserProducts.length,
+                      itemCount: state.listProducts.length,
                         itemBuilder: (context, index) => ProductListItem(
-                              product: state.listUserProducts[index],
+                              product: state.listProducts[index],
                             )),
               ));
         });

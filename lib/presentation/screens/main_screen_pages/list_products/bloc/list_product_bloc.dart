@@ -21,25 +21,65 @@ class ListProductBloc extends Bloc<ListProductEvent, ListProductState> {
   })  : _productRepository = productRepository,
         super(const ListProductState()) {
     on<ListProductEventPageRequested>(_onPageRequested);
+    on<ListProductFilterChanged>(_onFilterChanged);
+    on<ListProductEventUpdateList>(_onUpdateList);
+    on<ListProductEventRestartPaging>(_onRestartPaging);
   }
 
-  void _onPageRequested(ListProductEventPageRequested event,
+  _onPageRequested(ListProductEventPageRequested event,
       Emitter<ListProductState> emit) async {
+    if(state.noMoreData != true) {
+      _fetchNewPage();
+    }
+  }
+
+  _onUpdateList (
+      ListProductEventUpdateList event,
+      Emitter<ListProductState> emit
+      ) async {
+    emit(state.copyWith(lastDocumentId: null, noMoreData: null));
+    // _fetchNewPage();
+    final lastDocumentId = state.listProducts.isNotEmpty ? state.listProducts.last.id : '';
+    print('getAllProducts   ' + state.listProducts.last.name.toString() );
+    final result = await _productRepository.refreshProducts(
+        state.filter, lastDocumentId);
+    if (result is Success<List<Product>, String>) {
+      print('getAllProducts   ' + result.data!.length.toString());
+      emit(state.copyWith(
+          listProducts: [...result.data!],
+          isNewPortionLoading: false
+      ));
+    }
+  }
+
+  _onRestartPaging(
+      ListProductEventRestartPaging event, Emitter<ListProductState> emit
+      ){
+    emit(state.copyWith(listProducts: [], lastDocumentId: null, noMoreData: null));
+     _fetchNewPage();
+  }
+
+  _onFilterChanged(
+      ListProductFilterChanged event, Emitter<ListProductState> emit) {
+    emit(state.copyWith(filter: event.filter, lastDocumentId: null, listProducts: []));
+    _fetchNewPage();
+  }
+
+  _fetchNewPage() async {
     emit(state.copyWith(isNewPortionLoading: true));
+    final lastDocumentId = state.listProducts.isNotEmpty ? state.listProducts.last.id : '';
     final result = await _productRepository.getPageOfProducts(
-        const Filter(), state.lastDocumentId);
+        state.filter, lastDocumentId);
     if (result is Success<List<Product>, String>) {
       emit(state.copyWith(
           listProducts: [...state.listProducts, ...result.data!],
           isNewPortionLoading: false
       ));
-      if(result.data?.isNotEmpty == true) {
-        emit(state.copyWith(
-            lastDocumentId: result.data![result.data!.length - 1].id));
-      } else {
+      if(result.data?.isNotEmpty != true) {
         emit(state.copyWith(
             noMoreData: true));
       }
     }
   }
+
 }

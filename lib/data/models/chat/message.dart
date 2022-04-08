@@ -12,7 +12,8 @@ class Message with _$Message {
   const factory Message(
       {String? id,
         String? usedId,
-        String? message
+        String? message,
+        DateTime? time
       }) = _Initial;
 
   factory Message.fromJson(Map<String, dynamic> json) => _$MessageFromJson(json);

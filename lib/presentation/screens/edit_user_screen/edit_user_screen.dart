@@ -76,6 +76,10 @@ class EditUserScreenBody extends StatelessWidget {
               editUserBloc: editUserBloc,
               initial: args?.user?.address.toString(),
             ),
+            EditUserIsSellerCheckBox(
+              editUserBloc: editUserBloc,
+              isChecked: state.user?.isSeller == true,
+            ),
             const Divider(height: 30),
             EditUserChooseAvatarWidget(
                 isImageLoading: state.isImageLoading,
@@ -100,6 +104,32 @@ class EditUserScreenBody extends StatelessWidget {
   }
 }
 
+class EditUserIsSellerCheckBox extends StatelessWidget {
+  const EditUserIsSellerCheckBox(
+      {Key? key, required this.isChecked, required this.editUserBloc})
+      : super(key: key);
+
+  final bool isChecked;
+  final EditUserBloc editUserBloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Checkbox(
+          activeColor: Theme.of(context).primaryColor,
+          checkColor: Theme.of(context).backgroundColor,
+          value: isChecked,
+          onChanged: (bool? value) {
+            editUserBloc.add(UserDetailIsSellerChanged(!isChecked));
+          },
+        ),
+        const Text('Are you a seller?')
+      ],
+    );
+  }
+}
+
 class EditUserAddressAutocomplete extends StatelessWidget {
   const EditUserAddressAutocomplete(
       {Key? key, required this.state, required this.editUserBloc, this.initial})
@@ -111,15 +141,16 @@ class EditUserAddressAutocomplete extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(state.user);
     final addressRepository = locator.get<IAddressRepository>();
     return Autocomplete<Address>(
       optionsBuilder: (TextEditingValue value) async {
         // didn't find a way to get an actual result through state here. That's why direct request is used.
         final result = await addressRepository.getSuggestions(value.text);
-        if(result is Success<List<Suggestion>, String>) {
+        if (result is Success<List<Suggestion>, String>) {
           return result.data?.map((e) => e.data) ?? [];
         } else {
-          return [Address(userId: '')];
+          return <Address>[];
         }
         // return state.addresses ?? <Address>[];
       },
@@ -128,7 +159,7 @@ class EditUserAddressAutocomplete extends StatelessWidget {
         return TextInputCustom(
           initialValue: initial,
           node: node,
-          icon: const Icon(Icons.location_city),
+          icon: Icons.location_city,
           hint: S.of(context).userDetailScreen_address,
           onChanged: (value) {
             editUserBloc.add(UserDetailAddressChanged(value));
@@ -205,7 +236,7 @@ class EditUserTextInputs extends StatelessWidget {
     return Column(children: [
       TextInputCustom(
         initialValue: existedUser?.name,
-        icon: const Icon(Icons.person),
+        icon: Icons.person,
         //controller: nameController,
         hint: S.of(context).userDetailScreen_name,
         onChanged: (value) {
@@ -214,7 +245,7 @@ class EditUserTextInputs extends StatelessWidget {
       ),
       TextInputCustom(
         initialValue: existedUser?.description,
-        icon: const Icon(Icons.text_snippet),
+        icon: Icons.text_snippet,
         //controller: descriptionController,
         hint: S.of(context).userDetailScreen_description,
         onChanged: (value) {

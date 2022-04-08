@@ -15,8 +15,10 @@ part 'chat_screen_cubit.freezed.dart';
 
 @freezed
 class ChatScreenState with _$ChatScreenState {
-  const factory ChatScreenState({User? user, @Default(Chat()) Chat chat, @Default('') String messageString}) =
-      _Initial;
+  const factory ChatScreenState(
+      {User? user,
+      @Default(Chat()) Chat chat,
+      @Default('') String messageString}) = _Initial;
 }
 
 class ChatScreenCubit extends Cubit<ChatScreenState> {
@@ -34,21 +36,25 @@ class ChatScreenCubit extends Cubit<ChatScreenState> {
     });
   }
 
-  void onChangeTextInput(String text){
+  void onChangeTextInput(String text) {
     emit(state.copyWith(messageString: text));
   }
 
-  void sendMessage() {
+  void sendMessage(String message) {
     final messageId = const Uuid().v1();
     final listMessages = [
       ...?state.chat.listMessages,
-      Message(message: state.messageString, usedId: state.user?.id, id: messageId)
+      Message(
+          message: message,
+          usedId: state.user?.id,
+          id: messageId,
+          time: DateTime.now())
     ];
     Chat? chat = state.chat.copyWith(listMessages: listMessages);
     if (state.chat.user == null && state.user?.id != null) {
       chat = chat.copyWith(user: state.user);
     }
-    if(state.messageString.isNotEmpty) {
+    if (message.isNotEmpty) {
       _chatRepository.saveChat(chat);
     }
   }

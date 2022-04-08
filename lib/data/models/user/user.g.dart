@@ -12,8 +12,6 @@ _$_Initial _$$_InitialFromJson(Map<String, dynamic> json) => _$_Initial(
       phone: json['phone'] as String?,
       description: json['description'] as String?,
       isSeller: json['isSeller'] as bool?,
-      longitude: (json['longitude'] as num?)?.toDouble(),
-      latitude: (json['latitude'] as num?)?.toDouble(),
       avatarUrl: json['avatarUrl'] as String?,
       address: addressFromJson(json['address'] as Map<String, dynamic>?),
       products: (json['products'] as List<dynamic>?)
@@ -32,8 +30,6 @@ Map<String, dynamic> _$$_InitialToJson(_$_Initial instance) =>
       'phone': instance.phone,
       'description': instance.description,
       'isSeller': instance.isSeller,
-      'longitude': instance.longitude,
-      'latitude': instance.latitude,
       'avatarUrl': instance.avatarUrl,
       'address': addressToJson(instance.address),
       'products': instance.products,

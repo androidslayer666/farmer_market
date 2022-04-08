@@ -10,6 +10,6 @@ part 'chat_state.freezed.dart';
 class ChatState with _$ChatState {
   const factory ChatState(
       {
-        List<Chat>? chat,
+        List<Chat>? chats,
         }) = _Initial;
 }

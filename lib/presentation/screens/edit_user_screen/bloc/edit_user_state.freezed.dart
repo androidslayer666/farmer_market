@@ -18,11 +18,8 @@ class _$EditUserStateTearOff {
   const _$EditUserStateTearOff();
 
   _Initial call(
-      {String? name,
-      bool? haveUserInfoOnServer,
-      String? description,
+      {User? user,
       String? addressQuery,
-      Address? address,
       List<Address>? addresses,
       bool? isLoading,
       bool? isImageLoading,
@@ -30,11 +27,8 @@ class _$EditUserStateTearOff {
       UserDetailStatus? userDetailStatus,
       Uint8List? avatarFile}) {
     return _Initial(
-      name: name,
-      haveUserInfoOnServer: haveUserInfoOnServer,
-      description: description,
+      user: user,
       addressQuery: addressQuery,
-      address: address,
       addresses: addresses,
       isLoading: isLoading,
       isImageLoading: isImageLoading,
@@ -50,11 +44,8 @@ const $EditUserState = _$EditUserStateTearOff();
 
 /// @nodoc
 mixin _$EditUserState {
-  String? get name => throw _privateConstructorUsedError;
-  bool? get haveUserInfoOnServer => throw _privateConstructorUsedError;
-  String? get description => throw _privateConstructorUsedError;
+  User? get user => throw _privateConstructorUsedError;
   String? get addressQuery => throw _privateConstructorUsedError;
-  Address? get address => throw _privateConstructorUsedError;
   List<Address>? get addresses => throw _privateConstructorUsedError;
   bool? get isLoading => throw _privateConstructorUsedError;
   bool? get isImageLoading => throw _privateConstructorUsedError;
@@ -73,17 +64,16 @@ abstract class $EditUserStateCopyWith<$Res> {
           EditUserState value, $Res Function(EditUserState) then) =
       _$EditUserStateCopyWithImpl<$Res>;
   $Res call(
-      {String? name,
-      bool? haveUserInfoOnServer,
-      String? description,
+      {User? user,
       String? addressQuery,
-      Address? address,
       List<Address>? addresses,
       bool? isLoading,
       bool? isImageLoading,
       bool? logOutIsClicked,
       UserDetailStatus? userDetailStatus,
       Uint8List? avatarFile});
+
+  $UserCopyWith<$Res>? get user;
 }
 
 /// @nodoc
@@ -97,11 +87,8 @@ class _$EditUserStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? name = freezed,
-    Object? haveUserInfoOnServer = freezed,
-    Object? description = freezed,
+    Object? user = freezed,
     Object? addressQuery = freezed,
-    Object? address = freezed,
     Object? addresses = freezed,
     Object? isLoading = freezed,
     Object? isImageLoading = freezed,
@@ -110,26 +97,14 @@ class _$EditUserStateCopyWithImpl<$Res>
     Object? avatarFile = freezed,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      haveUserInfoOnServer: haveUserInfoOnServer == freezed
-          ? _value.haveUserInfoOnServer
-          : haveUserInfoOnServer // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      description: description == freezed
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
+      user: user == freezed
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as User?,
       addressQuery: addressQuery == freezed
           ? _value.addressQuery
           : addressQuery // ignore: cast_nullable_to_non_nullable
               as String?,
-      address: address == freezed
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as Address?,
       addresses: addresses == freezed
           ? _value.addresses
           : addresses // ignore: cast_nullable_to_non_nullable
@@ -156,6 +131,17 @@ class _$EditUserStateCopyWithImpl<$Res>
               as Uint8List?,
     ));
   }
+
+  @override
+  $UserCopyWith<$Res>? get user {
+    if (_value.user == null) {
+      return null;
+    }
+
+    return $UserCopyWith<$Res>(_value.user!, (value) {
+      return _then(_value.copyWith(user: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -164,17 +150,17 @@ abstract class _$InitialCopyWith<$Res> implements $EditUserStateCopyWith<$Res> {
       __$InitialCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String? name,
-      bool? haveUserInfoOnServer,
-      String? description,
+      {User? user,
       String? addressQuery,
-      Address? address,
       List<Address>? addresses,
       bool? isLoading,
       bool? isImageLoading,
       bool? logOutIsClicked,
       UserDetailStatus? userDetailStatus,
       Uint8List? avatarFile});
+
+  @override
+  $UserCopyWith<$Res>? get user;
 }
 
 /// @nodoc
@@ -188,11 +174,8 @@ class __$InitialCopyWithImpl<$Res> extends _$EditUserStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? name = freezed,
-    Object? haveUserInfoOnServer = freezed,
-    Object? description = freezed,
+    Object? user = freezed,
     Object? addressQuery = freezed,
-    Object? address = freezed,
     Object? addresses = freezed,
     Object? isLoading = freezed,
     Object? isImageLoading = freezed,
@@ -201,26 +184,14 @@ class __$InitialCopyWithImpl<$Res> extends _$EditUserStateCopyWithImpl<$Res>
     Object? avatarFile = freezed,
   }) {
     return _then(_Initial(
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      haveUserInfoOnServer: haveUserInfoOnServer == freezed
-          ? _value.haveUserInfoOnServer
-          : haveUserInfoOnServer // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      description: description == freezed
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String?,
+      user: user == freezed
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as User?,
       addressQuery: addressQuery == freezed
           ? _value.addressQuery
           : addressQuery // ignore: cast_nullable_to_non_nullable
               as String?,
-      address: address == freezed
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as Address?,
       addresses: addresses == freezed
           ? _value.addresses
           : addresses // ignore: cast_nullable_to_non_nullable
@@ -253,11 +224,8 @@ class __$InitialCopyWithImpl<$Res> extends _$EditUserStateCopyWithImpl<$Res>
 
 class _$_Initial implements _Initial {
   const _$_Initial(
-      {this.name,
-      this.haveUserInfoOnServer,
-      this.description,
+      {this.user,
       this.addressQuery,
-      this.address,
       this.addresses,
       this.isLoading,
       this.isImageLoading,
@@ -266,15 +234,9 @@ class _$_Initial implements _Initial {
       this.avatarFile});
 
   @override
-  final String? name;
-  @override
-  final bool? haveUserInfoOnServer;
-  @override
-  final String? description;
+  final User? user;
   @override
   final String? addressQuery;
-  @override
-  final Address? address;
   @override
   final List<Address>? addresses;
   @override
@@ -290,7 +252,7 @@ class _$_Initial implements _Initial {
 
   @override
   String toString() {
-    return 'EditUserState(name: $name, haveUserInfoOnServer: $haveUserInfoOnServer, description: $description, addressQuery: $addressQuery, address: $address, addresses: $addresses, isLoading: $isLoading, isImageLoading: $isImageLoading, logOutIsClicked: $logOutIsClicked, userDetailStatus: $userDetailStatus, avatarFile: $avatarFile)';
+    return 'EditUserState(user: $user, addressQuery: $addressQuery, addresses: $addresses, isLoading: $isLoading, isImageLoading: $isImageLoading, logOutIsClicked: $logOutIsClicked, userDetailStatus: $userDetailStatus, avatarFile: $avatarFile)';
   }
 
   @override
@@ -298,14 +260,9 @@ class _$_Initial implements _Initial {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Initial &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality()
-                .equals(other.haveUserInfoOnServer, haveUserInfoOnServer) &&
-            const DeepCollectionEquality()
-                .equals(other.description, description) &&
+            const DeepCollectionEquality().equals(other.user, user) &&
             const DeepCollectionEquality()
                 .equals(other.addressQuery, addressQuery) &&
-            const DeepCollectionEquality().equals(other.address, address) &&
             const DeepCollectionEquality().equals(other.addresses, addresses) &&
             const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
             const DeepCollectionEquality()
@@ -321,11 +278,8 @@ class _$_Initial implements _Initial {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(haveUserInfoOnServer),
-      const DeepCollectionEquality().hash(description),
+      const DeepCollectionEquality().hash(user),
       const DeepCollectionEquality().hash(addressQuery),
-      const DeepCollectionEquality().hash(address),
       const DeepCollectionEquality().hash(addresses),
       const DeepCollectionEquality().hash(isLoading),
       const DeepCollectionEquality().hash(isImageLoading),
@@ -341,11 +295,8 @@ class _$_Initial implements _Initial {
 
 abstract class _Initial implements EditUserState {
   const factory _Initial(
-      {String? name,
-      bool? haveUserInfoOnServer,
-      String? description,
+      {User? user,
       String? addressQuery,
-      Address? address,
       List<Address>? addresses,
       bool? isLoading,
       bool? isImageLoading,
@@ -354,15 +305,9 @@ abstract class _Initial implements EditUserState {
       Uint8List? avatarFile}) = _$_Initial;
 
   @override
-  String? get name;
-  @override
-  bool? get haveUserInfoOnServer;
-  @override
-  String? get description;
+  User? get user;
   @override
   String? get addressQuery;
-  @override
-  Address? get address;
   @override
   List<Address>? get addresses;
   @override

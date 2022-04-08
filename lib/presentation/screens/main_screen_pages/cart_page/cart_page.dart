@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../app/bloc/app_bloc.dart';
-import '../../../../app/bloc/app_event.dart';
-import '../../../../app/bloc/app_state.dart';
 import '../../../../data/models/cart/cart_item.dart';
 import '../../../../data/models/product/product.dart';
 import '../../../../data/models/user/user.dart';
@@ -28,8 +25,8 @@ class CartPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('CartPageBody rebuild');
     return BlocBuilder<CartBloc, CartState>(builder: (context, state) {
+      print(state.cart.cartItems.length);
       return Column(children: [
         CartList(
           listCartItems: state.cart.cartItems,
@@ -46,33 +43,56 @@ class CartList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cartBloc = context.read<CartBloc>();
     final shippingBloc = context.read<ShippingBloc>();
-    final listUserIDs = listCartItems.map((e) => e.user).toSet().toList();
+    final listUsers = listCartItems.map((e) => e.user).toSet().toList();
+    print(listUsers);
     final Map<User?, List<CartItem>> map = {};
-    for (final user in listUserIDs) {
+    for (final user in listUsers) {
       map[user] = listCartItems
           .where((element) => element.product?.userID == user?.id)
           .toList();
     }
-    return Column(
-        children: map.entries
-            .where((element) =>
-                element.key?.id != null && element.key?.name != null)
-            .map((e) => Column(
-                  children: [
-                    Text(e.key?.name ?? ''),
-                    ...e.value.map((e) => CartItemWidget(item: e)),
-                    ElevatedButton(
-                        onPressed: () {
-                          shippingBloc.add(ShippingEventCreateOrderClicked(
-                              listCartItems,
-                              e.key ?? User(),
-                              e.value.first.product?.userID ?? ''));
-                        },
-                        child: Text('Place order'))
-                  ],
-                ))
-            .toList());
+    return ListView.builder(
+        shrinkWrap: true,
+        itemCount: map.keys.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                const SizedBox(height: 16),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      backgroundImage:
+                          map.keys.elementAt(index)?.avatarUrl != null
+                              ? NetworkImage(
+                                  map.keys.elementAt(index)?.avatarUrl ?? '')
+                              : null),
+                  const SizedBox(width: 16,),
+                  Text(map.keys.elementAt(index)?.name ?? '')
+                ]),
+                const SizedBox(height: 16),
+                ...map.values
+                    .elementAt(index)
+                    .map((e) => CartItemWidget(item: e)),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                    onPressed: () {
+                      cartBloc.add(
+                          CartEventCreateOrderClicked(map.keys.elementAt(index)));
+                      shippingBloc.add(ShippingEventCreateOrderClicked(
+                          listCartItems,
+                          map.keys.elementAt(index) ?? const User(),
+                          map.values.elementAt(index).first.product?.userID ??
+                              ''));
+                    },
+                    child: const Text('Place order'))
+              ],
+            ),
+          );
+        });
   }
 }
 
@@ -85,69 +105,93 @@ class CartItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     Locale locale = Localizations.localeOf(context);
     final bloc = context.read<CartBloc>();
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Expanded(
-            flex: 2,
-            child: item.product?.pictureUrl != null
-                ? CachedNetworkImage(
-                    imageUrl: item.product!.pictureUrl!,
-                    height: 100,
+    return Card(
+      elevation: 1,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Expanded(
+              flex: 2,
+              child: item.product?.pictureUrl != null
+                  ? CachedNetworkImage(
+                      imageUrl: item.product!.pictureUrl!,
+                      height: 100,
+                      imageBuilder: (context, imageProvider) => Container(
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              bottomLeft: Radius.circular(10)),
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    )
+                  : Image.asset('assets/images/placeholder-image.png')),
+          Expanded(
+            flex: 9,
+            child: Column(children: [
+              Row(
+                children: [
+                  Expanded(
+                      flex: 5,
+                      child: _productDescriptionBuilder(
+                          item.product ?? const Product(), locale, context)),
+                  Expanded(
+                      flex: 4,
+                      child: Row(children: [
+                        IconButton(
+                            onPressed: () {
+                              bloc.add(CartEventRemoveFromCart(item.product!));
+                            },
+                            icon: const Icon(Icons.remove)),
+                        Text(item.qty.toString()),
+                        IconButton(
+                            onPressed: () {
+                              bloc.add(CartEventAddToCart(
+                                  item.product!, item.user!));
+                            },
+                            icon: const Icon(Icons.add)),
+                      ]))
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        _positionSumCalculationString(item, locale),
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                    ),
                   )
-                : Image.asset('assets/images/placeholder-image.png')),
-        Expanded(
-          flex: 9,
-          child: Column(children: [
-            Row(
-              children: [
-                Expanded(
-                    flex: 5,
-                    child: _productDescriptionBuilder(
-                        item.product ?? const Product(), locale)),
-                Expanded(
-                    flex: 4,
-                    child: Row(children: [
-                      IconButton(
-                          onPressed: () {
-                            bloc.add(CartEventRemoveFromCart(item.product!));
-                          },
-                          icon: const Icon(Icons.remove)),
-                      Text(item.qty.toString()),
-                      IconButton(
-                          onPressed: () {
-                            bloc.add(
-                                CartEventAddToCart(item.product!, item.user!));
-                          },
-                          icon: const Icon(Icons.add)),
-                    ]))
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Text(
-                        '${item.product?.price} x ${item.qty} = ${(item.product?.price != null) ? (item.product!.price! * item.qty) : 0}'),
-                  ),
-                )
-              ],
-            ),
-          ]),
-        ),
-      ],
+                ],
+              ),
+            ]),
+          ),
+        ],
+      ),
     );
   }
 }
 
-Widget _productDescriptionBuilder(Product product, Locale locale) {
+String _positionSumCalculationString(CartItem item, Locale locale) {
   final formatCurrency = NumberFormat.simpleCurrency(locale: locale.toString());
+  String price = item.product != null ? item.product!.price.toString() : '0';
+  price = price + getCurrencySign(formatCurrency, locale);
+  final qty = ' x ${item.qty}';
+  String sum =
+      ' = ${(item.product?.price != null) ? (item.product!.price! * item.qty) : 0}';
+  sum = sum + getCurrencySign(formatCurrency, locale);
+  return price + qty + sum;
+}
+
+Widget _productDescriptionBuilder(
+    Product product, Locale locale, BuildContext context) {
   return Center(
       child: Column(children: [
-    Text((product.name ?? '') +
-        ', ' +
-        product.price.toString() +
-        // because of the ruble sign is not supported in intl 0.17.0 there is a custom function
-        getCurrencySign(formatCurrency, locale)),
+    Text(product.name ?? '', style: Theme.of(context).textTheme.bodyText1)
   ]));
 }

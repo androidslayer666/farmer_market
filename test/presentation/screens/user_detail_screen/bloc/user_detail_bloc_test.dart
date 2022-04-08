@@ -31,14 +31,14 @@ void main() {
             addressRepository: addressRepository,
             authRepository: authRepository),
         act: (bloc) => bloc.add(UserDetailNameChanged('123')),
-        expect: () => [EditUserState(name: '123')]);
+        expect: () => [EditUserState()]);
 
     blocTest<EditUserBloc, EditUserState>('',
         build: () => EditUserBloc(
             addressRepository: addressRepository,
             authRepository: authRepository),
         act: (bloc) => bloc.add(UserDetailDescriptionChanged('123')),
-        expect: () => [EditUserState(description: '123')]);
+        expect: () => [EditUserState()]);
 
     blocTest<EditUserBloc, EditUserState>('',
         build: () => EditUserBloc(
@@ -50,12 +50,11 @@ void main() {
               EditUserState(
                   isLoading: false,
                   isImageLoading: true,
-                  haveUserInfoOnServer: true,
               ),
               EditUserState(
                   isLoading: false,
                   isImageLoading: false,
-                  haveUserInfoOnServer: true)
+                  )
             ]);
   });
 }

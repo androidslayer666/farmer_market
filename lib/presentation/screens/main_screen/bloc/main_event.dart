@@ -37,12 +37,3 @@ class MainScreenTabChanged extends MainEvent {
 class MainScreenFilterButtonClicked extends MainEvent {
   const MainScreenFilterButtonClicked();
 }
-
-class MainScreenFilterChanged extends MainEvent {
-  const MainScreenFilterChanged(this.filter);
-
-  final Filter filter;
-
-  @override
-  List<Object> get props => [filter];
-}

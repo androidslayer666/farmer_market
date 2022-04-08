@@ -3,3 +3,5 @@ flutter pub run intl_utils:generate
 flutter pub run build_runner watch
 
 flutter pub run build_runner watch --delete-conflicting-outputs
+
+flutter pub run flutter_native_splash:create

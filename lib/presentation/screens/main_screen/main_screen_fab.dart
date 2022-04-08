@@ -9,7 +9,7 @@ class MainScreenFab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).primaryColor,
       onPressed: () {
         navigateToAddProductScreen(context);
       },

@@ -9,6 +9,8 @@ import '../../navigation/navigation_wrapper.dart';
 import '../../shared/app_bar.dart';
 import '../main_screen_pages/cart_page/cart_page.dart';
 import '../main_screen_pages/chat_page/chat_page.dart';
+import '../main_screen_pages/list_products/bloc/list_product_bloc.dart';
+import '../main_screen_pages/list_products/bloc/list_product_state.dart';
 import '../main_screen_pages/list_products/list_products_page.dart';
 import '../main_screen_pages/shipping_page/shipping_page.dart';
 import '../main_screen_pages/user_products_page/user_products_page.dart';
@@ -16,7 +18,7 @@ import 'bloc/main_bloc.dart';
 import 'bloc/main_event.dart';
 import 'bloc/main_state.dart';
 import 'main_screen_back_press_resolver.dart';
-import 'main_screen_button_navigation_bar.dart';
+import 'main_screen_bottom_navigation_bar.dart';
 import 'main_screen_fab.dart';
 
 class MainScreen extends StatelessWidget {
@@ -25,14 +27,21 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppBloc, AppState>(builder: (context, appState) {
-      List<Widget> _pages = _getListPages(appState.currentUser?.isSeller == true);
-      return BlocBuilder<MainBloc, MainState>(builder: (context, mainState) {
-        return MainScreenBody(
-          appState: appState,
-          mainState: mainState,
-          pages: _pages,
-        );
-      });
+      List<Widget> _pages =
+          _getListPages(appState.currentUser?.isSeller == true);
+      return BlocBuilder<ListProductBloc, ListProductState>(
+        builder: (context, listProductState) {
+          return BlocBuilder<MainBloc, MainState>(
+              builder: (context, mainState) {
+            return MainScreenBody(
+              appState: appState,
+              listProductState: listProductState,
+              mainState: mainState,
+              pages: _pages,
+            );
+          });
+        },
+      );
     });
   }
 }
@@ -42,15 +51,18 @@ class MainScreenBody extends StatelessWidget {
       {Key? key,
       required this.mainState,
       required this.appState,
-      required this.pages})
+      required this.pages,
+      required this.listProductState})
       : super(key: key);
 
   final MainState mainState;
+  final ListProductState listProductState;
   final AppState appState;
   final List<Widget> pages;
 
   @override
   Widget build(BuildContext context) {
+    final listProductBloc = context.read<ListProductBloc>();
     final mainBloc = context.read<MainBloc>();
     final currentTab = mainState.pageStack[mainState.pageStack.length - 1];
     return WillPopScope(
@@ -61,13 +73,15 @@ class MainScreenBody extends StatelessWidget {
           mainBloc: mainBloc,
           stackIsNotEmpty: mainState.pageStack.length > 1),
       child: Scaffold(
+          extendBodyBehindAppBar: true,
+          extendBody: true,
           appBar: CustomAppBar(
             user: appState.currentUser,
             filterSwitchedOn: mainState.filterSwitchedOn,
             mainBloc: mainBloc,
             showFilter: currentTab == 0,
             onFilterClick: () {
-              _getFilter(context, mainState.filter, mainBloc);
+              _getFilter(context, listProductState.filter, listProductBloc);
             },
           ),
           body: IndexedStack(
@@ -77,7 +91,7 @@ class MainScreenBody extends StatelessWidget {
           floatingActionButton: mainState.pageStack.last == 1
               ? const MainScreenFab()
               : Container(),
-          bottomNavigationBar: MainScreenButtonNavigationBar(
+          bottomNavigationBar: MainScreenBottomNavigationBar(
             mainBloc: mainBloc,
             currentTab: currentTab,
             userIsSeller: appState.currentUser?.isSeller == true,
@@ -86,12 +100,12 @@ class MainScreenBody extends StatelessWidget {
   }
 }
 
-void _getFilter(
-    BuildContext context, Filter previousFilter, MainBloc mainBloc) async {
+void _getFilter(BuildContext context, Filter? previousFilter,
+    ListProductBloc listProductBloc) async {
   final filter = await navigateToFilterScreen(context,
       arguments: FilterArguments(filter: previousFilter));
   if (filter != null) {
-    mainBloc.add(MainScreenFilterChanged(filter));
+    listProductBloc.add(ListProductFilterChanged(filter));
   }
 }
 

@@ -2,11 +2,13 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../models/api/address.dart';
 import '../../models/filter/filter.dart';
 import '../../models/product/category.dart';
+import '../../models/review/review.dart';
 import '../../utils/firestore_query_filtering_builder.dart';
 import '../constants.dart';
 import '../interfaces/i_address_repository.dart';
@@ -35,7 +37,6 @@ class ProductRepository {
       final _currentUser = _auth.currentUser;
 
       if (file != null && product.pictureUrl == null) {
-        print("file != null");
         final result = await _storageRepository.uploadPictureToStorage(
             fireStoreNameProductPics, file);
         if (result is Success<String, String>) {
@@ -44,12 +45,11 @@ class ProductRepository {
       }
 
       if (_currentUser != null) {
-        print("_currentUser != null");
         final address =
             await _addressRepository.getUserAddress(_currentUser.uid);
         product = product.copyWith(userID: _currentUser.uid);
         if (address is Success<Address, String>) {
-          product = product.copyWith(address: address.data);
+          product = product.copyWith(address: address.data, region: address.data?.region);
         }
 
         if (product.id == null) {
@@ -71,9 +71,34 @@ class ProductRepository {
     }
   }
 
-  Future<Result<List<Product>, String>> getAllProducts(Filter filter) async {
+  Future<Result<Product, String>> getProductById(String productId) async {
     try {
-      final _query = firestoreQueryFilteringBuilder(_firestore, filter);
+      final productQuery = await _firestore
+          .collection(fireStoreNameProductTable)
+          .doc(productId)
+          .get();
+      if(productQuery.data() != null) {
+        return Success(
+          data: Product.fromJson(productQuery.data()!));
+      }
+      return Failure();
+    } catch (e) {
+      print(e);
+      return Failure();
+    }
+  }
+
+  Future<Result<List<Product>, String>> getPageOfProducts(
+      Filter? filter, String? lastDocument) async {
+    final prefs = await SharedPreferences.getInstance();
+    final region = prefs.getString('userRegion');
+    try {
+      Query<Map<String, dynamic>> _query =
+          firestoreQueryFilteringBuilder(_firestore, filter, region ?? '');
+      if (lastDocument != null) {
+        _query = _query.startAfter([lastDocument]);
+      }
+      _query = _query.limit(5);
       final result = await _query.get();
       return Success(
           data: (result.docs.map((e) => Product.fromJson(e.data())).toList()));
@@ -83,15 +108,16 @@ class ProductRepository {
     }
   }
 
-  Future<Result<List<Product>, String>> getPageOfProducts(
-      Filter filter, String? lastDocument) async {
+  Future<Result<List<Product>, String>> refreshProducts(
+      Filter? filter, String? lastDocument) async {
+    final prefs = await SharedPreferences.getInstance();
+    final region = prefs.getString('userRegion');
     try {
       Query<Map<String, dynamic>> _query =
-          firestoreQueryFilteringBuilder(_firestore, filter).orderBy('id');
+      firestoreQueryFilteringBuilder(_firestore, filter, region ?? '');
       if (lastDocument != null) {
-        _query = _query.startAfter([lastDocument]);
+        _query = _query.endAt([lastDocument]);
       }
-      _query = _query.limit(10);
       final result = await _query.get();
       return Success(
           data: (result.docs.map((e) => Product.fromJson(e.data())).toList()));
@@ -100,6 +126,7 @@ class ProductRepository {
       return Failure();
     }
   }
+
 
   Future<Result<List<Product>, String>> getUserProducts(String userId) async {
     try {
@@ -123,11 +150,25 @@ class ProductRepository {
           .collection(fireStoreNameProductTable)
           .doc(productUid)
           .delete();
-      print("Success()");
       return (Success());
     } catch (e) {
       print(e);
       return Failure(error: e.toString());
     }
   }
+
+  Future<Result> addReview(Review review, String productId) async {
+    try {
+      await _firestore
+          .collection(fireStoreNameProductTable)
+          .doc(productId)
+          .update({'reviews' : FieldValue.arrayUnion([review.toJson()])});
+      return (Success());
+    } catch (e) {
+      print(e);
+      return Failure(error: e.toString());
+    }
+  }
+
+
 }

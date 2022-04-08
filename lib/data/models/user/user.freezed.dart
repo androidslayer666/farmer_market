@@ -27,8 +27,6 @@ class _$UserTearOff {
       String? phone,
       String? description,
       bool? isSeller,
-      double? longitude,
-      double? latitude,
       String? avatarUrl,
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
@@ -41,8 +39,6 @@ class _$UserTearOff {
       phone: phone,
       description: description,
       isSeller: isSeller,
-      longitude: longitude,
-      latitude: latitude,
       avatarUrl: avatarUrl,
       address: address,
       products: products,
@@ -66,8 +62,6 @@ mixin _$User {
   String? get phone => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   bool? get isSeller => throw _privateConstructorUsedError;
-  double? get longitude => throw _privateConstructorUsedError;
-  double? get latitude => throw _privateConstructorUsedError;
   String? get avatarUrl =>
       throw _privateConstructorUsedError; // ignore: invalid_annotation_target
   @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
@@ -91,8 +85,6 @@ abstract class $UserCopyWith<$Res> {
       String? phone,
       String? description,
       bool? isSeller,
-      double? longitude,
-      double? latitude,
       String? avatarUrl,
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
@@ -116,8 +108,6 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
     Object? phone = freezed,
     Object? description = freezed,
     Object? isSeller = freezed,
-    Object? longitude = freezed,
-    Object? latitude = freezed,
     Object? avatarUrl = freezed,
     Object? address = freezed,
     Object? products = freezed,
@@ -145,14 +135,6 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
           ? _value.isSeller
           : isSeller // ignore: cast_nullable_to_non_nullable
               as bool?,
-      longitude: longitude == freezed
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
-              as double?,
-      latitude: latitude == freezed
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
-              as double?,
       avatarUrl: avatarUrl == freezed
           ? _value.avatarUrl
           : avatarUrl // ignore: cast_nullable_to_non_nullable
@@ -188,8 +170,6 @@ abstract class _$InitialCopyWith<$Res> implements $UserCopyWith<$Res> {
       String? phone,
       String? description,
       bool? isSeller,
-      double? longitude,
-      double? latitude,
       String? avatarUrl,
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
@@ -214,8 +194,6 @@ class __$InitialCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
     Object? phone = freezed,
     Object? description = freezed,
     Object? isSeller = freezed,
-    Object? longitude = freezed,
-    Object? latitude = freezed,
     Object? avatarUrl = freezed,
     Object? address = freezed,
     Object? products = freezed,
@@ -243,14 +221,6 @@ class __$InitialCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
           ? _value.isSeller
           : isSeller // ignore: cast_nullable_to_non_nullable
               as bool?,
-      longitude: longitude == freezed
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
-              as double?,
-      latitude: latitude == freezed
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
-              as double?,
       avatarUrl: avatarUrl == freezed
           ? _value.avatarUrl
           : avatarUrl // ignore: cast_nullable_to_non_nullable
@@ -284,8 +254,6 @@ class _$_Initial implements _Initial {
       this.phone,
       this.description,
       this.isSeller,
-      this.longitude,
-      this.latitude,
       this.avatarUrl,
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson) this.address,
       this.products,
@@ -306,10 +274,6 @@ class _$_Initial implements _Initial {
   @override
   final bool? isSeller;
   @override
-  final double? longitude;
-  @override
-  final double? latitude;
-  @override
   final String? avatarUrl;
   @override // ignore: invalid_annotation_target
   @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
@@ -323,7 +287,7 @@ class _$_Initial implements _Initial {
 
   @override
   String toString() {
-    return 'User(id: $id, name: $name, phone: $phone, description: $description, isSeller: $isSeller, longitude: $longitude, latitude: $latitude, avatarUrl: $avatarUrl, address: $address, products: $products, orders: $orders, reviews: $reviews)';
+    return 'User(id: $id, name: $name, phone: $phone, description: $description, isSeller: $isSeller, avatarUrl: $avatarUrl, address: $address, products: $products, orders: $orders, reviews: $reviews)';
   }
 
   @override
@@ -337,8 +301,6 @@ class _$_Initial implements _Initial {
             const DeepCollectionEquality()
                 .equals(other.description, description) &&
             const DeepCollectionEquality().equals(other.isSeller, isSeller) &&
-            const DeepCollectionEquality().equals(other.longitude, longitude) &&
-            const DeepCollectionEquality().equals(other.latitude, latitude) &&
             const DeepCollectionEquality().equals(other.avatarUrl, avatarUrl) &&
             const DeepCollectionEquality().equals(other.address, address) &&
             const DeepCollectionEquality().equals(other.products, products) &&
@@ -354,8 +316,6 @@ class _$_Initial implements _Initial {
       const DeepCollectionEquality().hash(phone),
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(isSeller),
-      const DeepCollectionEquality().hash(longitude),
-      const DeepCollectionEquality().hash(latitude),
       const DeepCollectionEquality().hash(avatarUrl),
       const DeepCollectionEquality().hash(address),
       const DeepCollectionEquality().hash(products),
@@ -380,8 +340,6 @@ abstract class _Initial implements User {
       String? phone,
       String? description,
       bool? isSeller,
-      double? longitude,
-      double? latitude,
       String? avatarUrl,
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
@@ -401,10 +359,6 @@ abstract class _Initial implements User {
   String? get description;
   @override
   bool? get isSeller;
-  @override
-  double? get longitude;
-  @override
-  double? get latitude;
   @override
   String? get avatarUrl;
   @override // ignore: invalid_annotation_target

@@ -18,19 +18,32 @@ class FilterScreenState with _$FilterScreenState {
 }
 
 class FilterScreenCubit extends Cubit<FilterScreenState> {
-  FilterScreenCubit() : super(const FilterScreenState());
+  FilterScreenCubit(Filter? filter)
+      : super(FilterScreenState(filter: filter ?? const Filter()));
 
   void addOrRemoveCategory(Category category) {
     Filter? filter;
-    if  (state.filter.categories == null) {
+    if (state.filter.categories == null) {
       filter = state.filter.copyWith(categories: [category]);
     } else if (state.filter.categories?.contains(category) != true) {
-    filter = state.filter
-        .copyWith(categories: [...?state.filter.categories, category]);
+      filter = state.filter
+          .copyWith(categories: [...?state.filter.categories, category]);
     } else {
       filter = state.filter.copyWith(
           categories: [...?state.filter.categories]..remove(category));
     }
     emit(state.copyWith(filter: filter));
+  }
+
+  void setBottomPrice(int price) {
+    emit(state.copyWith(filter: state.filter.copyWith(bottomPrice: price)));
+  }
+
+  void setTopPrice(int price) {
+    emit(state.copyWith(filter: state.filter.copyWith(topPrice: price)));
+  }
+
+  void clearFilters() {
+    emit(state.copyWith(filter: const Filter()));
   }
 }

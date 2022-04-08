@@ -27,7 +27,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       ) async {
     final result = await _chatRepository.getUserChats();
     if (result is Success<List<Chat>,String>){
-      emit(state.copyWith(chat: result.data));
+      emit(state.copyWith(chats: result.data));
     }
   }
 }
