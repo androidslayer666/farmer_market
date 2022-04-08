@@ -24,7 +24,7 @@ class MainScreenBottomNavigationBar extends StatelessWidget {
           height: 60,
           decoration: BoxDecoration(
             color: Theme.of(context).secondaryHeaderColor.withOpacity(0.9),
-            borderRadius:  BorderRadius.all(Radius.circular(10))
+            borderRadius:  const BorderRadius.all(Radius.circular(10))
             // const BorderRadius.only(
             //   topLeft: Radius.circular(20),
             //   topRight: Radius.circular(20),

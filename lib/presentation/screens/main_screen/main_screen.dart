@@ -15,7 +15,6 @@ import '../main_screen_pages/list_products/list_products_page.dart';
 import '../main_screen_pages/shipping_page/shipping_page.dart';
 import '../main_screen_pages/user_products_page/user_products_page.dart';
 import 'bloc/main_bloc.dart';
-import 'bloc/main_event.dart';
 import 'bloc/main_state.dart';
 import 'main_screen_back_press_resolver.dart';
 import 'main_screen_bottom_navigation_bar.dart';

@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_visible_for_testing_member
+
 import 'package:bloc/bloc.dart';
 import 'package:farmer_market/data/repository/product_repository/product_repository.dart';
 import 'package:farmer_market/data/repository/success_failure.dart';
@@ -6,7 +8,6 @@ import 'package:farmer_market/presentation/screens/product_detail_screen/bloc/pr
 import 'package:farmer_market/presentation/screens/product_detail_screen/bloc/product_detail_screen_state.dart';
 
 import '../../../../data/models/product/product.dart';
-import '../../../../data/models/review/review.dart';
 import '../../../../data/models/user/user.dart' as models;
 
 class ProductDetailBloc extends Bloc<ProductDetailEvent, ProductDetailState> {

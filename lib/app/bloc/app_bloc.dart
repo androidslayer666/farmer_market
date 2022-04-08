@@ -14,9 +14,7 @@ import 'app_state.dart';
 class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc(bool authenticated, CartRepository cartRepository,
       OrderRepository orderRepository, AuthRepository authRepository)
-      : _cartRepository = cartRepository,
-        _orderRepository = orderRepository,
-        _authRepository = authRepository,
+      : _authRepository = authRepository,
         super(AppState(authenticated: authenticated)) {
     on<AppAuthStatusChanged>(_onAuthStatusChanged);
     on<AppEventAppLaunched>(_onAppLaunched);
@@ -25,8 +23,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     });
   }
 
-  final CartRepository _cartRepository;
-  final OrderRepository _orderRepository;
+
   final AuthRepository _authRepository;
 
   void _onAppLaunched(

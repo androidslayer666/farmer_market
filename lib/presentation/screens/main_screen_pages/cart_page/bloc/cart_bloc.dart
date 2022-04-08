@@ -1,16 +1,11 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 
 import '../../../../../data/models/cart/cart.dart';
 import '../../../../../data/models/cart/cart_item.dart';
 import '../../../../../data/models/product/product.dart';
 import '../../../../../data/models/user/user.dart';
-import '../../../../../data/repository/auth_repository/auth_repository.dart';
 import '../../../../../data/repository/cart_repository/cart_repository.dart';
-import '../../../../../data/repository/order_repository/order_repository.dart';
 import '../../../../../data/repository/success_failure.dart';
 import 'cart_state.dart';
 

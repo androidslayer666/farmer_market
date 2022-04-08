@@ -1,13 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:farmer_market/data/repository/product_repository/product_repository.dart';
-import 'package:farmer_market/data/repository/user_repository/user_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../data/models/filter/filter.dart';
 import '../../../data/models/product/category.dart';
-import '../../../data/models/product/product.dart';
-import '../../../data/models/user/user.dart';
-import '../../../data/repository/success_failure.dart';
 
 part 'filter_screen_cubit.freezed.dart';
 

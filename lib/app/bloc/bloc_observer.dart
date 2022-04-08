@@ -8,9 +8,4 @@ class FarmerMarketBlocObserver extends BlocObserver {
     print(event);
   }
 
-  @override
-  void onChange(BlocBase bloc, Change change) {
-    super.onChange(bloc, change);
-    //print(change);
-  }
 }

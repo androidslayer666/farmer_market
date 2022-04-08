@@ -1,9 +1,9 @@
-import 'dart:async';
+
+// ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:farmer_market/presentation/screens/main_screen_pages/user_products_page/bloc/user_products_state.dart';
-import 'package:meta/meta.dart';
 
 import '../../../../../data/models/product/product.dart';
 import '../../../../../data/repository/auth_repository/auth_repository.dart';

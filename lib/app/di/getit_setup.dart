@@ -1,13 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:farmer_market/data/repository/order_repository/order_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
-import 'package:dio/dio.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../data/api/address_suggestions_rest_client.dart';
-import '../../data/models/product/product.dart';
 import '../../data/repository/address_repository/address_repository.dart';
 import '../../data/repository/auth_repository/auth_repository.dart';
 import '../../data/repository/cart_repository/cart_repository.dart';

@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:farmer_market/presentation/shared/utils.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../../data/models/product/product.dart';
 import '../../../../data/repository/auth_repository/auth_repository.dart';
@@ -116,7 +115,6 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
     final userId = _authRepository.getUserId();
     final product =  state.product?.copyWith(
         userID: userId);
-    print(product);
     if(product != null) {
       final result =
       await _productRepository.saveProduct(product, state.productImage);

@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:farmer_market/data/repository/address_repository/address_repository.dart';
 import 'package:farmer_market/data/repository/success_failure.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -141,7 +140,6 @@ class EditUserAddressAutocomplete extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(state.user);
     final addressRepository = locator.get<IAddressRepository>();
     return Autocomplete<Address>(
       optionsBuilder: (TextEditingValue value) async {

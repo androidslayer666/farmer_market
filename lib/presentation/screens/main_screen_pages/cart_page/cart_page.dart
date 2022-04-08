@@ -26,7 +26,6 @@ class CartPageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CartBloc, CartState>(builder: (context, state) {
-      print(state.cart.cartItems.length);
       return Column(children: [
         CartList(
           listCartItems: state.cart.cartItems,
@@ -46,7 +45,6 @@ class CartList extends StatelessWidget {
     final cartBloc = context.read<CartBloc>();
     final shippingBloc = context.read<ShippingBloc>();
     final listUsers = listCartItems.map((e) => e.user).toSet().toList();
-    print(listUsers);
     final Map<User?, List<CartItem>> map = {};
     for (final user in listUsers) {
       map[user] = listCartItems

@@ -1,12 +1,10 @@
-import 'dart:async';
+// ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../../data/models/filter/filter.dart';
 import '../../../../../data/models/product/product.dart';
-import '../../../../../data/repository/auth_repository/auth_repository.dart';
-import '../../../../../data/repository/cart_repository/cart_repository.dart';
 import '../../../../../data/repository/product_repository/product_repository.dart';
 import '../../../../../data/repository/success_failure.dart';
 import 'list_product_state.dart';
@@ -38,13 +36,10 @@ class ListProductBloc extends Bloc<ListProductEvent, ListProductState> {
       Emitter<ListProductState> emit
       ) async {
     emit(state.copyWith(lastDocumentId: null, noMoreData: null));
-    // _fetchNewPage();
     final lastDocumentId = state.listProducts.isNotEmpty ? state.listProducts.last.id : '';
-    print('getAllProducts   ' + state.listProducts.last.name.toString() );
     final result = await _productRepository.refreshProducts(
         state.filter, lastDocumentId);
     if (result is Success<List<Product>, String>) {
-      print('getAllProducts   ' + result.data!.length.toString());
       emit(state.copyWith(
           listProducts: [...result.data!],
           isNewPortionLoading: false

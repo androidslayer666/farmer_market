@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -87,7 +86,7 @@ class ListOrdersItemWidget extends StatelessWidget {
               if (order.confirmedShippingDate != null)
                 Row(
                   children: [
-                    Text('Shipping date confirmed on '),
+                    const Text('Shipping date confirmed on '),
                     Text(
                       DateFormat('dd.MM.yyyy')
                           .format(order.confirmedShippingDate!),

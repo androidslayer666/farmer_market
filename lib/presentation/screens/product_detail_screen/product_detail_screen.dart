@@ -1,10 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:farmer_market/app/bloc/app_event.dart';
 import 'package:farmer_market/data/repository/product_repository/product_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
 
 import '../../../app/bloc/app_bloc.dart';
 import '../../../app/bloc/app_state.dart';
@@ -17,7 +16,6 @@ import '../../navigation/arguments.dart';
 import '../../navigation/navigation_wrapper.dart';
 import '../../shared/app_bar.dart';
 import '../../shared/utils.dart';
-import '../main_screen/bloc/main_state.dart';
 import '../main_screen_pages/cart_page/bloc/cart_bloc.dart';
 import 'bloc/product_detail_screen_bloc.dart';
 import 'bloc/product_detail_screen_event.dart';
@@ -152,9 +150,7 @@ class ProductDetailReviewBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //print(listReview);
     final rating = getAverageRating(listReview);
-    print(rating);
     return !showReview
         ? Row(
             children: [

@@ -4,14 +4,13 @@ import 'package:bloc/bloc.dart';
 import 'package:farmer_market/presentation/shared/utils.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../../data/repository/auth_repository/auth_repository.dart';
-import '../../../../data/repository/interfaces/i_address_repository.dart';
 import '../../../../data/models/api/address.dart';
 import '../../../../data/models/api/suggestion.dart';
-import '../../../../data/models/user/user.dart';
+import '../../../../data/repository/auth_repository/auth_repository.dart';
+import '../../../../data/repository/interfaces/i_address_repository.dart';
 import '../../../../data/repository/success_failure.dart';
-import '../../edit_user_screen/bloc/edit_user_state.dart';
 import '../../edit_user_screen/bloc/edit_user_event.dart';
+import '../../edit_user_screen/bloc/edit_user_state.dart';
 
 class EditUserBloc extends Bloc<EditUserEvent, EditUserState> {
   EditUserBloc({

@@ -5,15 +5,15 @@ const backGroundColor = Color(0xFFFFFFFF);
 final themeData = ThemeData(
   // Define the default brightness and colors.
   brightness: Brightness.light,
-  primaryColor: Color(0xFFDA6317),
-  backgroundColor: Color(0xFFFEF6ED),
+  primaryColor: const Color(0xFFDA6317),
+  backgroundColor: const Color(0xFFFEF6ED),
   //cardColor: Color(0xFFF3F3F3),
   // scaffoldBackgroundColor: ColorTwo,
-  bottomAppBarColor: Color(0xFF52E68B),
-  hoverColor: Color(0xFFA8FDC8),
-  secondaryHeaderColor: Color(0xFFFFFFFF),
-  focusColor: Color(0xFFF1BF9C),
-  indicatorColor: Color(0xFF717171),
+  bottomAppBarColor: const Color(0xFF52E68B),
+  hoverColor: const Color(0xFFA8FDC8),
+  secondaryHeaderColor: const Color(0xFFFFFFFF),
+  focusColor: const Color(0xFFF1BF9C),
+  indicatorColor: const Color(0xFF717171),
   // Define the default font family.
   fontFamily: 'Roboto',
 
@@ -39,10 +39,3 @@ final themeData = ThemeData(
     ),
   ),
 );
-
-const ColorOne = Color(0xFF1D2566);
-const ColorTwo = Color(0xFFFEF6ED);
-const ColorThree = Color(0xFFE5CDAD);
-const ColorFour = Color(0xFFA10141);
-const ColorFive = Color(0xFFDA6317);
-const ColorSix = Color(0xFFFEF6ED);

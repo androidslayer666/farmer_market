@@ -31,9 +31,7 @@ class SingletonBlocsProvider extends StatelessWidget {
         locator<OrderRepository>(),
         locator<AuthRepository>());
 
-    final mainBloc = MainBloc(
-        authRepository: locator.get<AuthRepository>(),
-        productRepository: locator.get<ProductRepository>());
+    final mainBloc = MainBloc();
 
     final listProductBloc =
     ListProductBloc(productRepository: locator.get<ProductRepository>());

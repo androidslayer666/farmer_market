@@ -11,12 +11,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ChatBloc({required ChatRepository chatRepository,
     required AuthRepository authRepository})
       : _chatRepository = chatRepository,
-        _authRepository = authRepository,
         super(const ChatState()) {
     on<ChatEventInit>(_onInit);
   }
 
-  final AuthRepository _authRepository;
 
   final ChatRepository _chatRepository;
 
