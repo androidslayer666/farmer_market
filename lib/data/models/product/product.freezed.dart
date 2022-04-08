@@ -25,26 +25,32 @@ class _$ProductTearOff {
       {String? id,
       String? name,
       Unit? unit,
+      int portion = 0,
       int? price,
+      String? region,
       String? description,
       String? pictureUrl,
       @JsonKey(fromJson: categoryFromJson, toJson: categoryToJson)
           Category? category,
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
-      List<String>? reviews,
+      List<Review>? reviews,
+      List<Address> shippingAddresses = const [],
       String? userID,
       DateTime? nextPossibleShipping}) {
     return _Initial(
       id: id,
       name: name,
       unit: unit,
+      portion: portion,
       price: price,
+      region: region,
       description: description,
       pictureUrl: pictureUrl,
       category: category,
       address: address,
       reviews: reviews,
+      shippingAddresses: shippingAddresses,
       userID: userID,
       nextPossibleShipping: nextPossibleShipping,
     );
@@ -63,7 +69,9 @@ mixin _$Product {
   String? get id => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   Unit? get unit => throw _privateConstructorUsedError;
+  int get portion => throw _privateConstructorUsedError;
   int? get price => throw _privateConstructorUsedError;
+  String? get region => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get pictureUrl => throw _privateConstructorUsedError;
   @JsonKey(fromJson: categoryFromJson, toJson: categoryToJson)
@@ -71,7 +79,8 @@ mixin _$Product {
       throw _privateConstructorUsedError; // ignore: invalid_annotation_target
   @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
   Address? get address => throw _privateConstructorUsedError;
-  List<String>? get reviews => throw _privateConstructorUsedError;
+  List<Review>? get reviews => throw _privateConstructorUsedError;
+  List<Address> get shippingAddresses => throw _privateConstructorUsedError;
   String? get userID => throw _privateConstructorUsedError;
   DateTime? get nextPossibleShipping => throw _privateConstructorUsedError;
 
@@ -88,14 +97,17 @@ abstract class $ProductCopyWith<$Res> {
       {String? id,
       String? name,
       Unit? unit,
+      int portion,
       int? price,
+      String? region,
       String? description,
       String? pictureUrl,
       @JsonKey(fromJson: categoryFromJson, toJson: categoryToJson)
           Category? category,
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
-      List<String>? reviews,
+      List<Review>? reviews,
+      List<Address> shippingAddresses,
       String? userID,
       DateTime? nextPossibleShipping});
 }
@@ -113,12 +125,15 @@ class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
     Object? id = freezed,
     Object? name = freezed,
     Object? unit = freezed,
+    Object? portion = freezed,
     Object? price = freezed,
+    Object? region = freezed,
     Object? description = freezed,
     Object? pictureUrl = freezed,
     Object? category = freezed,
     Object? address = freezed,
     Object? reviews = freezed,
+    Object? shippingAddresses = freezed,
     Object? userID = freezed,
     Object? nextPossibleShipping = freezed,
   }) {
@@ -135,10 +150,18 @@ class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
               as Unit?,
+      portion: portion == freezed
+          ? _value.portion
+          : portion // ignore: cast_nullable_to_non_nullable
+              as int,
       price: price == freezed
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as int?,
+      region: region == freezed
+          ? _value.region
+          : region // ignore: cast_nullable_to_non_nullable
+              as String?,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -158,7 +181,11 @@ class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
       reviews: reviews == freezed
           ? _value.reviews
           : reviews // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
+              as List<Review>?,
+      shippingAddresses: shippingAddresses == freezed
+          ? _value.shippingAddresses
+          : shippingAddresses // ignore: cast_nullable_to_non_nullable
+              as List<Address>,
       userID: userID == freezed
           ? _value.userID
           : userID // ignore: cast_nullable_to_non_nullable
@@ -180,14 +207,17 @@ abstract class _$InitialCopyWith<$Res> implements $ProductCopyWith<$Res> {
       {String? id,
       String? name,
       Unit? unit,
+      int portion,
       int? price,
+      String? region,
       String? description,
       String? pictureUrl,
       @JsonKey(fromJson: categoryFromJson, toJson: categoryToJson)
           Category? category,
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
-      List<String>? reviews,
+      List<Review>? reviews,
+      List<Address> shippingAddresses,
       String? userID,
       DateTime? nextPossibleShipping});
 }
@@ -206,12 +236,15 @@ class __$InitialCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
     Object? id = freezed,
     Object? name = freezed,
     Object? unit = freezed,
+    Object? portion = freezed,
     Object? price = freezed,
+    Object? region = freezed,
     Object? description = freezed,
     Object? pictureUrl = freezed,
     Object? category = freezed,
     Object? address = freezed,
     Object? reviews = freezed,
+    Object? shippingAddresses = freezed,
     Object? userID = freezed,
     Object? nextPossibleShipping = freezed,
   }) {
@@ -228,10 +261,18 @@ class __$InitialCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
               as Unit?,
+      portion: portion == freezed
+          ? _value.portion
+          : portion // ignore: cast_nullable_to_non_nullable
+              as int,
       price: price == freezed
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
               as int?,
+      region: region == freezed
+          ? _value.region
+          : region // ignore: cast_nullable_to_non_nullable
+              as String?,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -251,7 +292,11 @@ class __$InitialCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
       reviews: reviews == freezed
           ? _value.reviews
           : reviews // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
+              as List<Review>?,
+      shippingAddresses: shippingAddresses == freezed
+          ? _value.shippingAddresses
+          : shippingAddresses // ignore: cast_nullable_to_non_nullable
+              as List<Address>,
       userID: userID == freezed
           ? _value.userID
           : userID // ignore: cast_nullable_to_non_nullable
@@ -271,7 +316,9 @@ class _$_Initial implements _Initial {
       {this.id,
       this.name,
       this.unit,
+      this.portion = 0,
       this.price,
+      this.region,
       this.description,
       this.pictureUrl,
       @JsonKey(fromJson: categoryFromJson, toJson: categoryToJson)
@@ -279,6 +326,7 @@ class _$_Initial implements _Initial {
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           this.address,
       this.reviews,
+      this.shippingAddresses = const [],
       this.userID,
       this.nextPossibleShipping});
 
@@ -291,8 +339,13 @@ class _$_Initial implements _Initial {
   final String? name;
   @override
   final Unit? unit;
+  @JsonKey()
+  @override
+  final int portion;
   @override
   final int? price;
+  @override
+  final String? region;
   @override
   final String? description;
   @override
@@ -304,7 +357,10 @@ class _$_Initial implements _Initial {
   @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
   final Address? address;
   @override
-  final List<String>? reviews;
+  final List<Review>? reviews;
+  @JsonKey()
+  @override
+  final List<Address> shippingAddresses;
   @override
   final String? userID;
   @override
@@ -312,7 +368,7 @@ class _$_Initial implements _Initial {
 
   @override
   String toString() {
-    return 'Product(id: $id, name: $name, unit: $unit, price: $price, description: $description, pictureUrl: $pictureUrl, category: $category, address: $address, reviews: $reviews, userID: $userID, nextPossibleShipping: $nextPossibleShipping)';
+    return 'Product(id: $id, name: $name, unit: $unit, portion: $portion, price: $price, region: $region, description: $description, pictureUrl: $pictureUrl, category: $category, address: $address, reviews: $reviews, shippingAddresses: $shippingAddresses, userID: $userID, nextPossibleShipping: $nextPossibleShipping)';
   }
 
   @override
@@ -323,7 +379,9 @@ class _$_Initial implements _Initial {
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.unit, unit) &&
+            const DeepCollectionEquality().equals(other.portion, portion) &&
             const DeepCollectionEquality().equals(other.price, price) &&
+            const DeepCollectionEquality().equals(other.region, region) &&
             const DeepCollectionEquality()
                 .equals(other.description, description) &&
             const DeepCollectionEquality()
@@ -331,6 +389,8 @@ class _$_Initial implements _Initial {
             const DeepCollectionEquality().equals(other.category, category) &&
             const DeepCollectionEquality().equals(other.address, address) &&
             const DeepCollectionEquality().equals(other.reviews, reviews) &&
+            const DeepCollectionEquality()
+                .equals(other.shippingAddresses, shippingAddresses) &&
             const DeepCollectionEquality().equals(other.userID, userID) &&
             const DeepCollectionEquality()
                 .equals(other.nextPossibleShipping, nextPossibleShipping));
@@ -342,12 +402,15 @@ class _$_Initial implements _Initial {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(unit),
+      const DeepCollectionEquality().hash(portion),
       const DeepCollectionEquality().hash(price),
+      const DeepCollectionEquality().hash(region),
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(pictureUrl),
       const DeepCollectionEquality().hash(category),
       const DeepCollectionEquality().hash(address),
       const DeepCollectionEquality().hash(reviews),
+      const DeepCollectionEquality().hash(shippingAddresses),
       const DeepCollectionEquality().hash(userID),
       const DeepCollectionEquality().hash(nextPossibleShipping));
 
@@ -367,14 +430,17 @@ abstract class _Initial implements Product {
       {String? id,
       String? name,
       Unit? unit,
+      int portion,
       int? price,
+      String? region,
       String? description,
       String? pictureUrl,
       @JsonKey(fromJson: categoryFromJson, toJson: categoryToJson)
           Category? category,
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
-      List<String>? reviews,
+      List<Review>? reviews,
+      List<Address> shippingAddresses,
       String? userID,
       DateTime? nextPossibleShipping}) = _$_Initial;
 
@@ -387,7 +453,11 @@ abstract class _Initial implements Product {
   @override
   Unit? get unit;
   @override
+  int get portion;
+  @override
   int? get price;
+  @override
+  String? get region;
   @override
   String? get description;
   @override
@@ -399,7 +469,9 @@ abstract class _Initial implements Product {
   @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
   Address? get address;
   @override
-  List<String>? get reviews;
+  List<Review>? get reviews;
+  @override
+  List<Address> get shippingAddresses;
   @override
   String? get userID;
   @override

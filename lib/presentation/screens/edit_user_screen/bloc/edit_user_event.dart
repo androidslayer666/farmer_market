@@ -38,6 +38,15 @@ class UserDetailDescriptionChanged extends EditUserEvent {
   List<Object> get props => [description];
 }
 
+class UserDetailIsSellerChanged extends EditUserEvent {
+  const UserDetailIsSellerChanged(this.isSeller);
+
+  final bool isSeller;
+
+  @override
+  List<Object> get props => [isSeller];
+}
+
 
 class UserDetailAddressChanged extends EditUserEvent {
   const UserDetailAddressChanged(this.address);

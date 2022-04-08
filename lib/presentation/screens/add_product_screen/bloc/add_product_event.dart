@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:farmer_market/presentation/navigation/arguments.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../data/models/product/category.dart';
 import '../../../../data/models/product/product.dart';
@@ -48,6 +49,15 @@ class AddProductUnitChanged extends AddProductEvent {
   List<Object> get props => [unit];
 }
 
+class AddProductPortionChanged extends AddProductEvent {
+  const AddProductPortionChanged(this.portion);
+
+  final int portion;
+
+  @override
+  List<Object> get props => [portion];
+}
+
 class AddProductCategoryChanged extends AddProductEvent {
   const AddProductCategoryChanged(this.category);
 
@@ -67,10 +77,12 @@ class AddProductDescriptionChanged extends AddProductEvent {
 }
 
 class AddProductImageAddClicked extends AddProductEvent {
-  const AddProductImageAddClicked();
+  const AddProductImageAddClicked(this.imageSource);
+
+  final ImageSource imageSource;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [imageSource];
 }
 
 class AddProductSubmitted extends AddProductEvent {

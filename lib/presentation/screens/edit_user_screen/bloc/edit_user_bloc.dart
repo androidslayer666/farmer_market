@@ -28,37 +28,34 @@ class EditUserBloc extends Bloc<EditUserEvent, EditUserState> {
     on<UserDetailLogOutClicked>(_onLogOutClicked);
     on<UserDetailAddressChanged>(_onAddressChanged);
     on<UserDetailAddressOptionSubmitted>(_onUserDetailAddressOptionSubmitted);
+    on<UserDetailIsSellerChanged>(_onIsSellerChanged);
   }
 
   final AuthRepository _authRepository;
   final IAddressRepository _addressRepository;
 
-  Future<void> _onInit(
+  _onInit(
     UserDetailInit event,
     Emitter<EditUserState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true, isImageLoading: true));
-    final result = await _authRepository.getCurrentUser();
-    if (result is Success<User, String>) {
-      emit(state.copyWith(
-          haveUserInfoOnServer: true,
-          name: event.user?.name,
-          addressQuery: event.user?.address.toString(),
-          description: event.user?.description,
-          isLoading: false));
-      emit(state.copyWith(
-          avatarFile: await urlToUint8List(
-            result.data?.avatarUrl,
-          ),
-          isImageLoading: false,
-          isLoading: false));
-    } else {
-      emit(state.copyWith(
-          isLoading: false,
-          isImageLoading: false,
-          userDetailStatus: UserDetailStatus.failure,
-          haveUserInfoOnServer: false));
-    }
+    emit(state.copyWith(
+        isImageLoading: true,
+        user: event.user,
+        addressQuery: event.user?.address.toString()));
+
+    emit(state.copyWith(
+      avatarFile: await urlToUint8List(
+        event.user?.avatarUrl,
+      ),
+      isImageLoading: false,
+    ));
+  }
+
+  _onIsSellerChanged(
+    UserDetailIsSellerChanged event,
+    Emitter<EditUserState> emit,
+  ) {
+    emit(state.copyWith(user: state.user?.copyWith(isSeller: event.isSeller)));
   }
 
   void _onLogOutClicked(
@@ -73,9 +70,7 @@ class EditUserBloc extends Bloc<EditUserEvent, EditUserState> {
     UserDetailNameChanged event,
     Emitter<EditUserState> emit,
   ) {
-    final name = event.name;
-    if (state.name != null) {}
-    emit(state.copyWith(name: name));
+    emit(state.copyWith(user: state.user?.copyWith(name: event.name)));
   }
 
   void _onDescriptionChanged(
@@ -83,7 +78,7 @@ class EditUserBloc extends Bloc<EditUserEvent, EditUserState> {
     Emitter<EditUserState> emit,
   ) {
     final description = event.description;
-    emit(state.copyWith(description: description));
+    emit(state.copyWith(user: state.user?.copyWith(description: description)));
   }
 
   void _onAddressChanged(
@@ -115,33 +110,23 @@ class EditUserBloc extends Bloc<EditUserEvent, EditUserState> {
     UserDetailAddressOptionSubmitted event,
     Emitter<EditUserState> emit,
   ) {
-    emit(state.copyWith(address: event.address));
+    emit(state.copyWith(user: state.user?.copyWith(address: event.address)));
   }
 
   void _onSubmitted(
     UserDetailSubmitted event,
     Emitter<EditUserState> emit,
   ) async {
-    if (
-        // state.passwordIsValid && state.phoneIsValid
-        true) {
-      emit(state.copyWith(isLoading: true));
-      try {
-        //final position = await getPosition();
-        await _authRepository.addUserInfo(
-            User(
-              name: state.name ?? '',
-              description: state.description ?? '',
-              isSeller: false,
-              address: state.address,
-            ),
-            state.avatarFile);
-        emit(state.copyWith(
-            userDetailStatus: UserDetailStatus.success, isLoading: false));
-      } catch (_) {
-        emit(state.copyWith(
-            userDetailStatus: UserDetailStatus.failure, isLoading: false));
+    emit(state.copyWith(isLoading: true));
+    try {
+      if (state.user != null) {
+        await _authRepository.addUserInfo(state.user!, state.avatarFile);
       }
+      emit(state.copyWith(
+          userDetailStatus: UserDetailStatus.success, isLoading: false));
+    } catch (_) {
+      emit(state.copyWith(
+          userDetailStatus: UserDetailStatus.failure, isLoading: false));
     }
   }
 }

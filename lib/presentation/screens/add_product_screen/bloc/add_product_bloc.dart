@@ -27,7 +27,9 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
     on<AddProductInit>(_onInit);
     on<AddProductDeleteSubmitted>(_addProductDeleteSubmitted);
     on<AddProductCategoryChanged>(_onCategoryChanged);
+    on<AddProductPortionChanged>(_onPortionChanged);
   }
+
 
   final ProductRepository _productRepository;
   final AuthRepository _authRepository;
@@ -37,9 +39,9 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
     Emitter<AddProductState> emit,
   ) async {
     if (event.args != null) {
-      print(event.args);
       final product = event.args!.product;
       emit(state.copyWith(
+          product: event.args!.product ?? const Product(),
           name: product?.name,
           description: product?.description,
           price: product?.price.toString(),
@@ -48,6 +50,9 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
           id: product?.id));
       emit(state.copyWith(
           productImage: await urlToUint8List(product?.pictureUrl)));
+    }else {
+      emit(state.copyWith(
+          product:  const Product()));
     }
   }
 
@@ -55,42 +60,49 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
     AddProductNameChanged event,
     Emitter<AddProductState> emit,
   ) {
-    emit(state.copyWith(name: event.name));
+    emit(state.copyWith(product: state.product?.copyWith(name: event.name)));
   }
 
   void _onDescriptionChanged(
     AddProductDescriptionChanged event,
     Emitter<AddProductState> emit,
   ) {
-    emit(state.copyWith(description: event.description));
+    emit(state.copyWith(product: state.product?.copyWith(description: event.description)));
   }
 
   void _onPriceChanged(
     AddProductPriceChanged event,
     Emitter<AddProductState> emit,
   ) {
-    emit(state.copyWith(price: event.price));
+    emit(state.copyWith(product: state.product?.copyWith(price: int.parse(event.price))));
   }
 
   void _onUnitChanged(
     AddProductUnitChanged event,
     Emitter<AddProductState> emit,
   ) {
-    emit(state.copyWith(unit: event.unit));
+    emit(state.copyWith(product: state.product?.copyWith(unit: event.unit)));
+  }
+
+  _onPortionChanged(
+      AddProductPortionChanged event,
+      Emitter<AddProductState> emit,
+      ){
+    emit(state.copyWith(product: state.product?.copyWith(portion: event.portion)));
   }
 
   void _onCategoryChanged(
     AddProductCategoryChanged event,
     Emitter<AddProductState> emit,
   ) {
-    emit(state.copyWith(category: event.category));
+    emit(state.copyWith(product: state.product?.copyWith(category: event.category)));
   }
 
   void _onImageChanged(
     AddProductImageAddClicked event,
     Emitter<AddProductState> emit,
   ) async {
-    Uint8List? image = await pickImage(ImageSource.gallery);
+    Uint8List? image = await pickImage(event.imageSource);
     if (image != null) {
       emit(state.copyWith(productImage: image));
     }
@@ -102,20 +114,15 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
   ) async {
     emit(state.copyWith(isLoading: true));
     final userId = _authRepository.getUserId();
-    final product = Product(
-        id: state.id,
-        name: state.name ?? '',
-        userID: userId,
-        unit: state.unit ?? Unit.kilos,
-        pictureUrl: state.pictureUrl,
-        description: state.description ?? '',
-        price: int.parse(state.price ?? '0'),
-        category: state.category);
+    final product =  state.product?.copyWith(
+        userID: userId);
     print(product);
-    final result =
-        await _productRepository.saveProduct(product, state.productImage);
-    emit(state.copyWith(
-        isLoading: false, addingIsSuccessful: result is Success));
+    if(product != null) {
+      final result =
+      await _productRepository.saveProduct(product, state.productImage);
+      emit(state.copyWith(
+          isLoading: false, addingIsSuccessful: result is Success));
+    }
   }
 
   Future<void> _addProductDeleteSubmitted(

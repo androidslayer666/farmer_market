@@ -19,6 +19,7 @@ class _$AddProductStateTearOff {
 
   _Initial call(
       {String? name,
+      Product? product,
       String? id,
       String? description,
       String? price,
@@ -33,6 +34,7 @@ class _$AddProductStateTearOff {
       Uint8List? productImage}) {
     return _Initial(
       name: name,
+      product: product,
       id: id,
       description: description,
       price: price,
@@ -55,6 +57,7 @@ const $AddProductState = _$AddProductStateTearOff();
 /// @nodoc
 mixin _$AddProductState {
   String? get name => throw _privateConstructorUsedError;
+  Product? get product => throw _privateConstructorUsedError;
   String? get id => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get price => throw _privateConstructorUsedError;
@@ -80,6 +83,7 @@ abstract class $AddProductStateCopyWith<$Res> {
       _$AddProductStateCopyWithImpl<$Res>;
   $Res call(
       {String? name,
+      Product? product,
       String? id,
       String? description,
       String? price,
@@ -92,6 +96,8 @@ abstract class $AddProductStateCopyWith<$Res> {
       bool? deletingIsSuccessful,
       bool? addingIsSuccessful,
       Uint8List? productImage});
+
+  $ProductCopyWith<$Res>? get product;
 }
 
 /// @nodoc
@@ -106,6 +112,7 @@ class _$AddProductStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = freezed,
+    Object? product = freezed,
     Object? id = freezed,
     Object? description = freezed,
     Object? price = freezed,
@@ -124,6 +131,10 @@ class _$AddProductStateCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
+      product: product == freezed
+          ? _value.product
+          : product // ignore: cast_nullable_to_non_nullable
+              as Product?,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -174,6 +185,17 @@ class _$AddProductStateCopyWithImpl<$Res>
               as Uint8List?,
     ));
   }
+
+  @override
+  $ProductCopyWith<$Res>? get product {
+    if (_value.product == null) {
+      return null;
+    }
+
+    return $ProductCopyWith<$Res>(_value.product!, (value) {
+      return _then(_value.copyWith(product: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -184,6 +206,7 @@ abstract class _$InitialCopyWith<$Res>
   @override
   $Res call(
       {String? name,
+      Product? product,
       String? id,
       String? description,
       String? price,
@@ -196,6 +219,9 @@ abstract class _$InitialCopyWith<$Res>
       bool? deletingIsSuccessful,
       bool? addingIsSuccessful,
       Uint8List? productImage});
+
+  @override
+  $ProductCopyWith<$Res>? get product;
 }
 
 /// @nodoc
@@ -210,6 +236,7 @@ class __$InitialCopyWithImpl<$Res> extends _$AddProductStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? name = freezed,
+    Object? product = freezed,
     Object? id = freezed,
     Object? description = freezed,
     Object? price = freezed,
@@ -228,6 +255,10 @@ class __$InitialCopyWithImpl<$Res> extends _$AddProductStateCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
+      product: product == freezed
+          ? _value.product
+          : product // ignore: cast_nullable_to_non_nullable
+              as Product?,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -285,6 +316,7 @@ class __$InitialCopyWithImpl<$Res> extends _$AddProductStateCopyWithImpl<$Res>
 class _$_Initial implements _Initial {
   const _$_Initial(
       {this.name,
+      this.product,
       this.id,
       this.description,
       this.price,
@@ -300,6 +332,8 @@ class _$_Initial implements _Initial {
 
   @override
   final String? name;
+  @override
+  final Product? product;
   @override
   final String? id;
   @override
@@ -327,7 +361,7 @@ class _$_Initial implements _Initial {
 
   @override
   String toString() {
-    return 'AddProductState(name: $name, id: $id, description: $description, price: $price, pictureUrl: $pictureUrl, unit: $unit, category: $category, isLoading: $isLoading, isImageLoading: $isImageLoading, confirmIsClicked: $confirmIsClicked, deletingIsSuccessful: $deletingIsSuccessful, addingIsSuccessful: $addingIsSuccessful, productImage: $productImage)';
+    return 'AddProductState(name: $name, product: $product, id: $id, description: $description, price: $price, pictureUrl: $pictureUrl, unit: $unit, category: $category, isLoading: $isLoading, isImageLoading: $isImageLoading, confirmIsClicked: $confirmIsClicked, deletingIsSuccessful: $deletingIsSuccessful, addingIsSuccessful: $addingIsSuccessful, productImage: $productImage)';
   }
 
   @override
@@ -336,6 +370,7 @@ class _$_Initial implements _Initial {
         (other.runtimeType == runtimeType &&
             other is _Initial &&
             const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.product, product) &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality()
                 .equals(other.description, description) &&
@@ -361,6 +396,7 @@ class _$_Initial implements _Initial {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(product),
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(price),
@@ -383,6 +419,7 @@ class _$_Initial implements _Initial {
 abstract class _Initial implements AddProductState {
   const factory _Initial(
       {String? name,
+      Product? product,
       String? id,
       String? description,
       String? price,
@@ -398,6 +435,8 @@ abstract class _Initial implements AddProductState {
 
   @override
   String? get name;
+  @override
+  Product? get product;
   @override
   String? get id;
   @override

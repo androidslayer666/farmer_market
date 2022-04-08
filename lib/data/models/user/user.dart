@@ -15,8 +15,6 @@ class User with _$User {
     String? phone,
     String? description,
     bool? isSeller,
-    double? longitude,
-    double? latitude,
     String? avatarUrl,
     // ignore: invalid_annotation_target
     @JsonKey(fromJson: addressFromJson, toJson: addressToJson) Address? address,

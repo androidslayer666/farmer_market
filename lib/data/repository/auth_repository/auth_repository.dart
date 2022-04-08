@@ -49,7 +49,7 @@ class AuthRepository {
         final result = await _storageRepository.uploadPictureToStorage(
             fireStoreNameProfilePics, file);
         if (result is Success<String, String>) {
-          user = user.copyWith(avatarUrl: (result as Success<String, String>).data);
+          user = user.copyWith(avatarUrl: result.data);
         }
       }
       final jsonUser = user.toJson();
@@ -85,7 +85,7 @@ class AuthRepository {
     }
   }
 
- String? getUserId() {
+  String? getUserId() {
     return _auth.currentUser?.uid;
   }
 
@@ -97,4 +97,24 @@ class AuthRepository {
       return Failure(error: null);
     }
   }
+
+  Stream<models.User> getCurrentUserStream() async* {
+    final _currentUser = _auth.currentUser;
+    try {
+      final result = _firestore
+          .collection(fireStoreUsersTableName)
+          .doc(_currentUser?.uid)
+          .snapshots();
+
+      await for (final user in result){
+        if(user.data() != null) {
+          yield models.User.fromJson(user.data()!);
+        }
+      }
+
+    } catch (e) {
+      print(e);
+    }
+  }
+
 }

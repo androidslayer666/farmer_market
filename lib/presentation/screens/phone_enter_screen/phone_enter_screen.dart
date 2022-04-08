@@ -85,7 +85,7 @@ class _PhoneEnterScreenBodyState extends State<PhoneEnterScreenBody> {
               Image.asset('assets/images/logo1.png'),
               if (state.codeIsSent == false)
                 TextInputCustom(
-                  icon: const Icon(Icons.phone),
+                  icon: Icons.phone,
                   controller: phoneController,
                   hint: S.of(context).phoneEnterScreen_phone,
                   textInputType: TextInputType.phone,

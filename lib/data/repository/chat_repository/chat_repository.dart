@@ -57,7 +57,6 @@ class ChatRepository {
 
       final listChats =
           result.docs.map((e) => Chat.fromJson(e.data())).toList();
-      print(listChats);
       return Success(data: listChats);
     } catch (e) {
       print(e);
@@ -88,7 +87,6 @@ class ChatRepository {
   }
 
   Stream<Chat> getChatBuIdStream(String userId) async* {
-    print('getChatBuIdStream');
     final _currentUser = _auth.currentUser;
     try {
       final result = await _firestore
@@ -99,7 +97,6 @@ class ChatRepository {
           .snapshots();
 
       await for (final chatReceived in result){
-        print(chatReceived.data());
         yield Chat.fromJson(chatReceived.data()!);
       }
 

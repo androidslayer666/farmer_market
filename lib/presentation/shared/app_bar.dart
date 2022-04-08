@@ -13,8 +13,7 @@ class CustomAppBar extends StatefulWidget with PreferredSizeWidget {
       this.filterSwitchedOn = false,
       this.showFilter = false,
       this.mainBloc,
-      this.onFilterClick
-      })
+      this.onFilterClick})
       : super(key: key);
 
   final User? user;
@@ -34,7 +33,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Theme.of(context).backgroundColor,
+      // backgroundColor: Color(0x05000000),
+      elevation: 0,
+      backgroundColor: Colors.white.withOpacity(0.8),
       title: GestureDetector(
         onTap: () {
           // navigate to account screen
@@ -47,25 +48,19 @@ class _CustomAppBarState extends State<CustomAppBar> {
               backgroundImage: widget.user?.avatarUrl != null
                   ? NetworkImage(widget.user!.avatarUrl!)
                   : null),
-          Center(
-            child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  widget.user?.name ?? '',
-                  style: const TextStyle(color: Colors.white),
-                )),
-          )
         ]),
       ),
       actions: [
-        if(widget.showFilter)
-          IconButton(onPressed: (){
-          if(widget.onFilterClick !=null) widget.onFilterClick!();
-          // widget.mainBloc?.add(const MainScreenFilterToggled());
-        }, icon: Icon(
-              widget.filterSwitchedOn ?
-              Icons.filter_alt
-          : Icons.filter_alt_outlined))
+        if (widget.showFilter)
+          IconButton(
+              onPressed: () {
+                if (widget.onFilterClick != null) widget.onFilterClick!();
+                // widget.mainBloc?.add(const MainScreenFilterToggled());
+              },
+              icon: Icon(widget.filterSwitchedOn
+                  ? Icons.filter_alt
+                  : Icons.filter_alt_outlined),
+              color: Theme.of(context).primaryColor)
       ],
     );
   }

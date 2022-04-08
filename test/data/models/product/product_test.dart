@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:farmer_market/data/models/convertors.dart';
 import 'package:farmer_market/data/models/api/address.dart';
 import 'package:farmer_market/data/models/product/product.dart';
+import 'package:farmer_market/data/models/review/review.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 final productJson = {
@@ -41,7 +42,7 @@ final product = Product(
       region: '',
       street: ''),
   userID: 'instance.userID',
-  reviews: ['123'],
+  reviews: [Review()],
 );
 
 void main() {

@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../app/bloc/app_bloc.dart';
 import '../../../app/bloc/app_state.dart';
 import '../../../app/di/getit_setup.dart';
+import '../../../data/models/user/user.dart';
 import '../../../data/repository/product_repository/product_repository.dart';
 import '../../navigation/arguments.dart';
 import '../../navigation/navigation_wrapper.dart';
@@ -18,82 +19,85 @@ class UserDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as UserDetailArguments?;
+    final user =
+    (ModalRoute.of(context)!.settings.arguments as UserDetailArguments?)?.user;
     return BlocProvider<UserDetailCubit>(
         create: (context) {
           final _userRepository = locator<UserRepository>();
           final _productRepository = locator<ProductRepository>();
-          return UserDetailCubit(_userRepository, _productRepository);
+          return UserDetailCubit(_userRepository, _productRepository)..onInit(user?.id);
         },
-        child: UserDetailScreenBody(args: args));
+        child: BlocBuilder<AppBloc, AppState>(
+            builder: (context, appState) =>
+                BlocBuilder<UserDetailCubit, UserDetailState>(
+                    builder: (context, state) {
+                  return UserDetailScreenBody(
+                      user: user, appState: appState, state: state);
+                })));
   }
 }
 
-class UserDetailScreenBody extends StatefulWidget {
-  const UserDetailScreenBody({Key? key, this.args}) : super(key: key);
+class UserDetailScreenBody extends StatelessWidget {
+  const UserDetailScreenBody(
+      {Key? key, this.user, required this.state, required this.appState})
+      : super(key: key);
 
-  final UserDetailArguments? args;
+  final User? user;
+  final UserDetailState state;
+  final AppState appState;
 
-  @override
-  State<UserDetailScreenBody> createState() => _UserDetailScreenBodyState();
-}
-
-class _UserDetailScreenBodyState extends State<UserDetailScreenBody> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppBloc, AppState>(
-        builder: (context, appState) =>
-            BlocBuilder<UserDetailCubit, UserDetailState>(
-                builder: (context, state) {
-              return Scaffold(
-                  appBar: CustomAppBar(user: appState.currentUser),
-                  body: SingleChildScrollView(
-                    child: SafeArea(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            state.user?.avatarUrl != null
-                                ? CachedNetworkImage(
-                                    imageBuilder: (context, imageProvider) =>
-                                        Container(
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                            image: imageProvider,
-                                            fit: BoxFit.cover),
-                                      ),
-                                    ),
-                                    imageUrl: state.user?.avatarUrl ?? '',
-                                    height: 200,
-                                    progressIndicatorBuilder: (_, __, ___) =>
-                                        const CircularProgressIndicator(),
-                                  )
-                                : Image.asset(
-                                    'assets/images/placeholder-image.png'),
-                            Text(state.user?.name ?? ''),
-                            ElevatedButton(
-                                onPressed: () {
-                                  navigateToChatScreen(context,
-                                      arguments: UserDetailArguments(
-                                          user: appState.currentUser));
-                                },
-                                child: const Text('Message')),
-                            ...?state.listProducts
-                                ?.map((e) => ProductListItem(product: e))
-                          ],
-                        ),
-                      ),
-                    ),
-                  ));
-            }));
+    return Scaffold(
+        appBar: CustomAppBar(user: appState.currentUser),
+        body: SingleChildScrollView(
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  UserDetailAvatar(
+                    user: state.user,
+                  ),
+                  Text(state.user?.name ?? ''),
+                  ElevatedButton(
+                      onPressed: () {
+                        navigateToChatScreen(context,
+                            arguments: UserDetailArguments(
+                                user: appState.currentUser));
+                      },
+                      child: const Text('Message')),
+                  ...?state.listProducts
+                      ?.map((e) => ProductListItem(product: e))
+                ],
+              ),
+            ),
+          ),
+        ));
   }
+}
+
+class UserDetailAvatar extends StatelessWidget {
+  const UserDetailAvatar({Key? key, this.user}) : super(key: key);
+
+  final User? user;
 
   @override
-  void initState() {
-    super.initState();
-    final userDetailCubit = context.read<UserDetailCubit>();
-    userDetailCubit.onInit(widget.args?.user?.id ?? '');
+  Widget build(BuildContext context) {
+    return user?.avatarUrl != null
+        ? CachedNetworkImage(
+      imageBuilder: (context, imageProvider) => Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          image: DecorationImage(
+              image: imageProvider, fit: BoxFit.cover),
+        ),
+      ),
+      imageUrl: user?.avatarUrl ?? '',
+      height: 200,
+      progressIndicatorBuilder: (_, __, ___) =>
+      const CircularProgressIndicator(),
+    )
+        : Image.asset('assets/images/placeholder-image.png');
   }
 }

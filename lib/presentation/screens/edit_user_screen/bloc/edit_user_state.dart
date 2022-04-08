@@ -12,11 +12,9 @@ enum UserDetailStatus { success, failure, unknown }
 @freezed
 class EditUserState with _$EditUserState {
   const factory EditUserState(
-      {String? name,
-      bool? haveUserInfoOnServer,
-      String? description,
+      {
+          User? user,
       String? addressQuery,
-      Address? address,
       List<Address>? addresses,
       bool? isLoading,
       bool? isImageLoading,

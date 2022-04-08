@@ -11,13 +11,9 @@ part 'main_state.freezed.dart';
 class MainState with _$MainState {
   const factory MainState(
       {User? user,
-      @Default([]) List<Product> listProducts,
-      @Default([]) List<Product> listUserProducts,
-      @Default(Cart()) Cart cart,
       String? errorWhileFetchingProducts,
       bool? backButtonPressedWhenStackIsClear,
       @Default([0]) List<int> pageStack,
-          @Default(Filter()) Filter filter,
       @Default(false) bool filterSwitchedOn,
       bool? isLoading}) = _Initial;
 }

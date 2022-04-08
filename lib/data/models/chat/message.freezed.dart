@@ -21,11 +21,12 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
 class _$MessageTearOff {
   const _$MessageTearOff();
 
-  _Initial call({String? id, String? usedId, String? message}) {
+  _Initial call({String? id, String? usedId, String? message, DateTime? time}) {
     return _Initial(
       id: id,
       usedId: usedId,
       message: message,
+      time: time,
     );
   }
 
@@ -42,6 +43,7 @@ mixin _$Message {
   String? get id => throw _privateConstructorUsedError;
   String? get usedId => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
+  DateTime? get time => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -52,7 +54,7 @@ mixin _$Message {
 abstract class $MessageCopyWith<$Res> {
   factory $MessageCopyWith(Message value, $Res Function(Message) then) =
       _$MessageCopyWithImpl<$Res>;
-  $Res call({String? id, String? usedId, String? message});
+  $Res call({String? id, String? usedId, String? message, DateTime? time});
 }
 
 /// @nodoc
@@ -68,6 +70,7 @@ class _$MessageCopyWithImpl<$Res> implements $MessageCopyWith<$Res> {
     Object? id = freezed,
     Object? usedId = freezed,
     Object? message = freezed,
+    Object? time = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -82,6 +85,10 @@ class _$MessageCopyWithImpl<$Res> implements $MessageCopyWith<$Res> {
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String?,
+      time: time == freezed
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -91,7 +98,7 @@ abstract class _$InitialCopyWith<$Res> implements $MessageCopyWith<$Res> {
   factory _$InitialCopyWith(_Initial value, $Res Function(_Initial) then) =
       __$InitialCopyWithImpl<$Res>;
   @override
-  $Res call({String? id, String? usedId, String? message});
+  $Res call({String? id, String? usedId, String? message, DateTime? time});
 }
 
 /// @nodoc
@@ -108,6 +115,7 @@ class __$InitialCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
     Object? id = freezed,
     Object? usedId = freezed,
     Object? message = freezed,
+    Object? time = freezed,
   }) {
     return _then(_Initial(
       id: id == freezed
@@ -122,6 +130,10 @@ class __$InitialCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String?,
+      time: time == freezed
+          ? _value.time
+          : time // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -129,7 +141,7 @@ class __$InitialCopyWithImpl<$Res> extends _$MessageCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_Initial implements _Initial {
-  const _$_Initial({this.id, this.usedId, this.message});
+  const _$_Initial({this.id, this.usedId, this.message, this.time});
 
   factory _$_Initial.fromJson(Map<String, dynamic> json) =>
       _$$_InitialFromJson(json);
@@ -140,10 +152,12 @@ class _$_Initial implements _Initial {
   final String? usedId;
   @override
   final String? message;
+  @override
+  final DateTime? time;
 
   @override
   String toString() {
-    return 'Message(id: $id, usedId: $usedId, message: $message)';
+    return 'Message(id: $id, usedId: $usedId, message: $message, time: $time)';
   }
 
   @override
@@ -153,7 +167,8 @@ class _$_Initial implements _Initial {
             other is _Initial &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.usedId, usedId) &&
-            const DeepCollectionEquality().equals(other.message, message));
+            const DeepCollectionEquality().equals(other.message, message) &&
+            const DeepCollectionEquality().equals(other.time, time));
   }
 
   @override
@@ -161,7 +176,8 @@ class _$_Initial implements _Initial {
       runtimeType,
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(usedId),
-      const DeepCollectionEquality().hash(message));
+      const DeepCollectionEquality().hash(message),
+      const DeepCollectionEquality().hash(time));
 
   @JsonKey(ignore: true)
   @override
@@ -175,8 +191,11 @@ class _$_Initial implements _Initial {
 }
 
 abstract class _Initial implements Message {
-  const factory _Initial({String? id, String? usedId, String? message}) =
-      _$_Initial;
+  const factory _Initial(
+      {String? id,
+      String? usedId,
+      String? message,
+      DateTime? time}) = _$_Initial;
 
   factory _Initial.fromJson(Map<String, dynamic> json) = _$_Initial.fromJson;
 
@@ -186,6 +205,8 @@ abstract class _Initial implements Message {
   String? get usedId;
   @override
   String? get message;
+  @override
+  DateTime? get time;
   @override
   @JsonKey(ignore: true)
   _$InitialCopyWith<_Initial> get copyWith =>

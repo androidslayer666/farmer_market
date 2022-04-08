@@ -12,6 +12,7 @@ part 'add_product_state.freezed.dart';
 class AddProductState with _$AddProductState {
   const factory AddProductState(
       {String? name,
+          Product? product,
           String? id,
       String? description,
       String? price,
