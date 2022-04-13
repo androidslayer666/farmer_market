@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../app/di/getit_setup.dart';
 import '../../../../data/repository/auth_repository/auth_repository.dart';
 import '../../../../data/repository/chat_repository/chat_repository.dart';
+import '../../../shared/avatar_name_widget.dart';
 
 class ChatPage extends StatelessWidget {
   const ChatPage({Key? key}) : super(key: key);
@@ -37,26 +38,22 @@ class ChatPageBody extends StatelessWidget {
       return Padding(
           padding: const EdgeInsets.all(16.0),
           child: ListView.builder(
-            itemCount: state.chats?.length,
+              itemCount: state.chats?.length,
               itemBuilder: (context, index) => GestureDetector(
-                behavior: HitTestBehavior.translucent,
+                  behavior: HitTestBehavior.translucent,
                   onTap: () {
                     navigateToChatScreen(context,
-                        arguments:
-                            UserDetailArguments(user: state.chats?[index].user));
+                        arguments: UserDetailArguments(
+                            user: state.chats?[index].user));
                   },
                   child: Row(children: [
-                    CircleAvatar(
-                        backgroundColor: Colors.transparent,
-                        backgroundImage:
-                            state.chats?[index].user?.avatarUrl != null
-                                ? NetworkImage(
-                                    state.chats?[index].user?.avatarUrl ?? '')
-                                : null),
-                    const SizedBox(width: 16,),
-                    Text(state.chats?[index].user?.name ?? ''),
+                    AvatarNameWidget(
+                        user: state.chats?[index].user, onClickNavigate: false),
                     const Spacer(),
-                    Icon(Icons.arrow_forward, color: Theme.of(context).primaryColor,)
+                    Icon(
+                      Icons.arrow_forward,
+                      color: Theme.of(context).primaryColor,
+                    )
                   ]))));
     });
   }

@@ -14,6 +14,7 @@ final themeData = ThemeData(
   secondaryHeaderColor: const Color(0xFFFFFFFF),
   focusColor: const Color(0xFFF1BF9C),
   indicatorColor: const Color(0xFF717171),
+  highlightColor: const Color(0xFF157837),
   // Define the default font family.
   fontFamily: 'Roboto',
 

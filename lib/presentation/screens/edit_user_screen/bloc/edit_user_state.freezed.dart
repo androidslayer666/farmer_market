@@ -24,7 +24,11 @@ class _$EditUserStateTearOff {
       bool? isLoading,
       bool? isImageLoading,
       bool? logOutIsClicked,
-      UserDetailStatus? userDetailStatus,
+      bool? nameIsValid,
+      bool? descriptionIsValid,
+      bool? addressIsValid,
+      bool? saveClickedWhenInputIsNotValid,
+      bool? changesSaved,
       Uint8List? avatarFile}) {
     return _Initial(
       user: user,
@@ -33,7 +37,11 @@ class _$EditUserStateTearOff {
       isLoading: isLoading,
       isImageLoading: isImageLoading,
       logOutIsClicked: logOutIsClicked,
-      userDetailStatus: userDetailStatus,
+      nameIsValid: nameIsValid,
+      descriptionIsValid: descriptionIsValid,
+      addressIsValid: addressIsValid,
+      saveClickedWhenInputIsNotValid: saveClickedWhenInputIsNotValid,
+      changesSaved: changesSaved,
       avatarFile: avatarFile,
     );
   }
@@ -50,7 +58,12 @@ mixin _$EditUserState {
   bool? get isLoading => throw _privateConstructorUsedError;
   bool? get isImageLoading => throw _privateConstructorUsedError;
   bool? get logOutIsClicked => throw _privateConstructorUsedError;
-  UserDetailStatus? get userDetailStatus => throw _privateConstructorUsedError;
+  bool? get nameIsValid => throw _privateConstructorUsedError;
+  bool? get descriptionIsValid => throw _privateConstructorUsedError;
+  bool? get addressIsValid => throw _privateConstructorUsedError;
+  bool? get saveClickedWhenInputIsNotValid =>
+      throw _privateConstructorUsedError;
+  bool? get changesSaved => throw _privateConstructorUsedError;
   Uint8List? get avatarFile => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -70,7 +83,11 @@ abstract class $EditUserStateCopyWith<$Res> {
       bool? isLoading,
       bool? isImageLoading,
       bool? logOutIsClicked,
-      UserDetailStatus? userDetailStatus,
+      bool? nameIsValid,
+      bool? descriptionIsValid,
+      bool? addressIsValid,
+      bool? saveClickedWhenInputIsNotValid,
+      bool? changesSaved,
       Uint8List? avatarFile});
 
   $UserCopyWith<$Res>? get user;
@@ -93,7 +110,11 @@ class _$EditUserStateCopyWithImpl<$Res>
     Object? isLoading = freezed,
     Object? isImageLoading = freezed,
     Object? logOutIsClicked = freezed,
-    Object? userDetailStatus = freezed,
+    Object? nameIsValid = freezed,
+    Object? descriptionIsValid = freezed,
+    Object? addressIsValid = freezed,
+    Object? saveClickedWhenInputIsNotValid = freezed,
+    Object? changesSaved = freezed,
     Object? avatarFile = freezed,
   }) {
     return _then(_value.copyWith(
@@ -121,10 +142,26 @@ class _$EditUserStateCopyWithImpl<$Res>
           ? _value.logOutIsClicked
           : logOutIsClicked // ignore: cast_nullable_to_non_nullable
               as bool?,
-      userDetailStatus: userDetailStatus == freezed
-          ? _value.userDetailStatus
-          : userDetailStatus // ignore: cast_nullable_to_non_nullable
-              as UserDetailStatus?,
+      nameIsValid: nameIsValid == freezed
+          ? _value.nameIsValid
+          : nameIsValid // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      descriptionIsValid: descriptionIsValid == freezed
+          ? _value.descriptionIsValid
+          : descriptionIsValid // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      addressIsValid: addressIsValid == freezed
+          ? _value.addressIsValid
+          : addressIsValid // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      saveClickedWhenInputIsNotValid: saveClickedWhenInputIsNotValid == freezed
+          ? _value.saveClickedWhenInputIsNotValid
+          : saveClickedWhenInputIsNotValid // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      changesSaved: changesSaved == freezed
+          ? _value.changesSaved
+          : changesSaved // ignore: cast_nullable_to_non_nullable
+              as bool?,
       avatarFile: avatarFile == freezed
           ? _value.avatarFile
           : avatarFile // ignore: cast_nullable_to_non_nullable
@@ -156,7 +193,11 @@ abstract class _$InitialCopyWith<$Res> implements $EditUserStateCopyWith<$Res> {
       bool? isLoading,
       bool? isImageLoading,
       bool? logOutIsClicked,
-      UserDetailStatus? userDetailStatus,
+      bool? nameIsValid,
+      bool? descriptionIsValid,
+      bool? addressIsValid,
+      bool? saveClickedWhenInputIsNotValid,
+      bool? changesSaved,
       Uint8List? avatarFile});
 
   @override
@@ -180,7 +221,11 @@ class __$InitialCopyWithImpl<$Res> extends _$EditUserStateCopyWithImpl<$Res>
     Object? isLoading = freezed,
     Object? isImageLoading = freezed,
     Object? logOutIsClicked = freezed,
-    Object? userDetailStatus = freezed,
+    Object? nameIsValid = freezed,
+    Object? descriptionIsValid = freezed,
+    Object? addressIsValid = freezed,
+    Object? saveClickedWhenInputIsNotValid = freezed,
+    Object? changesSaved = freezed,
     Object? avatarFile = freezed,
   }) {
     return _then(_Initial(
@@ -208,10 +253,26 @@ class __$InitialCopyWithImpl<$Res> extends _$EditUserStateCopyWithImpl<$Res>
           ? _value.logOutIsClicked
           : logOutIsClicked // ignore: cast_nullable_to_non_nullable
               as bool?,
-      userDetailStatus: userDetailStatus == freezed
-          ? _value.userDetailStatus
-          : userDetailStatus // ignore: cast_nullable_to_non_nullable
-              as UserDetailStatus?,
+      nameIsValid: nameIsValid == freezed
+          ? _value.nameIsValid
+          : nameIsValid // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      descriptionIsValid: descriptionIsValid == freezed
+          ? _value.descriptionIsValid
+          : descriptionIsValid // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      addressIsValid: addressIsValid == freezed
+          ? _value.addressIsValid
+          : addressIsValid // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      saveClickedWhenInputIsNotValid: saveClickedWhenInputIsNotValid == freezed
+          ? _value.saveClickedWhenInputIsNotValid
+          : saveClickedWhenInputIsNotValid // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      changesSaved: changesSaved == freezed
+          ? _value.changesSaved
+          : changesSaved // ignore: cast_nullable_to_non_nullable
+              as bool?,
       avatarFile: avatarFile == freezed
           ? _value.avatarFile
           : avatarFile // ignore: cast_nullable_to_non_nullable
@@ -230,7 +291,11 @@ class _$_Initial implements _Initial {
       this.isLoading,
       this.isImageLoading,
       this.logOutIsClicked,
-      this.userDetailStatus,
+      this.nameIsValid,
+      this.descriptionIsValid,
+      this.addressIsValid,
+      this.saveClickedWhenInputIsNotValid,
+      this.changesSaved,
       this.avatarFile});
 
   @override
@@ -246,13 +311,21 @@ class _$_Initial implements _Initial {
   @override
   final bool? logOutIsClicked;
   @override
-  final UserDetailStatus? userDetailStatus;
+  final bool? nameIsValid;
+  @override
+  final bool? descriptionIsValid;
+  @override
+  final bool? addressIsValid;
+  @override
+  final bool? saveClickedWhenInputIsNotValid;
+  @override
+  final bool? changesSaved;
   @override
   final Uint8List? avatarFile;
 
   @override
   String toString() {
-    return 'EditUserState(user: $user, addressQuery: $addressQuery, addresses: $addresses, isLoading: $isLoading, isImageLoading: $isImageLoading, logOutIsClicked: $logOutIsClicked, userDetailStatus: $userDetailStatus, avatarFile: $avatarFile)';
+    return 'EditUserState(user: $user, addressQuery: $addressQuery, addresses: $addresses, isLoading: $isLoading, isImageLoading: $isImageLoading, logOutIsClicked: $logOutIsClicked, nameIsValid: $nameIsValid, descriptionIsValid: $descriptionIsValid, addressIsValid: $addressIsValid, saveClickedWhenInputIsNotValid: $saveClickedWhenInputIsNotValid, changesSaved: $changesSaved, avatarFile: $avatarFile)';
   }
 
   @override
@@ -270,7 +343,16 @@ class _$_Initial implements _Initial {
             const DeepCollectionEquality()
                 .equals(other.logOutIsClicked, logOutIsClicked) &&
             const DeepCollectionEquality()
-                .equals(other.userDetailStatus, userDetailStatus) &&
+                .equals(other.nameIsValid, nameIsValid) &&
+            const DeepCollectionEquality()
+                .equals(other.descriptionIsValid, descriptionIsValid) &&
+            const DeepCollectionEquality()
+                .equals(other.addressIsValid, addressIsValid) &&
+            const DeepCollectionEquality().equals(
+                other.saveClickedWhenInputIsNotValid,
+                saveClickedWhenInputIsNotValid) &&
+            const DeepCollectionEquality()
+                .equals(other.changesSaved, changesSaved) &&
             const DeepCollectionEquality()
                 .equals(other.avatarFile, avatarFile));
   }
@@ -284,7 +366,11 @@ class _$_Initial implements _Initial {
       const DeepCollectionEquality().hash(isLoading),
       const DeepCollectionEquality().hash(isImageLoading),
       const DeepCollectionEquality().hash(logOutIsClicked),
-      const DeepCollectionEquality().hash(userDetailStatus),
+      const DeepCollectionEquality().hash(nameIsValid),
+      const DeepCollectionEquality().hash(descriptionIsValid),
+      const DeepCollectionEquality().hash(addressIsValid),
+      const DeepCollectionEquality().hash(saveClickedWhenInputIsNotValid),
+      const DeepCollectionEquality().hash(changesSaved),
       const DeepCollectionEquality().hash(avatarFile));
 
   @JsonKey(ignore: true)
@@ -301,7 +387,11 @@ abstract class _Initial implements EditUserState {
       bool? isLoading,
       bool? isImageLoading,
       bool? logOutIsClicked,
-      UserDetailStatus? userDetailStatus,
+      bool? nameIsValid,
+      bool? descriptionIsValid,
+      bool? addressIsValid,
+      bool? saveClickedWhenInputIsNotValid,
+      bool? changesSaved,
       Uint8List? avatarFile}) = _$_Initial;
 
   @override
@@ -317,7 +407,15 @@ abstract class _Initial implements EditUserState {
   @override
   bool? get logOutIsClicked;
   @override
-  UserDetailStatus? get userDetailStatus;
+  bool? get nameIsValid;
+  @override
+  bool? get descriptionIsValid;
+  @override
+  bool? get addressIsValid;
+  @override
+  bool? get saveClickedWhenInputIsNotValid;
+  @override
+  bool? get changesSaved;
   @override
   Uint8List? get avatarFile;
   @override

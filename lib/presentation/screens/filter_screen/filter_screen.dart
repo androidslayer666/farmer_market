@@ -2,6 +2,7 @@ import 'package:farmer_market/app/bloc/app_bloc.dart';
 import 'package:farmer_market/app/bloc/app_state.dart';
 import 'package:farmer_market/presentation/navigation/arguments.dart';
 import 'package:farmer_market/presentation/shared/app_bar.dart';
+import 'package:farmer_market/presentation/shared/text_input_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,11 +30,16 @@ class FilterScreen extends StatelessWidget {
   }
 }
 
-class FilterScreenBody extends StatelessWidget {
+class FilterScreenBody extends StatefulWidget {
   const FilterScreenBody({Key? key, required this.state}) : super(key: key);
 
   final FilterScreenState state;
 
+  @override
+  State<FilterScreenBody> createState() => _FilterScreenBodyState();
+}
+
+class _FilterScreenBodyState extends State<FilterScreenBody> {
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<FilterScreenCubit>();
@@ -42,20 +48,20 @@ class FilterScreenBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           FilterScreenCategoryGrid(
-            state: state,
+            state: widget.state,
             cubit: cubit,
           ),
           FilterScreenPriceInputs(
-            state: state,
+            state: widget.state,
             cubit: cubit,
           ),
           const Divider(height: 50),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              if (state.filter.categories?.isNotEmpty == true ||
-                  state.filter.topPrice != null ||
-                  state.filter.bottomPrice != null)
+              if (widget.state.filter.categories?.isNotEmpty == true ||
+                  widget.state.filter.topPrice != null ||
+                  widget.state.filter.bottomPrice != null)
                 ElevatedButton(
                     onPressed: () {
                       cubit.clearFilters();
@@ -63,7 +69,7 @@ class FilterScreenBody extends StatelessWidget {
                     child: const Text('Clear')),
               ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pop(state.filter);
+                    Navigator.of(context).pop(widget.state.filter);
                   },
                   child: const Text('confirm')),
             ],
@@ -74,7 +80,7 @@ class FilterScreenBody extends StatelessWidget {
   }
 }
 
-class FilterScreenPriceInputs extends StatelessWidget {
+class FilterScreenPriceInputs extends StatefulWidget {
   const FilterScreenPriceInputs(
       {Key? key, required this.state, required this.cubit})
       : super(key: key);
@@ -83,41 +89,66 @@ class FilterScreenPriceInputs extends StatelessWidget {
   final FilterScreenCubit cubit;
 
   @override
+  State<FilterScreenPriceInputs> createState() =>
+      _FilterScreenPriceInputsState();
+}
+
+class _FilterScreenPriceInputsState extends State<FilterScreenPriceInputs> {
+  late final TextEditingController bottomPriceController;
+  late final TextEditingController topPriceController;
+
+  @override
+  void initState() {
+    super.initState();
+    final bottomPrice = widget.state.filter.bottomPrice != null
+        ? widget.state.filter.bottomPrice.toString()
+        : '';
+    final topPrice = widget.state.filter.topPrice != null
+        ? widget.state.filter.topPrice.toString()
+        : '';
+
+    bottomPriceController = TextEditingController()..text = bottomPrice;
+    topPriceController = TextEditingController()..text = topPrice;
+
+    bottomPriceController.addListener(() {
+      widget.cubit.setBottomPrice(bottomPriceController.text);
+    });
+
+    topPriceController.addListener(() {
+      widget.cubit.setTopPrice(topPriceController.text);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         const Text('Price from '),
         SizedBox(
             width: 100,
-            child: TextFormField(
-              initialValue: state.filter.bottomPrice != null
-                  ? state.filter.bottomPrice.toString()
-                  : '',
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
-              ],
-              onChanged: (value) {
-                cubit.setBottomPrice(int.parse(value));
-              },
+            child: TextInputCustom(
+              controller: bottomPriceController,
+              textInputType: TextInputType.number,
+              textInputFormatter: FilteringTextInputFormatter.digitsOnly,
             )),
         const Text('  to '),
         SizedBox(
             width: 100,
-            child: TextFormField(
-              initialValue: state.filter.topPrice != null
-                  ? state.filter.topPrice.toString()
-                  : '',
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
-              ],
-              onChanged: (value) {
-                cubit.setTopPrice(int.parse(value));
-              },
+            child: TextInputCustom(
+              controller: topPriceController,
+              textInputType: TextInputType.number,
+              textInputFormatter: FilteringTextInputFormatter.digitsOnly,
+
             )),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    bottomPriceController.dispose();
+    topPriceController.dispose();
+    super.dispose();
   }
 }
 
@@ -143,9 +174,9 @@ class FilterScreenCategoryGrid extends StatelessWidget {
                     cubit.addOrRemoveCategory(models.Category.values[index]),
                 child: Center(
                   child: Card(
-                    color: state.filter.categories?.contains(
-                        models.Category.values[index]) ==
-                        true
+                    color: state.filter.categories
+                                ?.contains(models.Category.values[index]) ==
+                            true
                         ? Theme.of(context).bottomAppBarColor
                         : Theme.of(context).backgroundColor,
                     child: SizedBox(

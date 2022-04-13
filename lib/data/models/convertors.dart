@@ -1,5 +1,6 @@
 
 import 'package:farmer_market/data/models/product/category.dart';
+import 'package:farmer_market/data/models/review/review.dart';
 import 'package:farmer_market/data/models/user/user.dart';
 
 import 'api/address.dart';
@@ -47,6 +48,13 @@ String? categoryToJson(Category? category) {
 List<String>? listCategoriesToJson(List<Category>? listCategory) {
   if(listCategory != null) {
     return listCategory.map((cartItem) => cartItem.toString()).toList();
+  }
+  return null;
+}
+
+List<Map<String, dynamic>>? listReviewsToJson(List<Review>? listReviews) {
+  if(listReviews != null) {
+    return listReviews.map((review) => review.toJson()).toList();
   }
   return null;
 }

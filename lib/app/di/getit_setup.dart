@@ -53,13 +53,11 @@ void setupGetIt() {
 
   locator.registerLazySingleton(() => CartRepository(
       firestore: _firestore,
-      auth: _auth,
-      addressRepository: _addressRepository));
+      auth: _auth));
 
   locator.registerLazySingleton(() => OrderRepository(
       firestore: _firestore,
-      auth: _auth,
-      addressRepository: _addressRepository));
+      auth: _auth));
 
   locator.registerLazySingleton(() => ChatRepository(
       firestore: _firestore,

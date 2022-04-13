@@ -7,18 +7,19 @@ import '../../../../data/models/user/user.dart';
 
 part 'edit_user_state.freezed.dart';
 
-enum UserDetailStatus { success, failure, unknown }
-
 @freezed
 class EditUserState with _$EditUserState {
   const factory EditUserState(
-      {
-          User? user,
+      {User? user,
       String? addressQuery,
       List<Address>? addresses,
       bool? isLoading,
       bool? isImageLoading,
       bool? logOutIsClicked,
-      UserDetailStatus? userDetailStatus,
+      bool? nameIsValid,
+      bool? descriptionIsValid,
+      bool? addressIsValid,
+      bool? saveClickedWhenInputIsNotValid,
+          bool? changesSaved,
       Uint8List? avatarFile}) = _Initial;
 }

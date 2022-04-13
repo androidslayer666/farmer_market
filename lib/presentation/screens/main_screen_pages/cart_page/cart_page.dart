@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:farmer_market/presentation/navigation/arguments.dart';
 import 'package:farmer_market/presentation/screens/main_screen_pages/shipping_page/bloc/shipping_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,6 +8,8 @@ import 'package:intl/intl.dart';
 import '../../../../data/models/cart/cart_item.dart';
 import '../../../../data/models/product/product.dart';
 import '../../../../data/models/user/user.dart';
+import '../../../navigation/navigation_wrapper.dart';
+import '../../../shared/avatar_name_widget.dart';
 import '../../../shared/utils.dart';
 import 'bloc/cart_bloc.dart';
 import 'bloc/cart_state.dart';
@@ -58,19 +61,12 @@ class CartList extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 16),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      backgroundImage:
-                          map.keys.elementAt(index)?.avatarUrl != null
-                              ? NetworkImage(
-                                  map.keys.elementAt(index)?.avatarUrl ?? '')
-                              : null),
-                  const SizedBox(width: 16,),
-                  Text(map.keys.elementAt(index)?.name ?? '')
-                ]),
+                AvatarNameWidget(
+                  user: map.keys.elementAt(index),
+                ),
                 const SizedBox(height: 16),
                 ...map.values
                     .elementAt(index)
@@ -111,23 +107,28 @@ class CartItemWidget extends StatelessWidget {
         children: [
           Expanded(
               flex: 2,
-              child: item.product?.pictureUrl != null
-                  ? CachedNetworkImage(
-                      imageUrl: item.product!.pictureUrl!,
-                      height: 100,
-                      imageBuilder: (context, imageProvider) => Container(
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              bottomLeft: Radius.circular(10)),
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
+              child: GestureDetector(
+                onTap: () => navigateToProductDetailScreen(
+                  context, arguments: ProductDetailArguments(product: item.product)
+                ),
+                child: item.product?.pictureUrl != null
+                    ? CachedNetworkImage(
+                        imageUrl: item.product!.pictureUrl!,
+                        height: 100,
+                        imageBuilder: (context, imageProvider) => Container(
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                bottomLeft: Radius.circular(10)),
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                  : Image.asset('assets/images/placeholder-image.png')),
+                      )
+                    : Image.asset('assets/images/placeholder-image.png'),
+              )),
           Expanded(
             flex: 9,
             child: Column(children: [

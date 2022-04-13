@@ -14,7 +14,7 @@ import '../../../data/models/product/product.dart';
 import '../../../data/repository/auth_repository/auth_repository.dart';
 import '../../../data/repository/product_repository/product_repository.dart';
 import '../../../generated/l10n.dart';
-import '../../shared/icon_gradient_button.dart';
+import '../../shared/image_add_image_row.dart';
 import '../../shared/show_confirmation_dialogue.dart';
 import '../../shared/text_input_custom.dart';
 import 'bloc/add_product_bloc.dart';
@@ -39,6 +39,12 @@ class AddProductScreen extends StatelessWidget {
           final userProductBloc = context.read<UserProductsBloc>();
           if (state.deletingIsSuccessful == true) {
             navigateToMainScreen(context);
+          }
+          if (state.saveClickedWhenInputIsNotValid == true) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Please fill all the fields correctly"),
+              duration: Duration(seconds: 2),
+            ));
           }
           if (state.addingIsSuccessful == true) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -69,14 +75,14 @@ class AddProductScreenBody extends StatelessWidget {
     final _addProductBloc = context.read<AddProductBloc>();
     return Scaffold(
       appBar: AppBar(
-        // leading: BackButton(
-        //     color: Theme.of(context).indicatorColor
-        // ),
         iconTheme: IconThemeData(
           color: Theme.of(context).primaryColor, //change your color here
         ),
         backgroundColor: Theme.of(context).backgroundColor,
-        title: Text(S.of(context).addProductScreen_addProduct, style: TextStyle(color: Theme.of(context).indicatorColor),),
+        title: Text(
+          S.of(context).addProductScreen_addProduct,
+          style: TextStyle(color: Theme.of(context).indicatorColor),
+        ),
       ),
       body: SingleChildScrollView(
           reverse: true,
@@ -84,66 +90,261 @@ class AddProductScreenBody extends StatelessWidget {
             AddProductTextInputs(
               addProductBloc: _addProductBloc,
               product: args?.product,
+              nameIsValid: state.nameIsValid,
+              descriptionIsValid: state.descriptionIsValid,
+              priceIsValid: state.priceIsValid,
             ),
-            AddProductUnitDropdown(
-                unit: state.product?.unit, addProductBloc: _addProductBloc),
+            AddProductMeasureInput(
+              addProductBloc: _addProductBloc,
+              measureIsValid: state.measureIsValid,
+              product: args?.product,
+              unit: state.product?.unit,
+            ),
             AddProductCategoryDropdown(
-                category: Category.milk, addProductBloc: _addProductBloc),
-            const Divider(height: 30),
-            AddProductImage(
-                isImageLoading: state.isImageLoading,
-                productImage: state.productImage,
+                category: state.product?.category,
                 addProductBloc: _addProductBloc),
-            const Divider(height: 30),
+            const SizedBox(height: 30),
+            AddProductImage(
+              isImageLoading: state.isImageLoading,
+              productImage: state.productImage,
+              addProductBloc: _addProductBloc,
+            ),
+            const SizedBox(height: 30),
             AddProductBottomButtons(
-                isLoading: state.isLoading,
-                addProductBloc: _addProductBloc,
-                productId: state.product?.id)
+              isLoading: state.isLoading,
+              addProductBloc: _addProductBloc,
+              productId: state.product?.id,
+            )
           ])),
     );
   }
 }
 
-class AddProductTextInputs extends StatelessWidget {
+class AddProductTextInputs extends StatefulWidget {
   const AddProductTextInputs(
-      {Key? key, required this.product, required this.addProductBloc})
+      {Key? key,
+      required this.product,
+      required this.addProductBloc,
+      required this.nameIsValid,
+      required this.descriptionIsValid,
+      required this.priceIsValid})
       : super(key: key);
 
   final Product? product;
   final AddProductBloc addProductBloc;
+  final bool? nameIsValid;
+  final bool? descriptionIsValid;
+  final bool? priceIsValid;
+
+  @override
+  State<AddProductTextInputs> createState() => _AddProductTextInputsState();
+}
+
+class _AddProductTextInputsState extends State<AddProductTextInputs> {
+  late final TextEditingController nameController;
+  late final TextEditingController descriptionController;
+  late final TextEditingController priceController;
+
+  @override
+  void initState() {
+    super.initState();
+    nameController = TextEditingController()..text = widget.product?.name ?? '';
+    nameController.addListener(() {
+      widget.addProductBloc.add(AddProductNameChanged(nameController.text));
+    });
+    descriptionController = TextEditingController()
+      ..text = widget.product?.description ?? '';
+    descriptionController.addListener(() {
+      widget.addProductBloc
+          .add(AddProductDescriptionChanged(descriptionController.text));
+    });
+    priceController = TextEditingController()
+      ..text =
+          widget.product?.price != null ? widget.product!.price.toString() : '';
+    priceController.addListener(() {
+      widget.addProductBloc.add(AddProductPriceChanged(priceController.text));
+    });
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    descriptionController.dispose();
+    priceController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final nameErrorText = widget.nameIsValid == false
+        ? 'Please enter valid name, current is either too long of empty'
+        : null;
+    final descriptionErrorText = widget.descriptionIsValid == false
+        ? 'Please enter valid description, current may be too long'
+        : null;
+    final priceErrorText =
+        widget.priceIsValid == false ? 'Please enter valid price' : null;
 
     return Column(
       children: [
         TextInputCustom(
-          initialValue: product?.name,
+          controller: nameController,
           icon: Icons.person,
           hint: S.of(context).addProductScreen_product,
-          onChanged: (value) {
-            addProductBloc.add(AddProductNameChanged(value));
-          },
+          errorText: nameErrorText,
         ),
         TextInputCustom(
-          initialValue: product?.description,
+          controller: descriptionController,
+          lines: null,
           icon: Icons.text_snippet,
           hint: S.of(context).addProductScreen_description,
-          onChanged: (value) {
-            addProductBloc.add(AddProductDescriptionChanged(value));
-          },
+          errorText: descriptionErrorText,
         ),
         TextInputCustom(
-          initialValue: product?.price.toString(),
+          controller: priceController,
           icon: Icons.monetization_on,
           textInputFormatter: FilteringTextInputFormatter.digitsOnly,
           textInputType: TextInputType.number,
           hint: S.of(context).addProductScreen_price,
+          errorText: priceErrorText,
+        ),
+      ],
+    );
+  }
+}
+
+class AddProductMeasureInput extends StatefulWidget {
+  const AddProductMeasureInput(
+      {Key? key,
+      required this.measureIsValid,
+      this.product,
+      this.unit,
+      required this.addProductBloc})
+      : super(key: key);
+  final Product? product;
+  final bool? measureIsValid;
+  final Unit? unit;
+  final AddProductBloc addProductBloc;
+
+  @override
+  State<AddProductMeasureInput> createState() => _AddProductMeasureInputState();
+}
+
+class _AddProductMeasureInputState extends State<AddProductMeasureInput> {
+  late final TextEditingController portionController;
+
+  @override
+  void initState() {
+    super.initState();
+    portionController = TextEditingController()
+      ..text = widget.product?.portion != null
+          ? widget.product!.portion.toString()
+          : '';
+    portionController.addListener(() {
+      widget.addProductBloc
+          .add(AddProductPortionChanged(portionController.text));
+    });
+  }
+
+  @override
+  void dispose() {
+    portionController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bloc = context.read<AddProductBloc>();
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Measure',
+          style: TextStyle(color: Theme.of(context).indicatorColor),
+        ),
+        SizedBox(
+          width: 200,
+          child: TextInputCustom(
+            controller: portionController,
+            textInputFormatter: FilteringTextInputFormatter.digitsOnly,
+            textInputType: TextInputType.number,
+            errorText: widget.measureIsValid == false ? 'Incorrect' : null,
+          ),
+        ),
+        const SizedBox(width: 20),
+        DropdownButton<Unit>(
+          value: widget.product?.unit ?? widget.unit,
+          underline:
+              Container(height: 2, color: Theme.of(context).primaryColor),
+          items: <Unit>[Unit.litres, Unit.kilos].map((Unit value) {
+            return DropdownMenuItem<Unit>(
+              value: value,
+              child: Text(value.name),
+            );
+          }).toList(),
           onChanged: (value) {
-            addProductBloc.add(AddProductPriceChanged(value));
+            bloc.add(AddProductUnitChanged(value!));
           },
         ),
       ],
+    );
+  }
+}
+
+class AddProductCategoryDropdown extends StatelessWidget {
+  const AddProductCategoryDropdown(
+      {Key? key, required this.category, required this.addProductBloc})
+      : super(key: key);
+  final Category? category;
+  final AddProductBloc addProductBloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<Category>(
+      value: category,
+      underline: Container(height: 2, color: Theme.of(context).primaryColor),
+      items: <Category>[Category.cheese, Category.meat, Category.milk]
+          .map((Category value) {
+        return DropdownMenuItem<Category>(
+          value: value,
+          child: Text(value.name),
+        );
+      }).toList(),
+      onChanged: (value) {
+        addProductBloc.add(AddProductCategoryChanged(value!));
+      },
+    );
+  }
+}
+
+class AddProductImage extends StatefulWidget {
+  const AddProductImage(
+      {Key? key,
+      required this.isImageLoading,
+      required this.productImage,
+      required this.addProductBloc})
+      : super(key: key);
+
+  final bool? isImageLoading;
+  final Uint8List? productImage;
+  final AddProductBloc addProductBloc;
+
+  @override
+  State<AddProductImage> createState() => _AddProductImageState();
+}
+
+class _AddProductImageState extends State<AddProductImage> {
+  bool showOptions = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return ImageAddImageRow(
+      isImageLoading: widget.isImageLoading,
+      image: widget.productImage,
+      addImageFromGallery: () => widget.addProductBloc
+          .add(const AddProductImageAddClicked(ImageSource.gallery)),
+      addImageFromCamera: () => widget.addProductBloc
+          .add(const AddProductImageAddClicked(ImageSource.camera)),
     );
   }
 }
@@ -188,160 +389,10 @@ class AddProductBottomButtons extends StatelessWidget {
                   context: context);
             },
             icon: const Icon(Icons.delete),
-            iconSize: 50,
+            iconSize: 35,
           )
         ])
       ],
     );
-  }
-}
-
-class AddProductUnitDropdown extends StatelessWidget {
-  const AddProductUnitDropdown(
-      {Key? key, required this.unit, required this.addProductBloc, this.portion})
-      : super(key: key);
-
-  final int? portion;
-  final Unit? unit;
-  final AddProductBloc addProductBloc;
-
-  @override
-  Widget build(BuildContext context) {
-    final bloc = context.read<AddProductBloc>();
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text('Measure', style: TextStyle(color: Theme.of(context).indicatorColor),),
-        SizedBox(
-            width: 200,
-            child:
-            TextInputCustom(
-              textInputFormatter: FilteringTextInputFormatter.digitsOnly,
-              initialValue: portion != null? portion.toString() : '0',
-              textInputType: TextInputType.number,
-              // hint: S.of(context).addProductScreen_price,
-              onChanged: (value) {
-                bloc.add(AddProductPortionChanged(int.parse(value)));
-              },
-            ),
-        ),
-        const SizedBox(width: 20),
-        DropdownButton<Unit>(
-          value: unit,
-          underline: Container( height: 2, color: Theme.of(context).primaryColor),
-          items: <Unit>[Unit.litres, Unit.kilos].map((Unit value) {
-            return DropdownMenuItem<Unit>(
-              value: value,
-              child: Text(value.name),
-            );
-          }).toList(),
-          onChanged: (value) {
-            addProductBloc.add(AddProductUnitChanged(value!));
-          },
-        ),
-      ],
-    );
-  }
-}
-
-class AddProductCategoryDropdown extends StatelessWidget {
-  const AddProductCategoryDropdown(
-      {Key? key, required this.category, required this.addProductBloc})
-      : super(key: key);
-  final Category? category;
-  final AddProductBloc addProductBloc;
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<Category>(
-      value: category,
-      underline: Container( height: 2, color: Theme.of(context).primaryColor),
-      items: <Category>[Category.cheese, Category.meat, Category.milk]
-          .map((Category value) {
-        return DropdownMenuItem<Category>(
-          value: value,
-          child: Text(value.name),
-        );
-      }).toList(),
-      onChanged: (value) {
-        addProductBloc.add(AddProductCategoryChanged(value!));
-      },
-    );
-  }
-}
-
-class AddProductImage extends StatefulWidget {
-  const AddProductImage(
-      {Key? key,
-      required this.isImageLoading,
-      required this.productImage,
-      required this.addProductBloc})
-      : super(key: key);
-
-  final bool? isImageLoading;
-  final Uint8List? productImage;
-  final AddProductBloc addProductBloc;
-
-  @override
-  State<AddProductImage> createState() => _AddProductImageState();
-}
-
-class _AddProductImageState extends State<AddProductImage> {
-  bool showOptions = false;
-
-  @override
-  Widget build(BuildContext context) {
-    if (widget.isImageLoading == true) {
-      return ConstrainedBox(
-          constraints: const BoxConstraints(minHeight: 50, minWidth: 50),
-          child: const CircularProgressIndicator());
-    } else {
-      if (widget.productImage == null) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-
-            IconGradientButton(
-              color: Theme.of(context).primaryColor,
-              onPressed: () {
-                setState(() {
-                  showOptions = !showOptions;
-                });
-              },
-              size: 40,
-              iconData: Icons.add_a_photo,
-            ),
-            if (showOptions) const SizedBox(width: 30),
-            if (showOptions) IconGradientButton(
-              color: Theme.of(context).primaryColor,
-              onPressed: () {
-                widget.addProductBloc
-                    .add(const AddProductImageAddClicked(ImageSource.gallery));
-              },
-              iconData: Icons.image_search,
-              size: 30,
-            ),
-            if (showOptions) const SizedBox(width: 30),
-            if (showOptions) IconGradientButton(
-              color: Theme.of(context).primaryColor,
-              onPressed: () {
-                widget.addProductBloc
-                    .add(const AddProductImageAddClicked(ImageSource.camera));
-              },
-              iconData: Icons.camera_alt,
-              size: 30,
-            ),
-          ],
-        );
-      } else {
-        return ConstrainedBox(
-          constraints: const BoxConstraints(maxHeight: 50, minWidth: 50),
-          child: CircleAvatar(
-            backgroundImage: MemoryImage(widget.productImage!),
-            radius: 50,
-          ),
-        );
-      }
-    }
   }
 }

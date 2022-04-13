@@ -1,25 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:farmer_market/data/models/chat/message.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../models/chat/chat.dart';
 import '../constants.dart';
-import '../interfaces/i_address_repository.dart';
-import '../storage/storage_repository.dart';
+import '../firestoreErrorCodeToString.dart';
+import '../firestore_caller.dart';
 import '../success_failure.dart';
 
 class ChatRepository {
-  final FirebaseFirestore _firestore;
-  final FirebaseAuth _auth;
-
   ChatRepository(
       {required FirebaseFirestore firestore, required FirebaseAuth auth})
       : _firestore = firestore,
         _auth = auth;
 
+  final FirebaseFirestore _firestore;
+  final FirebaseAuth _auth;
+
   Future<Result> saveChat(Chat chat) async {
-    try {
+    return firestoreCaller(() async {
       final _currentUser = _auth.currentUser;
 
       if (_currentUser != null) {
@@ -38,70 +37,65 @@ class ChatRepository {
               .set(jsonChat);
         }
       }
-
-      return Success();
-    } catch (e) {
-      print(e);
-      return Failure();
-    }
+    });
   }
 
   Future<Result<List<Chat>, String>> getUserChats() async {
-    final _currentUser = _auth.currentUser;
-    try {
-      final result = await _firestore
-          .collection(fireStoreNameChatTable)
-          .doc(_currentUser?.uid)
-          .collection(fireStoreNameChatSubTable)
-          .get();
+    return firestoreCaller<List<Chat>>(() async {
+      final _currentUser = _auth.currentUser;
 
-      final listChats =
-          result.docs.map((e) => Chat.fromJson(e.data())).toList();
-      return Success(data: listChats);
-    } catch (e) {
-      print(e);
-      return Failure();
-    }
+      if (_currentUser != null) {
+        final result = await _firestore
+            .collection(fireStoreNameChatTable)
+            .doc(_currentUser.uid)
+            .collection(fireStoreNameChatSubTable)
+            .get();
+
+        final listChats =
+            result.docs.map((e) => Chat.fromJson(e.data())).toList();
+        return listChats;
+      }
+    });
   }
 
   Future<Result<Chat, String>> getChatBuId(String userId) async {
-    final _currentUser = _auth.currentUser;
-    try {
-      final result = await _firestore
-          .collection(fireStoreNameChatTable)
-          .doc(_currentUser?.uid)
-          .collection(fireStoreNameChatSubTable)
-          .doc(userId)
-          .get();
+    return firestoreCaller<Chat>(() async {
+      final _currentUser = _auth.currentUser;
 
-      if(result.data() != null) {
-        final chat =
-        Chat.fromJson(result.data()!);
-        return Success(data: chat);
+      if (_currentUser != null) {
+        final result = await _firestore
+            .collection(fireStoreNameChatTable)
+            .doc(_currentUser.uid)
+            .collection(fireStoreNameChatSubTable)
+            .doc(userId)
+            .get();
+
+        if (result.data() != null) {
+          return Chat.fromJson(result.data()!);
+        }
       }
-      return Failure();
-    } catch (e) {
-      print(e);
-      return Failure();
-    }
+    });
   }
 
-  Stream<Chat> getChatBuIdStream(String userId) async* {
+  Stream<Result<Chat, String>> getChatBuIdStream(String userId) async* {
     final _currentUser = _auth.currentUser;
     try {
-      final result = await _firestore
+      final result = _firestore
           .collection(fireStoreNameChatTable)
           .doc(_currentUser?.uid)
           .collection(fireStoreNameChatSubTable)
           .doc(userId)
           .snapshots();
 
-      await for (final chatReceived in result){
-        yield Chat.fromJson(chatReceived.data()!);
+      await for (final chatReceived in result) {
+        yield Success(data: Chat.fromJson(chatReceived.data()!));
       }
-
     } catch (e) {
-      print(e);
+      if (e is FirebaseException) {
+        yield (Failure(error: firestoreErrorCodeToString(e)));
+      } else {
+        yield (Failure(error: e.toString()));
+      }
     }
   }
 }

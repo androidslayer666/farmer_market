@@ -26,55 +26,56 @@ class ListProductBloc extends Bloc<ListProductEvent, ListProductState> {
 
   _onPageRequested(ListProductEventPageRequested event,
       Emitter<ListProductState> emit) async {
-    if(state.noMoreData != true) {
+    if (state.noMoreData != true) {
       _fetchNewPage();
     }
   }
 
-  _onUpdateList (
-      ListProductEventUpdateList event,
-      Emitter<ListProductState> emit
-      ) async {
+  _onUpdateList(
+      ListProductEventUpdateList event, Emitter<ListProductState> emit) async {
     emit(state.copyWith(lastDocumentId: null, noMoreData: null));
-    final lastDocumentId = state.listProducts.isNotEmpty ? state.listProducts.last.id : '';
-    final result = await _productRepository.refreshProducts(
-        state.filter, lastDocumentId);
+    final lastDocumentId =
+        state.listProducts.isNotEmpty ? state.listProducts.last.id : null;
+    final result =
+        await _productRepository.refreshProducts(state.filter, lastDocumentId);
     if (result is Success<List<Product>, String>) {
       emit(state.copyWith(
-          listProducts: [...result.data!],
-          isNewPortionLoading: false
-      ));
+          listProducts: [...result.data!], isNewPortionLoading: false, errorWhenLoading: null));
+    } else {
+      emit(state.copyWith(
+          errorWhenLoading: 'something went wrong with the request',
+          listProducts: [],
+          isNewPortionLoading: false));
     }
   }
 
   _onRestartPaging(
-      ListProductEventRestartPaging event, Emitter<ListProductState> emit
-      ){
-    emit(state.copyWith(listProducts: [], lastDocumentId: null, noMoreData: null));
-     _fetchNewPage();
+      ListProductEventRestartPaging event, Emitter<ListProductState> emit) {
+    emit(state
+        .copyWith(listProducts: [], lastDocumentId: null, noMoreData: null, errorWhenLoading: null));
+    _fetchNewPage();
   }
 
   _onFilterChanged(
       ListProductFilterChanged event, Emitter<ListProductState> emit) {
-    emit(state.copyWith(filter: event.filter, lastDocumentId: null, listProducts: []));
+    emit(state.copyWith( noMoreData: null,
+        filter: event.filter, lastDocumentId: null, listProducts: [], errorWhenLoading: null));
     _fetchNewPage();
   }
 
   _fetchNewPage() async {
     emit(state.copyWith(isNewPortionLoading: true));
-    final lastDocumentId = state.listProducts.isNotEmpty ? state.listProducts.last.id : '';
+    final lastDocumentId =
+        state.listProducts.isNotEmpty ? state.listProducts.last.id : null;
     final result = await _productRepository.getPageOfProducts(
         state.filter, lastDocumentId);
     if (result is Success<List<Product>, String>) {
       emit(state.copyWith(
           listProducts: [...state.listProducts, ...result.data!],
-          isNewPortionLoading: false
-      ));
-      if(result.data?.isNotEmpty != true) {
-        emit(state.copyWith(
-            noMoreData: true));
+          isNewPortionLoading: false, errorWhenLoading: null));
+      if (result.data?.isNotEmpty != true) {
+        emit(state.copyWith(noMoreData: true));
       }
     }
   }
-
 }

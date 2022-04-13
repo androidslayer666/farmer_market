@@ -52,7 +52,7 @@ class AddProductUnitChanged extends AddProductEvent {
 class AddProductPortionChanged extends AddProductEvent {
   const AddProductPortionChanged(this.portion);
 
-  final int portion;
+  final String portion;
 
   @override
   List<Object> get props => [portion];

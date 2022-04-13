@@ -12,6 +12,7 @@ class ListProductState with _$ListProductState {
     @Default([]) List<Product> listProducts,
     bool? isNewPortionLoading,
     bool? noMoreData,
-    Filter? filter
+    Filter? filter,
+    String? errorWhenLoading
   }) = _Initial;
 }

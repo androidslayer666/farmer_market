@@ -25,7 +25,7 @@ class _$ProductTearOff {
       {String? id,
       String? name,
       Unit? unit,
-      int portion = 0,
+      int? portion,
       int? price,
       String? region,
       String? description,
@@ -34,7 +34,8 @@ class _$ProductTearOff {
           Category? category,
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
-      List<Review>? reviews,
+      @JsonKey(toJson: listReviewsToJson)
+          List<Review>? reviews,
       List<Address> shippingAddresses = const [],
       String? userID,
       DateTime? nextPossibleShipping}) {
@@ -69,16 +70,16 @@ mixin _$Product {
   String? get id => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   Unit? get unit => throw _privateConstructorUsedError;
-  int get portion => throw _privateConstructorUsedError;
+  int? get portion => throw _privateConstructorUsedError;
   int? get price => throw _privateConstructorUsedError;
   String? get region => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get pictureUrl => throw _privateConstructorUsedError;
   @JsonKey(fromJson: categoryFromJson, toJson: categoryToJson)
-  Category? get category =>
-      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
+  Category? get category => throw _privateConstructorUsedError;
   @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
   Address? get address => throw _privateConstructorUsedError;
+  @JsonKey(toJson: listReviewsToJson)
   List<Review>? get reviews => throw _privateConstructorUsedError;
   List<Address> get shippingAddresses => throw _privateConstructorUsedError;
   String? get userID => throw _privateConstructorUsedError;
@@ -97,7 +98,7 @@ abstract class $ProductCopyWith<$Res> {
       {String? id,
       String? name,
       Unit? unit,
-      int portion,
+      int? portion,
       int? price,
       String? region,
       String? description,
@@ -106,7 +107,8 @@ abstract class $ProductCopyWith<$Res> {
           Category? category,
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
-      List<Review>? reviews,
+      @JsonKey(toJson: listReviewsToJson)
+          List<Review>? reviews,
       List<Address> shippingAddresses,
       String? userID,
       DateTime? nextPossibleShipping});
@@ -153,7 +155,7 @@ class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
       portion: portion == freezed
           ? _value.portion
           : portion // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       price: price == freezed
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
@@ -207,7 +209,7 @@ abstract class _$InitialCopyWith<$Res> implements $ProductCopyWith<$Res> {
       {String? id,
       String? name,
       Unit? unit,
-      int portion,
+      int? portion,
       int? price,
       String? region,
       String? description,
@@ -216,7 +218,8 @@ abstract class _$InitialCopyWith<$Res> implements $ProductCopyWith<$Res> {
           Category? category,
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
-      List<Review>? reviews,
+      @JsonKey(toJson: listReviewsToJson)
+          List<Review>? reviews,
       List<Address> shippingAddresses,
       String? userID,
       DateTime? nextPossibleShipping});
@@ -264,7 +267,7 @@ class __$InitialCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
       portion: portion == freezed
           ? _value.portion
           : portion // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       price: price == freezed
           ? _value.price
           : price // ignore: cast_nullable_to_non_nullable
@@ -316,7 +319,7 @@ class _$_Initial implements _Initial {
       {this.id,
       this.name,
       this.unit,
-      this.portion = 0,
+      this.portion,
       this.price,
       this.region,
       this.description,
@@ -325,7 +328,8 @@ class _$_Initial implements _Initial {
           this.category,
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           this.address,
-      this.reviews,
+      @JsonKey(toJson: listReviewsToJson)
+          this.reviews,
       this.shippingAddresses = const [],
       this.userID,
       this.nextPossibleShipping});
@@ -339,9 +343,8 @@ class _$_Initial implements _Initial {
   final String? name;
   @override
   final Unit? unit;
-  @JsonKey()
   @override
-  final int portion;
+  final int? portion;
   @override
   final int? price;
   @override
@@ -353,10 +356,11 @@ class _$_Initial implements _Initial {
   @override
   @JsonKey(fromJson: categoryFromJson, toJson: categoryToJson)
   final Category? category;
-  @override // ignore: invalid_annotation_target
+  @override
   @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
   final Address? address;
   @override
+  @JsonKey(toJson: listReviewsToJson)
   final List<Review>? reviews;
   @JsonKey()
   @override
@@ -430,7 +434,7 @@ abstract class _Initial implements Product {
       {String? id,
       String? name,
       Unit? unit,
-      int portion,
+      int? portion,
       int? price,
       String? region,
       String? description,
@@ -439,7 +443,8 @@ abstract class _Initial implements Product {
           Category? category,
       @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
           Address? address,
-      List<Review>? reviews,
+      @JsonKey(toJson: listReviewsToJson)
+          List<Review>? reviews,
       List<Address> shippingAddresses,
       String? userID,
       DateTime? nextPossibleShipping}) = _$_Initial;
@@ -453,7 +458,7 @@ abstract class _Initial implements Product {
   @override
   Unit? get unit;
   @override
-  int get portion;
+  int? get portion;
   @override
   int? get price;
   @override
@@ -465,10 +470,11 @@ abstract class _Initial implements Product {
   @override
   @JsonKey(fromJson: categoryFromJson, toJson: categoryToJson)
   Category? get category;
-  @override // ignore: invalid_annotation_target
+  @override
   @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
   Address? get address;
   @override
+  @JsonKey(toJson: listReviewsToJson)
   List<Review>? get reviews;
   @override
   List<Address> get shippingAddresses;

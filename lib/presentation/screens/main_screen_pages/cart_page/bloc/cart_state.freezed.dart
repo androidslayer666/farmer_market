@@ -17,9 +17,10 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$CartStateTearOff {
   const _$CartStateTearOff();
 
-  _Initial call({Cart cart = const Cart()}) {
+  _Initial call({Cart cart = const Cart(), bool? successfullyAddedToCart}) {
     return _Initial(
       cart: cart,
+      successfullyAddedToCart: successfullyAddedToCart,
     );
   }
 }
@@ -30,6 +31,7 @@ const $CartState = _$CartStateTearOff();
 /// @nodoc
 mixin _$CartState {
   Cart get cart => throw _privateConstructorUsedError;
+  bool? get successfullyAddedToCart => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CartStateCopyWith<CartState> get copyWith =>
@@ -40,7 +42,7 @@ mixin _$CartState {
 abstract class $CartStateCopyWith<$Res> {
   factory $CartStateCopyWith(CartState value, $Res Function(CartState) then) =
       _$CartStateCopyWithImpl<$Res>;
-  $Res call({Cart cart});
+  $Res call({Cart cart, bool? successfullyAddedToCart});
 
   $CartCopyWith<$Res> get cart;
 }
@@ -56,12 +58,17 @@ class _$CartStateCopyWithImpl<$Res> implements $CartStateCopyWith<$Res> {
   @override
   $Res call({
     Object? cart = freezed,
+    Object? successfullyAddedToCart = freezed,
   }) {
     return _then(_value.copyWith(
       cart: cart == freezed
           ? _value.cart
           : cart // ignore: cast_nullable_to_non_nullable
               as Cart,
+      successfullyAddedToCart: successfullyAddedToCart == freezed
+          ? _value.successfullyAddedToCart
+          : successfullyAddedToCart // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 
@@ -78,7 +85,7 @@ abstract class _$InitialCopyWith<$Res> implements $CartStateCopyWith<$Res> {
   factory _$InitialCopyWith(_Initial value, $Res Function(_Initial) then) =
       __$InitialCopyWithImpl<$Res>;
   @override
-  $Res call({Cart cart});
+  $Res call({Cart cart, bool? successfullyAddedToCart});
 
   @override
   $CartCopyWith<$Res> get cart;
@@ -96,12 +103,17 @@ class __$InitialCopyWithImpl<$Res> extends _$CartStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? cart = freezed,
+    Object? successfullyAddedToCart = freezed,
   }) {
     return _then(_Initial(
       cart: cart == freezed
           ? _value.cart
           : cart // ignore: cast_nullable_to_non_nullable
               as Cart,
+      successfullyAddedToCart: successfullyAddedToCart == freezed
+          ? _value.successfullyAddedToCart
+          : successfullyAddedToCart // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -109,15 +121,17 @@ class __$InitialCopyWithImpl<$Res> extends _$CartStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Initial implements _Initial {
-  const _$_Initial({this.cart = const Cart()});
+  const _$_Initial({this.cart = const Cart(), this.successfullyAddedToCart});
 
   @JsonKey()
   @override
   final Cart cart;
+  @override
+  final bool? successfullyAddedToCart;
 
   @override
   String toString() {
-    return 'CartState(cart: $cart)';
+    return 'CartState(cart: $cart, successfullyAddedToCart: $successfullyAddedToCart)';
   }
 
   @override
@@ -125,12 +139,16 @@ class _$_Initial implements _Initial {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Initial &&
-            const DeepCollectionEquality().equals(other.cart, cart));
+            const DeepCollectionEquality().equals(other.cart, cart) &&
+            const DeepCollectionEquality().equals(
+                other.successfullyAddedToCart, successfullyAddedToCart));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(cart));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(cart),
+      const DeepCollectionEquality().hash(successfullyAddedToCart));
 
   @JsonKey(ignore: true)
   @override
@@ -139,10 +157,13 @@ class _$_Initial implements _Initial {
 }
 
 abstract class _Initial implements CartState {
-  const factory _Initial({Cart cart}) = _$_Initial;
+  const factory _Initial({Cart cart, bool? successfullyAddedToCart}) =
+      _$_Initial;
 
   @override
   Cart get cart;
+  @override
+  bool? get successfullyAddedToCart;
   @override
   @JsonKey(ignore: true)
   _$InitialCopyWith<_Initial> get copyWith =>

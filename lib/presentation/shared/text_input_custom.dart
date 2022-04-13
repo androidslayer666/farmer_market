@@ -1,4 +1,3 @@
-import 'package:farmer_market/presentation/shared/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -12,9 +11,10 @@ class TextInputCustom extends StatelessWidget {
   final String? initialValue;
   final bool isPass;
   final FocusNode? node;
+  final String? errorText;
   final TextInputType? textInputType;
   final TextInputFormatter? textInputFormatter;
-  final Function(String) onChanged;
+  final Function(String)? onChanged;
 
   const TextInputCustom(
       {Key? key,
@@ -25,9 +25,9 @@ class TextInputCustom extends StatelessWidget {
       this.textInputType,
       this.hint,
       this.isPass = false,
-      required this.onChanged,
+      this.onChanged,
       this.textInputFormatter,
-      this.initialValue})
+      this.initialValue, this.errorText})
       : super(key: key);
 
   @override
@@ -35,6 +35,8 @@ class TextInputCustom extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       child: TextFormField(
+        // handling of initial value update
+        //key: Key(initialValue.toString()),
         cursorColor: Theme.of(context).primaryColor,
         initialValue: initialValue,
         style: TextStyle(fontSize: 18, fontFamily: 'Roboto', color: Theme.of(context).indicatorColor),
@@ -43,9 +45,10 @@ class TextInputCustom extends StatelessWidget {
         inputFormatters: [if (textInputFormatter != null) textInputFormatter!],
         maxLines: lines,
         focusNode: node,
-        onChanged: (String value) => onChanged(value),
+        onChanged: onChanged != null ? (String value) => onChanged!(value) : null,
         obscureText: isPass,
         decoration: InputDecoration(
+          errorText: errorText,
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Theme.of(context).primaryColor),
           ),
@@ -54,11 +57,11 @@ class TextInputCustom extends StatelessWidget {
           ),
           helperStyle: TextStyle(color: Theme.of(context).indicatorColor),
           labelStyle: TextStyle(color: Theme.of(context).indicatorColor),
-          icon: RadiantGradientMask(
+          icon: icon != null ? RadiantGradientMask(
               first: Theme.of(context).primaryColor,
               second: Colors.white,
               child: Icon(icon,
-                  color: Theme.of(context).primaryColor.withOpacity(0.8))),
+                  color: Theme.of(context).primaryColor.withOpacity(0.8))) : null,
           border: const UnderlineInputBorder(),
           labelText: hint,
         ),

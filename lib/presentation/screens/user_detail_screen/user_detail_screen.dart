@@ -94,9 +94,7 @@ class UserDetailAvatar extends StatelessWidget {
         ),
       ),
       imageUrl: user?.avatarUrl ?? '',
-      height: 200,
-      progressIndicatorBuilder: (_, __, ___) =>
-      const CircularProgressIndicator(),
+      height: 200
     )
         : Image.asset('assets/images/placeholder-image.png');
   }

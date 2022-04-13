@@ -25,10 +25,6 @@ class MainScreenBottomNavigationBar extends StatelessWidget {
           decoration: BoxDecoration(
             color: Theme.of(context).secondaryHeaderColor.withOpacity(0.9),
             borderRadius:  const BorderRadius.all(Radius.circular(10))
-            // const BorderRadius.only(
-            //   topLeft: Radius.circular(20),
-            //   topRight: Radius.circular(20),
-            // ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -111,7 +107,10 @@ class BottomNavBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
+        customBorder: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
         onTap: () {
           mainBloc.add(MainScreenTabChanged(tabNumber));
         },
@@ -120,7 +119,8 @@ class BottomNavBarItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(4.0),
               child: RadiantGradientMask(
-                first: Theme.of(context).bottomAppBarColor,
+                first: Colors.amber,
+                //Theme.of(context).bottomAppBarColor,
                 second: Colors.white,
                 child: Icon(
                   currentTab == tabNumber ? activeIcon : nonActiveIcon,

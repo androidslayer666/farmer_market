@@ -29,11 +29,10 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
     on<AddProductPortionChanged>(_onPortionChanged);
   }
 
-
   final ProductRepository _productRepository;
   final AuthRepository _authRepository;
 
-  Future<void> _onInit(
+  _onInit(
     AddProductInit event,
     Emitter<AddProductState> emit,
   ) async {
@@ -41,42 +40,66 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
       final product = event.args!.product;
       emit(state.copyWith(
           product: event.args!.product ?? const Product(),
-          name: product?.name,
-          description: product?.description,
-          price: product?.price.toString(),
-          unit: product?.unit,
+          priceIsValid: true,
+          descriptionIsValid: true,
+          nameIsValid: true,
+          categoryIsValid: true,
+          measureIsValid: true,
           pictureUrl: product?.pictureUrl,
+          isImageLoading: true,
           id: product?.id));
       emit(state.copyWith(
-          productImage: await urlToUint8List(product?.pictureUrl)));
-    }else {
-      emit(state.copyWith(
-          product:  const Product()));
+          productImage: await urlToUint8List(product?.pictureUrl), isImageLoading: false));
+    } else {
+      emit(state.copyWith(product: const Product()));
     }
   }
 
-  void _onNameChanged(
+  _onNameChanged(
     AddProductNameChanged event,
     Emitter<AddProductState> emit,
   ) {
-    emit(state.copyWith(product: state.product?.copyWith(name: event.name)));
+    if (event.name.length < 50 && event.name.isNotEmpty) {
+      emit(state.copyWith(
+          nameIsValid: true,
+          product: state.product?.copyWith(name: event.name),
+          saveClickedWhenInputIsNotValid: false));
+    } else {
+      emit(state.copyWith(nameIsValid: false));
+    }
   }
 
-  void _onDescriptionChanged(
+  _onDescriptionChanged(
     AddProductDescriptionChanged event,
     Emitter<AddProductState> emit,
   ) {
-    emit(state.copyWith(product: state.product?.copyWith(description: event.description)));
+    if (event.description.length < 1000) {
+      emit(state.copyWith(
+          descriptionIsValid: true,
+          product: state.product?.copyWith(description: event.description),
+          saveClickedWhenInputIsNotValid: false));
+    } else {
+      emit(state.copyWith(descriptionIsValid: false));
+    }
   }
 
-  void _onPriceChanged(
+  _onPriceChanged(
     AddProductPriceChanged event,
     Emitter<AddProductState> emit,
   ) {
-    emit(state.copyWith(product: state.product?.copyWith(price: int.parse(event.price))));
+    if (event.price.isNotEmpty &&
+        event.price.length < 12 &&
+        int.parse(event.price) > 0) {
+      emit(state.copyWith(
+          priceIsValid: true,
+          product: state.product?.copyWith(price: int.parse(event.price)),
+          saveClickedWhenInputIsNotValid: false));
+    } else {
+      emit(state.copyWith(priceIsValid: false));
+    }
   }
 
-  void _onUnitChanged(
+  _onUnitChanged(
     AddProductUnitChanged event,
     Emitter<AddProductState> emit,
   ) {
@@ -84,20 +107,30 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
   }
 
   _onPortionChanged(
-      AddProductPortionChanged event,
-      Emitter<AddProductState> emit,
-      ){
-    emit(state.copyWith(product: state.product?.copyWith(portion: event.portion)));
+    AddProductPortionChanged event,
+    Emitter<AddProductState> emit,
+  ) {
+    if (event.portion.isNotEmpty &&
+        int.parse(event.portion) < 1000 &&
+        int.parse(event.portion) > 0) {
+      emit(state.copyWith(
+          measureIsValid: true,
+          product: state.product?.copyWith(portion: int.parse(event.portion)),
+          saveClickedWhenInputIsNotValid: false));
+    } else {
+      emit(state.copyWith(measureIsValid: false));
+    }
   }
 
-  void _onCategoryChanged(
+  _onCategoryChanged(
     AddProductCategoryChanged event,
     Emitter<AddProductState> emit,
   ) {
-    emit(state.copyWith(product: state.product?.copyWith(category: event.category)));
+    emit(state.copyWith(
+        product: state.product?.copyWith(category: event.category)));
   }
 
-  void _onImageChanged(
+  _onImageChanged(
     AddProductImageAddClicked event,
     Emitter<AddProductState> emit,
   ) async {
@@ -107,23 +140,29 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState> {
     }
   }
 
-  void _onSubmitted(
+  _onSubmitted(
     AddProductSubmitted event,
     Emitter<AddProductState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true));
-    final userId = _authRepository.getUserId();
-    final product =  state.product?.copyWith(
-        userID: userId);
-    if(product != null) {
-      final result =
-      await _productRepository.saveProduct(product, state.productImage);
-      emit(state.copyWith(
-          isLoading: false, addingIsSuccessful: result is Success));
+    if (state.measureIsValid == true &&
+        state.priceIsValid == true &&
+        state.descriptionIsValid == true &&
+        state.nameIsValid == true) {
+      emit(state.copyWith(isLoading: true));
+      final userId = _authRepository.getUserId();
+      final product = state.product?.copyWith(userID: userId);
+      if (product != null) {
+        final result =
+            await _productRepository.saveProduct(product, state.productImage);
+        emit(state.copyWith(
+            isLoading: false, addingIsSuccessful: result is Success));
+      }
+    } else {
+      emit(state.copyWith(saveClickedWhenInputIsNotValid: true));
     }
   }
 
-  Future<void> _addProductDeleteSubmitted(
+  _addProductDeleteSubmitted(
     AddProductDeleteSubmitted event,
     Emitter<AddProductState> emit,
   ) async {

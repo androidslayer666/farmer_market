@@ -73,22 +73,9 @@ class AddressRepository implements IAddressRepository {
           .collection(fireStoreUsersTableName)
           .doc(_currentUser?.uid)
           .get();
-      //print(response.data());
       return models.User.fromJson(response.data()!).address;
     });
 
-    //final address = Address.fromJson(res.docs.first.data());
-    // try {
-    //   final result = await _firestore
-    //       .collection(fireStoreNameAddressTable)
-    //       .where('userId', isEqualTo: userId)
-    //       .limit(1)
-    //       .get();
-    //   final address = Address.fromJson(result.docs.first.data());
-    //   return Success(data: address);
-    // } catch (e) {
-    //   return Failure(error: e.toString());
-    // }
   }
 }
 

@@ -30,12 +30,16 @@ class FilterScreenCubit extends Cubit<FilterScreenState> {
     emit(state.copyWith(filter: filter));
   }
 
-  void setBottomPrice(int price) {
-    emit(state.copyWith(filter: state.filter.copyWith(bottomPrice: price)));
+  void setBottomPrice(String price) {
+    emit(state.copyWith(
+        filter: state.filter
+            .copyWith(bottomPrice: price.isEmpty ? null : int.parse(price))));
   }
 
-  void setTopPrice(int price) {
-    emit(state.copyWith(filter: state.filter.copyWith(topPrice: price)));
+  void setTopPrice(String price) {
+    emit(state.copyWith(
+        filter: state.filter
+            .copyWith(topPrice: price.isEmpty ? null : int.parse(price))));
   }
 
   void clearFilters() {

@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../../data/models/cart/cart.dart';
-import '../../../../../data/models/order/order.dart';
 
 part 'cart_state.freezed.dart';
 
@@ -10,5 +9,6 @@ class CartState with _$CartState {
   const factory CartState(
       {
         @Default(Cart()) Cart cart,
+        bool? successfullyAddedToCart
       }) = _Initial;
 }

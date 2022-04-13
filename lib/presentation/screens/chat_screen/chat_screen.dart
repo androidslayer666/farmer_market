@@ -9,6 +9,7 @@ import '../../../data/models/chat/message.dart';
 import '../../../data/repository/chat_repository/chat_repository.dart';
 import '../../navigation/arguments.dart';
 import '../../shared/app_bar.dart';
+import '../../shared/avatar_name_widget.dart';
 import 'chat_screen_cubit.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -26,10 +27,10 @@ class _ChatScreenState extends State<ChatScreen> {
     final args =
         ModalRoute.of(context)?.settings.arguments as UserDetailArguments?;
     final _chatRepository = locator<ChatRepository>();
-
     return BlocBuilder<AppBloc, AppState>(
       builder: (context, appState) => BlocProvider<ChatScreenCubit>(
         create: (context) {
+
           _chatScreenCubit = ChatScreenCubit(_chatRepository)
             ..onInit(args?.user);
           return _chatScreenCubit!;
@@ -46,12 +47,6 @@ class _ChatScreenState extends State<ChatScreen> {
         }),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _chatScreenCubit?.close();
-    super.dispose();
   }
 }
 
@@ -74,6 +69,8 @@ class ChatScreenBody extends StatelessWidget {
             ChatScreenAvatar(state: state),
             ChatScreenMessageList(
                 userId: userId, listMessages: state.chat.listMessages),
+            if(state.errorString != null)
+              Text(state.errorString!),
             ChatScreenTextInput(chatScreenCubit: chatScreenCubit)
           ],
         ),
@@ -82,14 +79,21 @@ class ChatScreenBody extends StatelessWidget {
   }
 }
 
-class ChatScreenTextInput extends StatefulWidget {
-  const ChatScreenTextInput({Key? key, required this.chatScreenCubit})
-      : super(key: key);
+class ChatScreenAvatar extends StatelessWidget {
+  const ChatScreenAvatar({Key? key, required this.state}) : super(key: key);
 
-  final ChatScreenCubit chatScreenCubit;
+  final ChatScreenState state;
 
   @override
-  State<ChatScreenTextInput> createState() => _ChatScreenTextInputState();
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      color: Colors.grey.withOpacity(0.2),
+      child: AvatarNameWidget(
+        user: state.user,
+      ),
+    );
+  }
 }
 
 class _ChatScreenTextInputState extends State<ChatScreenTextInput> {
@@ -131,33 +135,6 @@ class _ChatScreenTextInputState extends State<ChatScreenTextInput> {
                 _messageController.text = '';
               },
               icon: Icon(Icons.send, color: Theme.of(context).primaryColor,))
-        ],
-      ),
-    );
-  }
-}
-
-class ChatScreenAvatar extends StatelessWidget {
-  const ChatScreenAvatar({Key? key, required this.state}) : super(key: key);
-
-  final ChatScreenState state;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      color: Colors.grey.withOpacity(0.2),
-      child: Row(
-        children: [
-          CircleAvatar(
-              backgroundColor: Colors.transparent,
-              backgroundImage: state.user?.avatarUrl != null
-                  ? NetworkImage(state.user?.avatarUrl ?? '')
-                  : null),
-          const SizedBox(
-            width: 16,
-          ),
-          Text(state.user?.name ?? ''),
         ],
       ),
     );
@@ -279,4 +256,14 @@ class _MessageItemWidgetState extends State<MessageItemWidget> {
       ),
     );
   }
+}
+
+class ChatScreenTextInput extends StatefulWidget {
+  const ChatScreenTextInput({Key? key, required this.chatScreenCubit})
+      : super(key: key);
+
+  final ChatScreenCubit chatScreenCubit;
+
+  @override
+  State<ChatScreenTextInput> createState() => _ChatScreenTextInputState();
 }

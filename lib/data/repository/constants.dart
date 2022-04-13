@@ -24,3 +24,5 @@ const sharedPrefsUserLatitude = 'sharedPrefsUserLatitude';
 const dadataBaseUrl = 'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address';
 
 const categoryDocName = 'FMy1m1DqrOnqKMHKCnJc';
+
+const defaultErrorString = 'unknown error';

@@ -11,13 +11,17 @@ class CartEventInit extends CartEvent{
   const CartEventInit();
 }
 
+class CartEventAddedSuccessfully extends CartEvent{
+  const CartEventAddedSuccessfully();
+}
+
 class CartEventAddToCart extends CartEvent{
   const CartEventAddToCart(this.product, this.user);
-  final Product product;
-  final User user;
+  final Product? product;
+  final User? user;
 
   @override
-  List<Object> get props => [product, user];
+  List<Object?> get props => [product, user];
 }
 
 class CartEventRemoveFromCart extends CartEvent{

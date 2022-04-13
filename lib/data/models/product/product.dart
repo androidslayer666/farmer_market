@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_annotation_target
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../convertors.dart';
@@ -17,15 +19,16 @@ class Product with _$Product {
     String? id,
     String? name,
     Unit? unit,
-    @Default(0) int portion,
+    int? portion,
     int? price,
     String? region,
     String? description,
     String? pictureUrl,
     @JsonKey(fromJson: categoryFromJson, toJson: categoryToJson)
     Category? category,
-    // ignore: invalid_annotation_target
-    @JsonKey(fromJson: addressFromJson, toJson: addressToJson) Address? address,
+    @JsonKey(fromJson: addressFromJson, toJson: addressToJson)
+    Address? address,
+    @JsonKey(toJson: listReviewsToJson)
     List<Review>? reviews,
     @Default([]) List<Address> shippingAddresses,
     String? userID,

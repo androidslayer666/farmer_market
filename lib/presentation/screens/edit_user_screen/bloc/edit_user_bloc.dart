@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:farmer_market/presentation/shared/utils.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../../data/models/api/address.dart';
 import '../../../../data/models/api/suggestion.dart';
@@ -40,6 +39,9 @@ class EditUserBloc extends Bloc<EditUserEvent, EditUserState> {
     emit(state.copyWith(
         isImageLoading: true,
         user: event.user,
+        nameIsValid: true,
+        descriptionIsValid: true,
+        addressIsValid: true,
         addressQuery: event.user?.address.toString()));
 
     emit(state.copyWith(
@@ -69,15 +71,28 @@ class EditUserBloc extends Bloc<EditUserEvent, EditUserState> {
     UserDetailNameChanged event,
     Emitter<EditUserState> emit,
   ) {
-    emit(state.copyWith(user: state.user?.copyWith(name: event.name)));
+    if (event.name.length < 50 && event.name.isNotEmpty) {
+      emit(state.copyWith(
+          nameIsValid: true,
+          user: state.user?.copyWith(name: event.name),
+          saveClickedWhenInputIsNotValid: false));
+    } else {
+      emit(state.copyWith(nameIsValid: false));
+    }
   }
 
   void _onDescriptionChanged(
     UserDetailDescriptionChanged event,
     Emitter<EditUserState> emit,
   ) {
-    final description = event.description;
-    emit(state.copyWith(user: state.user?.copyWith(description: description)));
+    if (event.description.length < 1000) {
+      emit(state.copyWith(
+          descriptionIsValid: true,
+          user: state.user?.copyWith(description: event.description),
+          saveClickedWhenInputIsNotValid: false));
+    } else {
+      emit(state.copyWith(descriptionIsValid: false));
+    }
   }
 
   void _onAddressChanged(
@@ -99,7 +114,7 @@ class EditUserBloc extends Bloc<EditUserEvent, EditUserState> {
     UserDetailImageAddClicked event,
     Emitter<EditUserState> emit,
   ) async {
-    Uint8List? image = await pickImage(ImageSource.gallery);
+    Uint8List? image = await pickImage(event.imageSource);
     if (image != null) {
       emit(state.copyWith(avatarFile: image));
     }
@@ -109,23 +124,35 @@ class EditUserBloc extends Bloc<EditUserEvent, EditUserState> {
     UserDetailAddressOptionSubmitted event,
     Emitter<EditUserState> emit,
   ) {
-    emit(state.copyWith(user: state.user?.copyWith(address: event.address)));
+    emit(state.copyWith(
+        user: state.user?.copyWith(address: event.address),
+        addressIsValid: true,
+        saveClickedWhenInputIsNotValid: false));
   }
 
   void _onSubmitted(
     UserDetailSubmitted event,
     Emitter<EditUserState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true));
-    try {
-      if (state.user != null) {
-        await _authRepository.addUserInfo(state.user!, state.avatarFile);
+    if (state.nameIsValid == true &&
+        state.descriptionIsValid == true &&
+        state.user?.address != null) {
+      emit(state.copyWith(isLoading: true));
+      try {
+        if (state.user != null) {
+          await _authRepository.addUserInfo(state.user!, state.avatarFile);
+        }
+        emit(state.copyWith(
+            changesSaved: true, isLoading: false));
+      } catch (_) {
+        emit(state.copyWith(
+            changesSaved: false, isLoading: false));
       }
+    } else if (state.user?.address == null) {
       emit(state.copyWith(
-          userDetailStatus: UserDetailStatus.success, isLoading: false));
-    } catch (_) {
-      emit(state.copyWith(
-          userDetailStatus: UserDetailStatus.failure, isLoading: false));
+          addressIsValid: false, saveClickedWhenInputIsNotValid: true));
+    } else {
+      emit(state.copyWith(saveClickedWhenInputIsNotValid: true));
     }
   }
 }

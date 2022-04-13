@@ -1,15 +1,14 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:farmer_market/data/models/chat/message.dart';
 import 'package:farmer_market/data/repository/chat_repository/chat_repository.dart';
-import 'package:farmer_market/data/repository/product_repository/product_repository.dart';
-import 'package:farmer_market/data/repository/user_repository/user_repository.dart';
+import 'package:farmer_market/data/repository/success_failure.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../data/models/chat/chat.dart';
-import '../../../data/models/product/product.dart';
 import '../../../data/models/user/user.dart';
-import '../../../data/repository/success_failure.dart';
 
 part 'chat_screen_cubit.freezed.dart';
 
@@ -18,7 +17,8 @@ class ChatScreenState with _$ChatScreenState {
   const factory ChatScreenState(
       {User? user,
       @Default(Chat()) Chat chat,
-      @Default('') String messageString}) = _Initial;
+      @Default('') String messageString,
+      String? errorString}) = _Initial;
 }
 
 class ChatScreenCubit extends Cubit<ChatScreenState> {
@@ -28,11 +28,19 @@ class ChatScreenCubit extends Cubit<ChatScreenState> {
 
   final ChatRepository _chatRepository;
 
+  late final StreamSubscription chatSubscription;
+
   void onInit(User? user) async {
     final stream = _chatRepository.getChatBuIdStream(user?.id ?? '');
     emit(state.copyWith(user: user));
-    stream.listen((event) {
-      emit(state.copyWith(chat: event));
+    chatSubscription = stream.listen((event) {
+      if (event is Success<Chat, String>) {
+        if (event.data != null) {
+          emit(state.copyWith(chat: event.data!, errorString: null));
+        }
+      } else if (event is Failure<Chat, String>) {
+        emit(state.copyWith(errorString: event.error));
+      }
     });
   }
 
@@ -63,7 +71,13 @@ class ChatScreenCubit extends Cubit<ChatScreenState> {
     final listMessages = [...?state.chat.listMessages];
     listMessages.removeAt(
         listMessages.indexWhere((element) => element.id == messageID));
-    final result = _chatRepository
+    _chatRepository
         .saveChat(state.chat.copyWith(listMessages: listMessages));
+  }
+
+  @override
+  Future<void> close() async {
+    await chatSubscription.cancel();
+    return super.close();
   }
 }

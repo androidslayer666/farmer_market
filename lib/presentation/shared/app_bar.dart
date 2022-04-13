@@ -4,7 +4,6 @@ import '../../data/models/user/user.dart';
 import '../navigation/arguments.dart';
 import '../navigation/navigation_wrapper.dart';
 import '../screens/main_screen/bloc/main_bloc.dart';
-import '../screens/main_screen/bloc/main_event.dart';
 
 class CustomAppBar extends StatefulWidget with PreferredSizeWidget {
   const CustomAppBar(
@@ -33,7 +32,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      // backgroundColor: Color(0x05000000),
+      iconTheme: IconThemeData(
+        color: Theme.of(context).primaryColor, //change your color here
+      ),
       elevation: 0,
       backgroundColor: Colors.white.withOpacity(0.8),
       title: GestureDetector(
@@ -55,11 +56,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
           IconButton(
               onPressed: () {
                 if (widget.onFilterClick != null) widget.onFilterClick!();
-                // widget.mainBloc?.add(const MainScreenFilterToggled());
               },
-              icon: Icon(widget.filterSwitchedOn
-                  ? Icons.filter_alt
-                  : Icons.filter_alt_outlined),
+              icon: const Padding(
+                padding: EdgeInsets.only(right: 16.0),
+                child: Icon(Icons.filter_alt, size: 30),
+              ),
               color: Theme.of(context).primaryColor)
       ],
     );

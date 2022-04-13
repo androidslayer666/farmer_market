@@ -2,6 +2,7 @@
 
 
 import 'package:equatable/equatable.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../data/models/api/address.dart';
 import '../../../../data/models/user/user.dart';
@@ -58,10 +59,12 @@ class UserDetailAddressChanged extends EditUserEvent {
 }
 
 class UserDetailImageAddClicked extends EditUserEvent {
-  const UserDetailImageAddClicked();
+  const UserDetailImageAddClicked(this.imageSource);
+
+  final ImageSource imageSource;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [imageSource];
 }
 
 class UserDetailAddressOptionSubmitted extends EditUserEvent {
