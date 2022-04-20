@@ -141,12 +141,13 @@ class __$InitialCopyWithImpl<$Res> extends _$FilterCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Initial implements _Initial {
+class _$_Initial extends _Initial {
   const _$_Initial(
       {@JsonKey(toJson: listCategoriesToJson, fromJson: listCategoriesFromJson)
           this.categories,
       this.topPrice,
-      this.bottomPrice});
+      this.bottomPrice})
+      : super._();
 
   factory _$_Initial.fromJson(Map<String, dynamic> json) =>
       _$$_InitialFromJson(json);
@@ -194,12 +195,13 @@ class _$_Initial implements _Initial {
   }
 }
 
-abstract class _Initial implements Filter {
+abstract class _Initial extends Filter {
   const factory _Initial(
       {@JsonKey(toJson: listCategoriesToJson, fromJson: listCategoriesFromJson)
           List<Category>? categories,
       int? topPrice,
       int? bottomPrice}) = _$_Initial;
+  const _Initial._() : super._();
 
   factory _Initial.fromJson(Map<String, dynamic> json) = _$_Initial.fromJson;
 

@@ -59,96 +59,29 @@ class _FilterScreenBodyState extends State<FilterScreenBody> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              if (widget.state.filter.categories?.isNotEmpty == true ||
-                  widget.state.filter.topPrice != null ||
-                  widget.state.filter.bottomPrice != null)
-                ElevatedButton(
+              AnimatedOpacity(
+                opacity: widget.state.filter.isEmpty() ? 0 : 1,
+                duration: const Duration(milliseconds: 200),
+                child: ElevatedButton(
                     onPressed: () {
                       cubit.clearFilters();
                     },
                     child: const Text('Clear')),
+              ),
               ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(widget.state.filter);
-                  },
-                  child: const Text('confirm')),
+                onPressed: () {
+                  Navigator.of(context).pop(widget.state.filter);
+                },
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith(
+                        (states) => Theme.of(context).bottomAppBarColor)),
+                child: const Icon(Icons.done),
+              ),
             ],
           )
         ],
       ),
     );
-  }
-}
-
-class FilterScreenPriceInputs extends StatefulWidget {
-  const FilterScreenPriceInputs(
-      {Key? key, required this.state, required this.cubit})
-      : super(key: key);
-
-  final FilterScreenState state;
-  final FilterScreenCubit cubit;
-
-  @override
-  State<FilterScreenPriceInputs> createState() =>
-      _FilterScreenPriceInputsState();
-}
-
-class _FilterScreenPriceInputsState extends State<FilterScreenPriceInputs> {
-  late final TextEditingController bottomPriceController;
-  late final TextEditingController topPriceController;
-
-  @override
-  void initState() {
-    super.initState();
-    final bottomPrice = widget.state.filter.bottomPrice != null
-        ? widget.state.filter.bottomPrice.toString()
-        : '';
-    final topPrice = widget.state.filter.topPrice != null
-        ? widget.state.filter.topPrice.toString()
-        : '';
-
-    bottomPriceController = TextEditingController()..text = bottomPrice;
-    topPriceController = TextEditingController()..text = topPrice;
-
-    bottomPriceController.addListener(() {
-      widget.cubit.setBottomPrice(bottomPriceController.text);
-    });
-
-    topPriceController.addListener(() {
-      widget.cubit.setTopPrice(topPriceController.text);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Text('Price from '),
-        SizedBox(
-            width: 100,
-            child: TextInputCustom(
-              controller: bottomPriceController,
-              textInputType: TextInputType.number,
-              textInputFormatter: FilteringTextInputFormatter.digitsOnly,
-            )),
-        const Text('  to '),
-        SizedBox(
-            width: 100,
-            child: TextInputCustom(
-              controller: topPriceController,
-              textInputType: TextInputType.number,
-              textInputFormatter: FilteringTextInputFormatter.digitsOnly,
-
-            )),
-      ],
-    );
-  }
-
-  @override
-  void dispose() {
-    bottomPriceController.dispose();
-    topPriceController.dispose();
-    super.dispose();
   }
 }
 
@@ -206,5 +139,80 @@ class FilterScreenCategoryGrid extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class FilterScreenPriceInputs extends StatefulWidget {
+  const FilterScreenPriceInputs(
+      {Key? key, required this.state, required this.cubit})
+      : super(key: key);
+
+  final FilterScreenState state;
+  final FilterScreenCubit cubit;
+
+  @override
+  State<FilterScreenPriceInputs> createState() =>
+      _FilterScreenPriceInputsState();
+}
+
+class _FilterScreenPriceInputsState extends State<FilterScreenPriceInputs> {
+  late final TextEditingController bottomPriceController;
+  late final TextEditingController topPriceController;
+
+  @override
+  void initState() {
+    super.initState();
+    final bottomPrice = widget.state.filter.bottomPrice != null
+        ? widget.state.filter.bottomPrice.toString()
+        : '';
+    final topPrice = widget.state.filter.topPrice != null
+        ? widget.state.filter.topPrice.toString()
+        : '';
+
+    bottomPriceController = TextEditingController()..text = bottomPrice;
+    topPriceController = TextEditingController()..text = topPrice;
+
+    bottomPriceController.addListener(() {
+      widget.cubit.setBottomPrice(bottomPriceController.text);
+    });
+
+    topPriceController.addListener(() {
+      widget.cubit.setTopPrice(topPriceController.text);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if(widget.state.filter.isEmpty()){
+      bottomPriceController.clear();
+      topPriceController.clear();
+    }
+    return Row(
+      children: [
+        const Text('Price from '),
+        SizedBox(
+            width: 100,
+            child: TextInputCustom(
+              controller: bottomPriceController,
+              textInputType: TextInputType.number,
+              textInputFormatter: FilteringTextInputFormatter.digitsOnly,
+            )),
+        const Text('  to '),
+        SizedBox(
+            width: 100,
+            child: TextInputCustom(
+              controller: topPriceController,
+              textInputType: TextInputType.number,
+              textInputFormatter: FilteringTextInputFormatter.digitsOnly,
+            )),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    bottomPriceController.dispose();
+    topPriceController.dispose();
+    super.dispose();
   }
 }

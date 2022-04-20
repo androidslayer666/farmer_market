@@ -60,6 +60,9 @@ class UserDetailScreenBody extends StatelessWidget {
                     user: state.user,
                   ),
                   Text(state.user?.name ?? ''),
+                  Text(state.user?.description ?? ''),
+                  Text(state.user?.address.toString() ?? ''),
+                  Text(state.user?.phone ?? ''),
                   ElevatedButton(
                       onPressed: () {
                         navigateToChatScreen(context,
@@ -68,7 +71,7 @@ class UserDetailScreenBody extends StatelessWidget {
                       },
                       child: const Text('Message')),
                   ...?state.listProducts
-                      ?.map((e) => ProductListItem(product: e))
+                      ?.map((e) => ProductListItem(product: e, navigateToEditScreen: false))
                 ],
               ),
             ),

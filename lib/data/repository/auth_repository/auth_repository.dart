@@ -30,7 +30,9 @@ class AuthRepository {
         await _auth.verifyPhoneNumber(
           phoneNumber: phone,
           verificationCompleted: (PhoneAuthCredential cred) {},
-          verificationFailed: (FirebaseAuthException exception) => {},
+          verificationFailed: (FirebaseAuthException exception) => {
+            throw exception
+          },
           codeSent: (String verificationId, int? forceResendingToken) =>
               onCodeSent(verificationId, forceResendingToken, bloc, _auth),
           codeAutoRetrievalTimeout: (String verificationId) {},
@@ -52,6 +54,8 @@ class AuthRepository {
           user = user.copyWith(avatarUrl: result.data);
         }
       }
+      user = user.copyWith(phone: currentUser?.phoneNumber);
+
       final jsonUser = user.toJson();
 
       if (currentUser != null) {
@@ -65,6 +69,28 @@ class AuthRepository {
       return Failure(error: err.toString());
     }
   }
+
+  // Stream<Result<models.User, String>> getCurrentUserStream() async*{
+  //   final currentUser = _auth.currentUser;
+  //
+  //   if (currentUser != null) {
+  //     final result = _firestore
+  //         .collection(fireStoreUsersTableName)
+  //         .doc(currentUser.uid)
+  //         .snapshots();
+  //
+  //     await for(final user in result){
+  //
+  //       if (user.data() != null) {
+  //         yield Success(data: models.User.fromJson(user.data()!));
+  //       }
+  //     }
+  //
+  //   } else {
+  //     yield Failure(error: null);
+  //   }
+  // }
+
 
   Future<Result<models.User, String>> getCurrentUser() async {
     final currentUser = _auth.currentUser;
@@ -98,7 +124,7 @@ class AuthRepository {
     }
   }
 
-  Stream<models.User> getCurrentUserStream() async* {
+  Stream<Result<models.User, String>> getCurrentUserStream() async* {
     final _currentUser = _auth.currentUser;
     try {
       final result = _firestore
@@ -108,12 +134,12 @@ class AuthRepository {
 
       await for (final user in result){
         if(user.data() != null) {
-          yield models.User.fromJson(user.data()!);
+          yield Success(data: models.User.fromJson(user.data()!));
         }
       }
 
     } catch (e) {
-      print(e);
+      yield Failure(error: e.toString());
     }
   }
 

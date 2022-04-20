@@ -1,7 +1,6 @@
 // ignore_for_file: invalid_use_of_visible_for_testing_member
 
 import 'package:bloc/bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/models/user/user.dart';
 import '../../data/repository/auth_repository/auth_repository.dart';
@@ -18,8 +17,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         super(AppState(authenticated: authenticated)) {
     on<AppAuthStatusChanged>(_onAuthStatusChanged);
     on<AppEventAppLaunched>(_onAppLaunched);
-    _authRepository.getCurrentUserStream().listen((user) {
-      emit(state.copyWith(currentUser: user));
+    _authRepository.getCurrentUserStream().listen((result) {
+      if(result is Success<User, String>) {
+        emit(state.copyWith(currentUser: result.data));
+      }
     });
   }
 
@@ -30,7 +31,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     AppEventAppLaunched event,
     Emitter<AppState> emit,
   ) async {
-    _updateUser();
+    emit(state.copyWith(userFetchStatus: AppStateUserFetchStatus.loading));
+    _listenToUserChanges();
   }
 
   void _onAuthStatusChanged(
@@ -41,16 +43,14 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     emit(state.copyWith(authenticated: status));
   }
 
-  void _updateUser() async {
-    final result = await _authRepository.getCurrentUser();
-    final prefs = await SharedPreferences.getInstance();
-
-    if (result is Success<User, String>) {
-      if (result.data?.address?.region != null) {
-        // will be used in product request for the storage. It's simpler than forwarding through UI.
-        prefs.setString('userRegion', result.data!.address!.region!);
+  _listenToUserChanges(){
+    _authRepository.getCurrentUserStream().listen((event) {
+      if(event is Success<User, String>){
+        emit(state.copyWith(currentUser: event.data, userFetchStatus: AppStateUserFetchStatus.success));
+      } else if (event is Failure<User, String>){
+        emit(state.copyWith(userFetchStatus: AppStateUserFetchStatus.failure, userFetchingError: event.error));
       }
-      emit(state.copyWith(currentUser: result.data));
-    }
+    });
   }
+
 }

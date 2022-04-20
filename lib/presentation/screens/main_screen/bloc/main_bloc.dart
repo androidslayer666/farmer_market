@@ -13,7 +13,6 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     on<MainScreenBackButtonPressedWhenStackIsClear>(
         _backButtonPressedWhenStackIsClear);
     on<MainScreenBackButtonPressed>(_onBackButtonPressed);
-    on<MainScreenFilterButtonClicked>(_onFilterButtonClicked);
   }
 
 
@@ -45,11 +44,5 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       Emitter<MainState> emit) {
     emit(state.copyWith(backButtonPressedWhenStackIsClear: true));
   }
-
-  _onFilterButtonClicked(
-      MainScreenFilterButtonClicked event, Emitter<MainState> emit) {
-    emit(state.copyWith(filterSwitchedOn: !state.filterSwitchedOn));
-  }
-
 
 }

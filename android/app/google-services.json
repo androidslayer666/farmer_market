@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:964800864895:android:6ec17387c7d135bc14154a",
+        "mobilesdk_app_id": "1:964800864895:android:63e090678ef4327914154a",
         "android_client_info": {
           "package_name": "com.farmer_market.farmer_market"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "964800864895-mhsng06rds3l1dre5tvmd2q9uvrdnts5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.farmer_market.farmer_market",
+            "certificate_hash": "fb6d827b6c1ea45a46ccf0ef92a6504f44d0b835"
+          }
+        },
         {
           "client_id": "964800864895-4clq41h2eomn5rp94onf5oodpcfupm73.apps.googleusercontent.com",
           "client_type": 3

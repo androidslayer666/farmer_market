@@ -18,27 +18,87 @@ class ShippingPage extends StatelessWidget {
       return BlocBuilder<ShippingBloc, ShippingState>(
         builder: (context, shippingState) {
           return ShippingPageBody(
-              listOrders: shippingState.listOrders, user: appState.currentUser);
+              listFinishedOrders: shippingState.listFinishedOrders, listCurrentOrders: shippingState.listCurrentOrders, user: appState.currentUser);
         },
       );
     });
   }
 }
 
-class ShippingPageBody extends StatelessWidget {
+class ShippingPageBody extends StatefulWidget {
   const ShippingPageBody(
-      {Key? key, required this.listOrders, required this.user})
+      {Key? key, required this.listCurrentOrders, required this.listFinishedOrders, required this.user})
       : super(key: key);
 
-  final List<Order> listOrders;
+  final List<Order> listCurrentOrders;
+  final List<Order> listFinishedOrders;
   final User? user;
 
   @override
+  State<ShippingPageBody> createState() => _ShippingPageBodyState();
+}
+
+class _ShippingPageBodyState extends State<ShippingPageBody> {
+  int currentTab = 0;
+
+
+  @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: listOrders.length,
-        itemBuilder: (context, index) =>
-            ListOrdersItemWidget(order: listOrders[index], user: user));
+    if (widget.listCurrentOrders.isEmpty == true) {
+      return SafeArea(
+          child: SizedBox(
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Text('There are no orders yet',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey.shade500)),
+        ),
+      ));
+    }
+
+    return SafeArea(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        currentTab = 0;
+                      });
+                    },
+                    child: const Text('Current orders')),
+                ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        currentTab = 1;
+                      });
+                    },
+                    child: const Text('Finished orders'))
+              ],
+            ),
+          ),
+          currentTab == 0 ?
+          Expanded(
+            child: ListView.builder(
+                itemCount: widget.listCurrentOrders.length,
+                itemBuilder: (context, index) => ListOrdersItemWidget(
+                    order: widget.listCurrentOrders[index], user: widget.user)),
+          )
+              :
+          Expanded(
+            child: ListView.builder(
+                itemCount: widget.listFinishedOrders.length,
+                itemBuilder: (context, index) => ListOrdersItemWidget(
+                    order: widget.listFinishedOrders[index], user: widget.user)),
+          )
+        ],
+      ),
+    );
   }
 }
 

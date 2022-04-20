@@ -30,7 +30,6 @@ class _ChatScreenState extends State<ChatScreen> {
     return BlocBuilder<AppBloc, AppState>(
       builder: (context, appState) => BlocProvider<ChatScreenCubit>(
         create: (context) {
-
           _chatScreenCubit = ChatScreenCubit(_chatRepository)
             ..onInit(args?.user);
           return _chatScreenCubit!;
@@ -69,8 +68,7 @@ class ChatScreenBody extends StatelessWidget {
             ChatScreenAvatar(state: state),
             ChatScreenMessageList(
                 userId: userId, listMessages: state.chat.listMessages),
-            if(state.errorString != null)
-              Text(state.errorString!),
+            if (state.errorString != null) Text(state.errorString!),
             ChatScreenTextInput(chatScreenCubit: chatScreenCubit)
           ],
         ),
@@ -134,7 +132,10 @@ class _ChatScreenTextInputState extends State<ChatScreenTextInput> {
                 widget.chatScreenCubit.sendMessage(_messageController.text);
                 _messageController.text = '';
               },
-              icon: Icon(Icons.send, color: Theme.of(context).primaryColor,))
+              icon: Icon(
+                Icons.send,
+                color: Theme.of(context).primaryColor,
+              ))
         ],
       ),
     );
@@ -185,8 +186,41 @@ class MessageItemWidget extends StatefulWidget {
   State<MessageItemWidget> createState() => _MessageItemWidgetState();
 }
 
-class _MessageItemWidgetState extends State<MessageItemWidget> {
+class _MessageItemWidgetState extends State<MessageItemWidget>
+    with SingleTickerProviderStateMixin {
   bool showDelete = false;
+  late Animation<Offset> animationButton;
+  late AnimationController animationControllerButton;
+  late Animation<Offset> animationText;
+
+  @override
+  void initState() {
+    super.initState();
+    animationControllerButton = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
+    animationButton = Tween<Offset>(
+      begin: const Offset(5.0, 0.0),
+      end: const Offset(0.0, 0.0),
+    ).animate(CurvedAnimation(
+      parent: animationControllerButton,
+      curve: Curves.fastLinearToSlowEaseIn,
+    ));
+    animationText = Tween<Offset>(
+      begin: const Offset(0.0, 0.0),
+      end: const Offset(-0.2, 0.0),
+    ).animate(CurvedAnimation(
+      parent: animationControllerButton,
+      curve: Curves.fastLinearToSlowEaseIn,
+    ));
+  }
+
+  @override
+  void dispose() {
+    animationControllerButton.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -198,6 +232,12 @@ class _MessageItemWidgetState extends State<MessageItemWidget> {
       child: GestureDetector(
         onTap: () {
           setState(() {
+            (animationButton.value == const Offset(20.0, 0.0))
+                ? animationControllerButton.forward()
+                : animationControllerButton.reverse();
+            (animationText.value == const Offset(0.0, 0.0))
+                ? animationControllerButton.forward()
+                : animationControllerButton.reverse();
             showDelete = !showDelete;
           });
         },
@@ -210,44 +250,59 @@ class _MessageItemWidgetState extends State<MessageItemWidget> {
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16),
-              child: Row(
-                mainAxisAlignment: widget.message.usedId != widget.userId
-                    ? MainAxisAlignment.start
-                    : MainAxisAlignment.end,
+              child: Stack(
                 children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
+                  Row(
+                    mainAxisAlignment: widget.message.usedId != widget.userId
+                        ? MainAxisAlignment.start
+                        : MainAxisAlignment.end,
                     children: [
-                      if (widget.message.time != null)
-                        Text(DateFormat('jm').format(widget.message.time!),
-                            style: TextStyle(
-                                fontSize: 12, color: Colors.grey.shade400)),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        child: Text(
-                          widget.message.message ?? '',
-                          textAlign: TextAlign.end,
-                          style: Theme.of(context).textTheme.bodyText2,
-                          maxLines: 15,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
+                    SlideTransition(
+                    position: animationText,
+                    child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (widget.message.time != null)
+                            Text(DateFormat('jm').format(widget.message.time!),
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.grey.shade400)),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            child: Text(
+                              widget.message.message ?? '',
+                              textAlign: TextAlign.end,
+                              style: Theme.of(context).textTheme.bodyText2,
+                              maxLines: 15,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      )),
+
                     ],
                   ),
-                  if (showDelete)
-                    GestureDetector(
-                        onTap: () {
-                          showDelete = false;
-                          chatScreenCubit
-                              .deleteMessage(widget.message.id ?? '');
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Icon(
-                            Icons.delete,
-                            size: 20,
-                          ),
-                        ))
+              AnimatedOpacity(
+                opacity: !showDelete ? 0 : 1,
+                duration: const Duration(milliseconds: 200),
+                child:
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                          onTap: () {
+                            showDelete = false;
+                            chatScreenCubit
+                                .deleteMessage(widget.message.id ?? '');
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Icon(
+                              Icons.delete,
+                              size: 20,
+                            ),
+                          )),
+                    ],
+                ) )
                 ],
               ),
             ),

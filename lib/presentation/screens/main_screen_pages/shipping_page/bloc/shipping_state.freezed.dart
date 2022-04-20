@@ -17,9 +17,13 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$ShippingStateTearOff {
   const _$ShippingStateTearOff();
 
-  _Initial call({List<Order> listOrders = const [], bool? orderUpdateResult}) {
+  _Initial call(
+      {List<Order> listFinishedOrders = const [],
+      List<Order> listCurrentOrders = const [],
+      bool? orderUpdateResult}) {
     return _Initial(
-      listOrders: listOrders,
+      listFinishedOrders: listFinishedOrders,
+      listCurrentOrders: listCurrentOrders,
       orderUpdateResult: orderUpdateResult,
     );
   }
@@ -30,7 +34,8 @@ const $ShippingState = _$ShippingStateTearOff();
 
 /// @nodoc
 mixin _$ShippingState {
-  List<Order> get listOrders => throw _privateConstructorUsedError;
+  List<Order> get listFinishedOrders => throw _privateConstructorUsedError;
+  List<Order> get listCurrentOrders => throw _privateConstructorUsedError;
   bool? get orderUpdateResult => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -43,7 +48,10 @@ abstract class $ShippingStateCopyWith<$Res> {
   factory $ShippingStateCopyWith(
           ShippingState value, $Res Function(ShippingState) then) =
       _$ShippingStateCopyWithImpl<$Res>;
-  $Res call({List<Order> listOrders, bool? orderUpdateResult});
+  $Res call(
+      {List<Order> listFinishedOrders,
+      List<Order> listCurrentOrders,
+      bool? orderUpdateResult});
 }
 
 /// @nodoc
@@ -57,13 +65,18 @@ class _$ShippingStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? listOrders = freezed,
+    Object? listFinishedOrders = freezed,
+    Object? listCurrentOrders = freezed,
     Object? orderUpdateResult = freezed,
   }) {
     return _then(_value.copyWith(
-      listOrders: listOrders == freezed
-          ? _value.listOrders
-          : listOrders // ignore: cast_nullable_to_non_nullable
+      listFinishedOrders: listFinishedOrders == freezed
+          ? _value.listFinishedOrders
+          : listFinishedOrders // ignore: cast_nullable_to_non_nullable
+              as List<Order>,
+      listCurrentOrders: listCurrentOrders == freezed
+          ? _value.listCurrentOrders
+          : listCurrentOrders // ignore: cast_nullable_to_non_nullable
               as List<Order>,
       orderUpdateResult: orderUpdateResult == freezed
           ? _value.orderUpdateResult
@@ -78,7 +91,10 @@ abstract class _$InitialCopyWith<$Res> implements $ShippingStateCopyWith<$Res> {
   factory _$InitialCopyWith(_Initial value, $Res Function(_Initial) then) =
       __$InitialCopyWithImpl<$Res>;
   @override
-  $Res call({List<Order> listOrders, bool? orderUpdateResult});
+  $Res call(
+      {List<Order> listFinishedOrders,
+      List<Order> listCurrentOrders,
+      bool? orderUpdateResult});
 }
 
 /// @nodoc
@@ -92,13 +108,18 @@ class __$InitialCopyWithImpl<$Res> extends _$ShippingStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? listOrders = freezed,
+    Object? listFinishedOrders = freezed,
+    Object? listCurrentOrders = freezed,
     Object? orderUpdateResult = freezed,
   }) {
     return _then(_Initial(
-      listOrders: listOrders == freezed
-          ? _value.listOrders
-          : listOrders // ignore: cast_nullable_to_non_nullable
+      listFinishedOrders: listFinishedOrders == freezed
+          ? _value.listFinishedOrders
+          : listFinishedOrders // ignore: cast_nullable_to_non_nullable
+              as List<Order>,
+      listCurrentOrders: listCurrentOrders == freezed
+          ? _value.listCurrentOrders
+          : listCurrentOrders // ignore: cast_nullable_to_non_nullable
               as List<Order>,
       orderUpdateResult: orderUpdateResult == freezed
           ? _value.orderUpdateResult
@@ -111,17 +132,23 @@ class __$InitialCopyWithImpl<$Res> extends _$ShippingStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Initial implements _Initial {
-  const _$_Initial({this.listOrders = const [], this.orderUpdateResult});
+  const _$_Initial(
+      {this.listFinishedOrders = const [],
+      this.listCurrentOrders = const [],
+      this.orderUpdateResult});
 
   @JsonKey()
   @override
-  final List<Order> listOrders;
+  final List<Order> listFinishedOrders;
+  @JsonKey()
+  @override
+  final List<Order> listCurrentOrders;
   @override
   final bool? orderUpdateResult;
 
   @override
   String toString() {
-    return 'ShippingState(listOrders: $listOrders, orderUpdateResult: $orderUpdateResult)';
+    return 'ShippingState(listFinishedOrders: $listFinishedOrders, listCurrentOrders: $listCurrentOrders, orderUpdateResult: $orderUpdateResult)';
   }
 
   @override
@@ -130,7 +157,9 @@ class _$_Initial implements _Initial {
         (other.runtimeType == runtimeType &&
             other is _Initial &&
             const DeepCollectionEquality()
-                .equals(other.listOrders, listOrders) &&
+                .equals(other.listFinishedOrders, listFinishedOrders) &&
+            const DeepCollectionEquality()
+                .equals(other.listCurrentOrders, listCurrentOrders) &&
             const DeepCollectionEquality()
                 .equals(other.orderUpdateResult, orderUpdateResult));
   }
@@ -138,7 +167,8 @@ class _$_Initial implements _Initial {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(listOrders),
+      const DeepCollectionEquality().hash(listFinishedOrders),
+      const DeepCollectionEquality().hash(listCurrentOrders),
       const DeepCollectionEquality().hash(orderUpdateResult));
 
   @JsonKey(ignore: true)
@@ -148,11 +178,15 @@ class _$_Initial implements _Initial {
 }
 
 abstract class _Initial implements ShippingState {
-  const factory _Initial({List<Order> listOrders, bool? orderUpdateResult}) =
-      _$_Initial;
+  const factory _Initial(
+      {List<Order> listFinishedOrders,
+      List<Order> listCurrentOrders,
+      bool? orderUpdateResult}) = _$_Initial;
 
   @override
-  List<Order> get listOrders;
+  List<Order> get listFinishedOrders;
+  @override
+  List<Order> get listCurrentOrders;
   @override
   bool? get orderUpdateResult;
   @override

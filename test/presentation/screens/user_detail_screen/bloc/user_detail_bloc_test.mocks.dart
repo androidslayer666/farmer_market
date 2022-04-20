@@ -94,7 +94,8 @@ class MockAuthRepository extends _i1.Mock implements _i7.AuthRepository {
                   _FakeResult_0<dynamic, dynamic>()))
           as _i4.Future<_i2.Result<dynamic, dynamic>>);
   @override
-  _i4.Stream<_i9.User> getCurrentUserStream() =>
+  _i4.Stream<_i2.Result<_i9.User, String>> getCurrentUserStream() =>
       (super.noSuchMethod(Invocation.method(#getCurrentUserStream, []),
-          returnValue: Stream<_i9.User>.empty()) as _i4.Stream<_i9.User>);
+              returnValue: Stream<_i2.Result<_i9.User, String>>.empty())
+          as _i4.Stream<_i2.Result<_i9.User, String>>);
 }

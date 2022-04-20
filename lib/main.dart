@@ -18,7 +18,6 @@ void main() async {
   setupGetIt();
 
   //FirebaseAuth.instance.signOut();
-  //FlutterNativeSplash.remove();
   BlocOverrides.runZoned(
         () {
           runApp( const FarmerMarketApp());

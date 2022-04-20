@@ -9,9 +9,10 @@ import '../navigation/arguments.dart';
 import '../navigation/navigation_wrapper.dart';
 
 class ProductListItem extends StatelessWidget {
-  const ProductListItem({Key? key, required this.product}) : super(key: key);
+  const ProductListItem({Key? key, required this.product, required this.navigateToEditScreen}) : super(key: key);
 
   final Product product;
+  final bool navigateToEditScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +20,13 @@ class ProductListItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        navigateToAddProductScreen(context,
+        if(navigateToEditScreen) {
+          navigateToAddProductScreen(context,
             arguments: AddProductArguments(product: product));
+        } else {
+          navigateToProductDetailScreen(context,
+              arguments: ProductDetailArguments(product: product));
+        }
       },
       child: Card(
           color: Theme.of(context).cardColor,

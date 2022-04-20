@@ -7,7 +7,6 @@ import 'api/address.dart';
 import 'cart/cart_item.dart';
 import 'chat/message.dart';
 
-// the functions that is just redirecting to correct json convertors
 Address? addressFromJson(Map<String, dynamic>? json) => json != null ? Address.fromJson(json) : null;
 Map<String, dynamic>? addressToJson(Address? address) => address?.toJson();
 
@@ -35,7 +34,9 @@ Category? categoryFromJson(String? json) {
     case 'milk': return Category.milk;
     case null: return null;
   }
+  return null;
 }
+
 String? categoryToJson(Category? category) {
   switch(category) {
     case Category.cheese: return 'cheese';

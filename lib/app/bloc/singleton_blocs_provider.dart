@@ -18,10 +18,14 @@ import '../di/getit_setup.dart';
 import 'app_bloc.dart';
 import 'app_event.dart';
 
+
+
 class SingletonBlocsProvider extends StatelessWidget {
   const SingletonBlocsProvider({Key? key, required this.child}) : super(key: key);
 
   final Widget child;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -48,19 +52,21 @@ class SingletonBlocsProvider extends StatelessWidget {
         authRepository: locator.get<AuthRepository>());
 
     return MultiBlocProvider(providers: [
-    BlocProvider<AppBloc>(
-    create: (context) => appBloc..add(const AppEventAppLaunched())),
-    BlocProvider<ListProductBloc>(
-    create: (context) =>
-    listProductBloc..add(const ListProductEventPageRequested())),
-    BlocProvider<MainBloc>(
-    create: (context) => mainBloc..add(const MainScreenInit())),
-    BlocProvider<ShippingBloc>(
-    create: (context) => shippingBloc..add(const ShippingEventInit())),
-    BlocProvider<CartBloc>(
-    create: (context) => cartBloc..add(const CartEventInit())),
-    BlocProvider<UserProductsBloc>(
-    create: (context) => userProductsBloc..add(const UserProductsEventInit()))
+      BlocProvider<AppBloc>(
+          create: (context) => appBloc..add(const AppEventAppLaunched())),
+      BlocProvider<ListProductBloc>(
+          create: (context) =>
+          listProductBloc..add(const ListProductEventPageRequested())),
+      BlocProvider<MainBloc>(
+          create: (context) => mainBloc..add(const MainScreenInit())),
+      BlocProvider<ShippingBloc>(
+          create: (context) => shippingBloc..add(const ShippingEventInit())),
+      BlocProvider<CartBloc>(
+          create: (context) => cartBloc..add(const CartEventInit())),
+      BlocProvider<UserProductsBloc>(
+          create: (context) => userProductsBloc..add(const UserProductsEventInit()))
     ], child: child);
   }
 }
+
+

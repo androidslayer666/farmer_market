@@ -27,7 +27,8 @@ class FarmerMarketAppBody extends StatelessWidget {
     FlutterNativeSplash.remove();
     return BlocBuilder<AppBloc, AppState>(
       builder: (context, state) {
-        return MaterialApp(
+        return
+          MaterialApp(
           theme: themeData,
           initialRoute: state.authenticated ? mainRoute : signInRoute,
           routes: routes,

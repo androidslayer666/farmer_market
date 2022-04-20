@@ -10,7 +10,6 @@ class UserProductsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final bloc = context.read<UserProductsBloc>();
     return BlocConsumer<UserProductsBloc, UserProductsState>(
         listener: (context, state) {},
@@ -22,12 +21,12 @@ class UserProductsPage extends StatelessWidget {
                 onRefresh: () async {
                   bloc.add(const UserProductsEventUpdateList());
                 },
-                child:
-                    ListView.builder(
-                      itemCount: state.listProducts.length,
-                        itemBuilder: (context, index) => ProductListItem(
-                              product: state.listProducts[index],
-                            )),
+                child: ListView.builder(
+                    itemCount: state.listProducts.length,
+                    itemBuilder: (context, index) => ProductListItem(
+                          product: state.listProducts[index],
+                          navigateToEditScreen: true,
+                        )),
               ));
         });
   }

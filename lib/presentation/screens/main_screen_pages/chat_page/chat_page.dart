@@ -35,6 +35,19 @@ class ChatPageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
+      if(state.chats?.isEmpty == true){
+        return SafeArea(
+            child: SizedBox(
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Text(
+                    'There are no chats yet, please start chatting from a user profile',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey.shade500)),
+              ),
+            ));
+      }
       return Padding(
           padding: const EdgeInsets.all(16.0),
           child: ListView.builder(
@@ -47,8 +60,10 @@ class ChatPageBody extends StatelessWidget {
                             user: state.chats?[index].user));
                   },
                   child: Row(children: [
-                    AvatarNameWidget(
-                        user: state.chats?[index].user, onClickNavigate: false),
+                    IgnorePointer(
+                      child: AvatarNameWidget(
+                          user: state.chats?[index].user, onClickNavigate: false),
+                    ),
                     const Spacer(),
                     Icon(
                       Icons.arrow_forward,

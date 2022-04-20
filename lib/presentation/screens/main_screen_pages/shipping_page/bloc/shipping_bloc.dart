@@ -61,8 +61,22 @@ class ShippingBloc extends Bloc<ShippingEvent, ShippingState> {
 
   void _fetchOrders() async {
     final orderResult = await _orderRepository.getOrders();
+
+
     if (orderResult is Success<List<Order>, String>) {
-      emit(state.copyWith(listOrders: (orderResult).data ?? []));
+      final listFinishedOrders = orderResult.data
+          ?.where((element) =>
+      element.confirmedShippingDate != null &&
+          DateTime.now().isAfter(element.confirmedShippingDate!))
+          .toList();
+      final listCurrentOrders = orderResult.data
+          ?.where((element) => element.confirmedShippingDate == null || element.confirmedShippingDate != null &&
+          DateTime.now().isBefore(element.confirmedShippingDate!))
+          .toList();
+
+      emit(state.copyWith(
+          listCurrentOrders: listCurrentOrders ?? [],
+          listFinishedOrders: listFinishedOrders ?? []));
     }
   }
 }

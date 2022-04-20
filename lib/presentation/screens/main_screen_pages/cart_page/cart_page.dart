@@ -31,6 +31,7 @@ class CartPageBody extends StatelessWidget {
     return BlocBuilder<CartBloc, CartState>(builder: (context, state) {
       return Column(children: [
         CartList(
+          mapUserToItems: state.mapUserToItems,
           listCartItems: state.cart.cartItems,
         )
       ]);
@@ -39,24 +40,32 @@ class CartPageBody extends StatelessWidget {
 }
 
 class CartList extends StatelessWidget {
-  const CartList({Key? key, required this.listCartItems}) : super(key: key);
+  const CartList(
+      {Key? key, required this.listCartItems, required this.mapUserToItems})
+      : super(key: key);
 
   final List<CartItem> listCartItems;
+  final Map<User?, List<CartItem>>? mapUserToItems;
 
   @override
   Widget build(BuildContext context) {
     final cartBloc = context.read<CartBloc>();
     final shippingBloc = context.read<ShippingBloc>();
-    final listUsers = listCartItems.map((e) => e.user).toSet().toList();
-    final Map<User?, List<CartItem>> map = {};
-    for (final user in listUsers) {
-      map[user] = listCartItems
-          .where((element) => element.product?.userID == user?.id)
-          .toList();
+    if (listCartItems.isEmpty == true) {
+      return SafeArea(
+          child: SizedBox(
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Text('There are no items in your cart',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey.shade500)),
+        ),
+      ));
     }
     return ListView.builder(
         shrinkWrap: true,
-        itemCount: map.keys.length,
+        itemCount: mapUserToItems?.keys.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.all(8.0),
@@ -65,21 +74,25 @@ class CartList extends StatelessWidget {
               children: [
                 const SizedBox(height: 16),
                 AvatarNameWidget(
-                  user: map.keys.elementAt(index),
+                  user: mapUserToItems?.keys.elementAt(index),
                 ),
                 const SizedBox(height: 16),
-                ...map.values
+                ...?mapUserToItems?.values
                     .elementAt(index)
                     .map((e) => CartItemWidget(item: e)),
                 const SizedBox(height: 16),
                 ElevatedButton(
                     onPressed: () {
-                      cartBloc.add(
-                          CartEventCreateOrderClicked(map.keys.elementAt(index)));
+                      cartBloc.add(CartEventCreateOrderClicked(
+                          mapUserToItems?.keys.elementAt(index)));
                       shippingBloc.add(ShippingEventCreateOrderClicked(
                           listCartItems,
-                          map.keys.elementAt(index) ?? const User(),
-                          map.values.elementAt(index).first.product?.userID ??
+                          mapUserToItems?.keys.elementAt(index) ?? const User(),
+                          mapUserToItems?.values
+                                  .elementAt(index)
+                                  .first
+                                  .product
+                                  ?.userID ??
                               ''));
                     },
                     child: const Text('Place order'))
@@ -108,9 +121,8 @@ class CartItemWidget extends StatelessWidget {
           Expanded(
               flex: 2,
               child: GestureDetector(
-                onTap: () => navigateToProductDetailScreen(
-                  context, arguments: ProductDetailArguments(product: item.product)
-                ),
+                onTap: () => navigateToProductDetailScreen(context,
+                    arguments: ProductDetailArguments(product: item.product)),
                 child: item.product?.pictureUrl != null
                     ? CachedNetworkImage(
                         imageUrl: item.product!.pictureUrl!,
@@ -145,14 +157,20 @@ class CartItemWidget extends StatelessWidget {
                             onPressed: () {
                               bloc.add(CartEventRemoveFromCart(item.product!));
                             },
-                            icon: const Icon(Icons.remove)),
+                            icon: Icon(
+                              Icons.remove,
+                              color: Theme.of(context).primaryColor,
+                            )),
                         Text(item.qty.toString()),
                         IconButton(
                             onPressed: () {
                               bloc.add(CartEventAddToCart(
                                   item.product!, item.user!));
                             },
-                            icon: const Icon(Icons.add)),
+                            icon: Icon(
+                              Icons.add,
+                              color: Theme.of(context).bottomAppBarColor,
+                            )),
                       ]))
                 ],
               ),

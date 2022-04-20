@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-import '../../../../data/models/filter/filter.dart';
 
 abstract class MainEvent extends Equatable {
   const MainEvent();
@@ -34,6 +33,3 @@ class MainScreenTabChanged extends MainEvent {
   List<Object> get props => [tabIndex];
 }
 
-class MainScreenFilterButtonClicked extends MainEvent {
-  const MainScreenFilterButtonClicked();
-}

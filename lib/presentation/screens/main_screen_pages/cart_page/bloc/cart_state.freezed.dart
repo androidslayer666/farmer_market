@@ -17,10 +17,16 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$CartStateTearOff {
   const _$CartStateTearOff();
 
-  _Initial call({Cart cart = const Cart(), bool? successfullyAddedToCart}) {
+  _Initial call(
+      {Cart cart = const Cart(),
+      Map<User?, List<CartItem>>? mapUserToItems,
+      bool? successfullyAddedToCart,
+      bool? successfullyDeletedToCart}) {
     return _Initial(
       cart: cart,
+      mapUserToItems: mapUserToItems,
       successfullyAddedToCart: successfullyAddedToCart,
+      successfullyDeletedToCart: successfullyDeletedToCart,
     );
   }
 }
@@ -31,7 +37,10 @@ const $CartState = _$CartStateTearOff();
 /// @nodoc
 mixin _$CartState {
   Cart get cart => throw _privateConstructorUsedError;
+  Map<User?, List<CartItem>>? get mapUserToItems =>
+      throw _privateConstructorUsedError;
   bool? get successfullyAddedToCart => throw _privateConstructorUsedError;
+  bool? get successfullyDeletedToCart => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CartStateCopyWith<CartState> get copyWith =>
@@ -42,7 +51,11 @@ mixin _$CartState {
 abstract class $CartStateCopyWith<$Res> {
   factory $CartStateCopyWith(CartState value, $Res Function(CartState) then) =
       _$CartStateCopyWithImpl<$Res>;
-  $Res call({Cart cart, bool? successfullyAddedToCart});
+  $Res call(
+      {Cart cart,
+      Map<User?, List<CartItem>>? mapUserToItems,
+      bool? successfullyAddedToCart,
+      bool? successfullyDeletedToCart});
 
   $CartCopyWith<$Res> get cart;
 }
@@ -58,16 +71,26 @@ class _$CartStateCopyWithImpl<$Res> implements $CartStateCopyWith<$Res> {
   @override
   $Res call({
     Object? cart = freezed,
+    Object? mapUserToItems = freezed,
     Object? successfullyAddedToCart = freezed,
+    Object? successfullyDeletedToCart = freezed,
   }) {
     return _then(_value.copyWith(
       cart: cart == freezed
           ? _value.cart
           : cart // ignore: cast_nullable_to_non_nullable
               as Cart,
+      mapUserToItems: mapUserToItems == freezed
+          ? _value.mapUserToItems
+          : mapUserToItems // ignore: cast_nullable_to_non_nullable
+              as Map<User?, List<CartItem>>?,
       successfullyAddedToCart: successfullyAddedToCart == freezed
           ? _value.successfullyAddedToCart
           : successfullyAddedToCart // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      successfullyDeletedToCart: successfullyDeletedToCart == freezed
+          ? _value.successfullyDeletedToCart
+          : successfullyDeletedToCart // ignore: cast_nullable_to_non_nullable
               as bool?,
     ));
   }
@@ -85,7 +108,11 @@ abstract class _$InitialCopyWith<$Res> implements $CartStateCopyWith<$Res> {
   factory _$InitialCopyWith(_Initial value, $Res Function(_Initial) then) =
       __$InitialCopyWithImpl<$Res>;
   @override
-  $Res call({Cart cart, bool? successfullyAddedToCart});
+  $Res call(
+      {Cart cart,
+      Map<User?, List<CartItem>>? mapUserToItems,
+      bool? successfullyAddedToCart,
+      bool? successfullyDeletedToCart});
 
   @override
   $CartCopyWith<$Res> get cart;
@@ -103,16 +130,26 @@ class __$InitialCopyWithImpl<$Res> extends _$CartStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? cart = freezed,
+    Object? mapUserToItems = freezed,
     Object? successfullyAddedToCart = freezed,
+    Object? successfullyDeletedToCart = freezed,
   }) {
     return _then(_Initial(
       cart: cart == freezed
           ? _value.cart
           : cart // ignore: cast_nullable_to_non_nullable
               as Cart,
+      mapUserToItems: mapUserToItems == freezed
+          ? _value.mapUserToItems
+          : mapUserToItems // ignore: cast_nullable_to_non_nullable
+              as Map<User?, List<CartItem>>?,
       successfullyAddedToCart: successfullyAddedToCart == freezed
           ? _value.successfullyAddedToCart
           : successfullyAddedToCart // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      successfullyDeletedToCart: successfullyDeletedToCart == freezed
+          ? _value.successfullyDeletedToCart
+          : successfullyDeletedToCart // ignore: cast_nullable_to_non_nullable
               as bool?,
     ));
   }
@@ -121,17 +158,25 @@ class __$InitialCopyWithImpl<$Res> extends _$CartStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Initial implements _Initial {
-  const _$_Initial({this.cart = const Cart(), this.successfullyAddedToCart});
+  const _$_Initial(
+      {this.cart = const Cart(),
+      this.mapUserToItems,
+      this.successfullyAddedToCart,
+      this.successfullyDeletedToCart});
 
   @JsonKey()
   @override
   final Cart cart;
   @override
+  final Map<User?, List<CartItem>>? mapUserToItems;
+  @override
   final bool? successfullyAddedToCart;
+  @override
+  final bool? successfullyDeletedToCart;
 
   @override
   String toString() {
-    return 'CartState(cart: $cart, successfullyAddedToCart: $successfullyAddedToCart)';
+    return 'CartState(cart: $cart, mapUserToItems: $mapUserToItems, successfullyAddedToCart: $successfullyAddedToCart, successfullyDeletedToCart: $successfullyDeletedToCart)';
   }
 
   @override
@@ -140,15 +185,21 @@ class _$_Initial implements _Initial {
         (other.runtimeType == runtimeType &&
             other is _Initial &&
             const DeepCollectionEquality().equals(other.cart, cart) &&
+            const DeepCollectionEquality()
+                .equals(other.mapUserToItems, mapUserToItems) &&
             const DeepCollectionEquality().equals(
-                other.successfullyAddedToCart, successfullyAddedToCart));
+                other.successfullyAddedToCart, successfullyAddedToCart) &&
+            const DeepCollectionEquality().equals(
+                other.successfullyDeletedToCart, successfullyDeletedToCart));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(cart),
-      const DeepCollectionEquality().hash(successfullyAddedToCart));
+      const DeepCollectionEquality().hash(mapUserToItems),
+      const DeepCollectionEquality().hash(successfullyAddedToCart),
+      const DeepCollectionEquality().hash(successfullyDeletedToCart));
 
   @JsonKey(ignore: true)
   @override
@@ -157,13 +208,20 @@ class _$_Initial implements _Initial {
 }
 
 abstract class _Initial implements CartState {
-  const factory _Initial({Cart cart, bool? successfullyAddedToCart}) =
-      _$_Initial;
+  const factory _Initial(
+      {Cart cart,
+      Map<User?, List<CartItem>>? mapUserToItems,
+      bool? successfullyAddedToCart,
+      bool? successfullyDeletedToCart}) = _$_Initial;
 
   @override
   Cart get cart;
   @override
+  Map<User?, List<CartItem>>? get mapUserToItems;
+  @override
   bool? get successfullyAddedToCart;
+  @override
+  bool? get successfullyDeletedToCart;
   @override
   @JsonKey(ignore: true)
   _$InitialCopyWith<_Initial> get copyWith =>

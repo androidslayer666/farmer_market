@@ -11,8 +11,7 @@ class CartRepository {
   final FirebaseAuth _auth;
 
   CartRepository(
-      {required FirebaseFirestore firestore,
-      required FirebaseAuth auth})
+      {required FirebaseFirestore firestore, required FirebaseAuth auth})
       : _firestore = firestore,
         _auth = auth;
 

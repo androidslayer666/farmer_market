@@ -65,7 +65,6 @@ class _PhoneEnterScreenBodyState extends State<PhoneEnterScreenBody> {
     final loginBloc = context.read<PhoneEnterBloc>();
     return BlocConsumer<PhoneEnterBloc, PhoneEnterStateFreezed>(
         listener: (context, state) {
-      //print(state.haveUserInfoOnServer);
       if (state.loginStatus == PhoneLoginStatus.success) {
         if (state.haveUserInfoOnServer == true) {
           navigateToMainScreen(context, clearStack: true);
@@ -74,7 +73,6 @@ class _PhoneEnterScreenBodyState extends State<PhoneEnterScreenBody> {
         }
       }
     }, builder: (context, state) {
-      //print(state);
       return WillPopScope(
         onWillPop: () async => false,
         child: SafeArea(

@@ -20,14 +20,25 @@ import 'main_screen_back_press_resolver.dart';
 import 'main_screen_bottom_navigation_bar.dart';
 import 'main_screen_fab.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  late final List<Widget> _pages;
+
+  @override
+  void initState() {
+    _pages = _getListPages(true);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AppBloc, AppState>(builder: (context, appState) {
-      List<Widget> _pages =
-          _getListPages(appState.currentUser?.isSeller == true);
       return BlocBuilder<ListProductBloc, ListProductState>(
         builder: (context, listProductState) {
           return BlocBuilder<MainBloc, MainState>(
