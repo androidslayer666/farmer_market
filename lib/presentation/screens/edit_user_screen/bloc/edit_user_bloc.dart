@@ -5,6 +5,7 @@ import 'package:farmer_market/presentation/shared/utils.dart';
 
 import '../../../../data/models/api/address.dart';
 import '../../../../data/models/api/suggestion.dart';
+import '../../../../data/models/user/user.dart';
 import '../../../../data/repository/auth_repository/auth_repository.dart';
 import '../../../../data/repository/interfaces/i_address_repository.dart';
 import '../../../../data/repository/success_failure.dart';
@@ -38,7 +39,7 @@ class EditUserBloc extends Bloc<EditUserEvent, EditUserState> {
   ) async {
     emit(state.copyWith(
         isImageLoading: true,
-        user: event.user,
+        user: event.user ?? const User(),
         nameIsValid: true,
         descriptionIsValid: true,
         addressIsValid: true,
@@ -130,6 +131,7 @@ class EditUserBloc extends Bloc<EditUserEvent, EditUserState> {
         saveClickedWhenInputIsNotValid: false));
   }
 
+  // todo: add uid
   void _onSubmitted(
     UserDetailSubmitted event,
     Emitter<EditUserState> emit,
@@ -138,9 +140,11 @@ class EditUserBloc extends Bloc<EditUserEvent, EditUserState> {
         state.descriptionIsValid == true &&
         state.user?.address != null) {
       emit(state.copyWith(isLoading: true));
+
       try {
         if (state.user != null) {
-          await _authRepository.addUserInfo(state.user!, state.avatarFile);
+          final user = state.user!.copyWith(id: _authRepository.getUserId());
+          await _authRepository.addUserInfo(user, state.avatarFile);
         }
         emit(state.copyWith(
             changesSaved: true, isLoading: false));
@@ -153,6 +157,7 @@ class EditUserBloc extends Bloc<EditUserEvent, EditUserState> {
           addressIsValid: false, saveClickedWhenInputIsNotValid: true));
     } else {
       emit(state.copyWith(saveClickedWhenInputIsNotValid: true));
+      emit(state.copyWith(saveClickedWhenInputIsNotValid: false));
     }
   }
 }

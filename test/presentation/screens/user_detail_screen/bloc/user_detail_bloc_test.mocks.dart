@@ -13,8 +13,9 @@ import 'package:farmer_market/data/repository/address_repository/address_reposit
 import 'package:farmer_market/data/repository/auth_repository/auth_repository.dart'
     as _i7;
 import 'package:farmer_market/data/repository/success_failure.dart' as _i2;
-import 'package:farmer_market/presentation/screens/phone_enter_screen/bloc/phone_enter_bloc.dart'
+import 'package:farmer_market/presentation/screens/authorization_screen/bloc/authorization_bloc.dart'
     as _i8;
+import 'package:firebase_auth/firebase_auth.dart' as _i11;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -68,7 +69,7 @@ class MockAuthRepository extends _i1.Mock implements _i7.AuthRepository {
 
   @override
   _i4.Future<_i2.Result<dynamic, dynamic>> signUpWithPhone(
-          {String? phone, _i8.PhoneEnterBloc? bloc}) =>
+          {String? phone, _i8.AuthorizationBloc? bloc}) =>
       (super.noSuchMethod(
           Invocation.method(#signUpWithPhone, [], {#phone: phone, #bloc: bloc}),
           returnValue: Future<_i2.Result<dynamic, dynamic>>.value(
@@ -98,4 +99,8 @@ class MockAuthRepository extends _i1.Mock implements _i7.AuthRepository {
       (super.noSuchMethod(Invocation.method(#getCurrentUserStream, []),
               returnValue: Stream<_i2.Result<_i9.User, String>>.empty())
           as _i4.Stream<_i2.Result<_i9.User, String>>);
+  @override
+  _i4.Stream<_i11.User?> authChanges() =>
+      (super.noSuchMethod(Invocation.method(#authChanges, []),
+          returnValue: Stream<_i11.User?>.empty()) as _i4.Stream<_i11.User?>);
 }

@@ -67,7 +67,7 @@ class UserDetailScreenBody extends StatelessWidget {
                       onPressed: () {
                         navigateToChatScreen(context,
                             arguments: UserDetailArguments(
-                                user: appState.currentUser));
+                                user: state.user));
                       },
                       child: const Text('Message')),
                   ...?state.listProducts

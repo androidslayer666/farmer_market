@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:farmer_market/presentation/navigation/arguments.dart';
 import 'package:farmer_market/presentation/navigation/navigation_wrapper.dart';
-import 'package:farmer_market/presentation/screens/main_screen_pages/user_products_page/bloc/user_products_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +16,7 @@ import '../../../generated/l10n.dart';
 import '../../shared/image_add_image_row.dart';
 import '../../shared/show_confirmation_dialogue.dart';
 import '../../shared/text_input_custom.dart';
+import '../main_screen/main_screen_pages/user_products_page/bloc/user_products_bloc.dart';
 import 'bloc/add_product_bloc.dart';
 import 'bloc/add_product_event.dart';
 import 'bloc/add_product_state.dart';

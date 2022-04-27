@@ -26,16 +26,16 @@ class ChatRepository {
           chat = chat.copyWith(id: const Uuid().v1());
         }
 
+        chat = chat.copyWith(userIds: [...?chat.userIds, _currentUser.uid]);
+
         final jsonChat = chat.toJson();
 
-        if (chat.user?.id != null) {
-          await _firestore
-              .collection(fireStoreNameChatTable)
-              .doc(_currentUser.uid)
-              .collection(fireStoreNameChatSubTable)
-              .doc(chat.user?.id)
-              .set(jsonChat);
-        }
+        await _firestore
+            .collection(fireStoreNameChatTable)
+            .doc(chat.id)
+            .set(jsonChat);
+
+        return Success;
       }
     });
   }
@@ -47,8 +47,7 @@ class ChatRepository {
       if (_currentUser != null) {
         final result = await _firestore
             .collection(fireStoreNameChatTable)
-            .doc(_currentUser.uid)
-            .collection(fireStoreNameChatSubTable)
+            .where('userIds', arrayContains: _auth.currentUser!.uid)
             .get();
 
         final listChats =
@@ -58,37 +57,43 @@ class ChatRepository {
     });
   }
 
-  Future<Result<Chat, String>> getChatBuId(String userId) async {
-    return firestoreCaller<Chat>(() async {
-      final _currentUser = _auth.currentUser;
-
-      if (_currentUser != null) {
-        final result = await _firestore
-            .collection(fireStoreNameChatTable)
-            .doc(_currentUser.uid)
-            .collection(fireStoreNameChatSubTable)
-            .doc(userId)
-            .get();
-
-        if (result.data() != null) {
-          return Chat.fromJson(result.data()!);
-        }
-      }
-    });
-  }
-
   Stream<Result<Chat, String>> getChatBuIdStream(String userId) async* {
-    final _currentUser = _auth.currentUser;
     try {
-      final result = _firestore
+      final result = await _firestore
           .collection(fireStoreNameChatTable)
-          .doc(_currentUser?.uid)
-          .collection(fireStoreNameChatSubTable)
-          .doc(userId)
-          .snapshots();
+          .where('userIds', arrayContains: _auth.currentUser!.uid)
+          .get();
+      if (result.size != 0) {
+        for (final chat in result.docs) {
+          if (Chat.fromJson(chat.data()).userIds?.contains(userId) == true &&
+              Chat.fromJson(chat.data())
+                      .userIds
+                      ?.contains(_auth.currentUser!.uid) ==
+                  true) {
+            final resultStream = _firestore
+                .collection(fireStoreNameChatTable)
+                .doc(Chat.fromJson(chat.data()).id)
+                .snapshots();
 
-      await for (final chatReceived in result) {
-        yield Success(data: Chat.fromJson(chatReceived.data()!));
+            await for (final chatReceived in resultStream) {
+              if (chatReceived.data() != null) {
+                yield Success(data: Chat.fromJson(chatReceived.data()!));
+              }
+            }
+          }
+        }
+      } else {
+        //create new chat
+        await saveChat(Chat(userIds: [userId]));
+
+        final result = _firestore
+            .collection(fireStoreNameChatTable)
+            .where('userIds', arrayContains: _auth.currentUser!.uid)
+            .snapshots();
+
+        await for (final chatReceived in result) {
+          yield Success(data: Chat.fromJson(chatReceived.docs.first.data()));
+        }
       }
     } catch (e) {
       if (e is FirebaseException) {

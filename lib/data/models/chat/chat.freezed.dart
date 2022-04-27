@@ -23,11 +23,11 @@ class _$ChatTearOff {
 
   _Initial call(
       {String? id,
-      @JsonKey(toJson: userToJson) User? user,
+      List<String>? userIds,
       @JsonKey(toJson: listMessagesToJson) List<Message>? listMessages}) {
     return _Initial(
       id: id,
-      user: user,
+      userIds: userIds,
       listMessages: listMessages,
     );
   }
@@ -43,8 +43,7 @@ const $Chat = _$ChatTearOff();
 /// @nodoc
 mixin _$Chat {
   String? get id => throw _privateConstructorUsedError;
-  @JsonKey(toJson: userToJson)
-  User? get user => throw _privateConstructorUsedError;
+  List<String>? get userIds => throw _privateConstructorUsedError;
   @JsonKey(toJson: listMessagesToJson)
   List<Message>? get listMessages => throw _privateConstructorUsedError;
 
@@ -59,10 +58,8 @@ abstract class $ChatCopyWith<$Res> {
       _$ChatCopyWithImpl<$Res>;
   $Res call(
       {String? id,
-      @JsonKey(toJson: userToJson) User? user,
+      List<String>? userIds,
       @JsonKey(toJson: listMessagesToJson) List<Message>? listMessages});
-
-  $UserCopyWith<$Res>? get user;
 }
 
 /// @nodoc
@@ -76,7 +73,7 @@ class _$ChatCopyWithImpl<$Res> implements $ChatCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
-    Object? user = freezed,
+    Object? userIds = freezed,
     Object? listMessages = freezed,
   }) {
     return _then(_value.copyWith(
@@ -84,26 +81,15 @@ class _$ChatCopyWithImpl<$Res> implements $ChatCopyWith<$Res> {
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      user: user == freezed
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as User?,
+      userIds: userIds == freezed
+          ? _value.userIds
+          : userIds // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
       listMessages: listMessages == freezed
           ? _value.listMessages
           : listMessages // ignore: cast_nullable_to_non_nullable
               as List<Message>?,
     ));
-  }
-
-  @override
-  $UserCopyWith<$Res>? get user {
-    if (_value.user == null) {
-      return null;
-    }
-
-    return $UserCopyWith<$Res>(_value.user!, (value) {
-      return _then(_value.copyWith(user: value));
-    });
   }
 }
 
@@ -114,11 +100,8 @@ abstract class _$InitialCopyWith<$Res> implements $ChatCopyWith<$Res> {
   @override
   $Res call(
       {String? id,
-      @JsonKey(toJson: userToJson) User? user,
+      List<String>? userIds,
       @JsonKey(toJson: listMessagesToJson) List<Message>? listMessages});
-
-  @override
-  $UserCopyWith<$Res>? get user;
 }
 
 /// @nodoc
@@ -133,7 +116,7 @@ class __$InitialCopyWithImpl<$Res> extends _$ChatCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? user = freezed,
+    Object? userIds = freezed,
     Object? listMessages = freezed,
   }) {
     return _then(_Initial(
@@ -141,10 +124,10 @@ class __$InitialCopyWithImpl<$Res> extends _$ChatCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String?,
-      user: user == freezed
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as User?,
+      userIds: userIds == freezed
+          ? _value.userIds
+          : userIds // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
       listMessages: listMessages == freezed
           ? _value.listMessages
           : listMessages // ignore: cast_nullable_to_non_nullable
@@ -158,7 +141,7 @@ class __$InitialCopyWithImpl<$Res> extends _$ChatCopyWithImpl<$Res>
 class _$_Initial implements _Initial {
   const _$_Initial(
       {this.id,
-      @JsonKey(toJson: userToJson) this.user,
+      this.userIds,
       @JsonKey(toJson: listMessagesToJson) this.listMessages});
 
   factory _$_Initial.fromJson(Map<String, dynamic> json) =>
@@ -167,15 +150,14 @@ class _$_Initial implements _Initial {
   @override
   final String? id;
   @override
-  @JsonKey(toJson: userToJson)
-  final User? user;
+  final List<String>? userIds;
   @override
   @JsonKey(toJson: listMessagesToJson)
   final List<Message>? listMessages;
 
   @override
   String toString() {
-    return 'Chat(id: $id, user: $user, listMessages: $listMessages)';
+    return 'Chat(id: $id, userIds: $userIds, listMessages: $listMessages)';
   }
 
   @override
@@ -184,7 +166,7 @@ class _$_Initial implements _Initial {
         (other.runtimeType == runtimeType &&
             other is _Initial &&
             const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.user, user) &&
+            const DeepCollectionEquality().equals(other.userIds, userIds) &&
             const DeepCollectionEquality()
                 .equals(other.listMessages, listMessages));
   }
@@ -193,7 +175,7 @@ class _$_Initial implements _Initial {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(user),
+      const DeepCollectionEquality().hash(userIds),
       const DeepCollectionEquality().hash(listMessages));
 
   @JsonKey(ignore: true)
@@ -210,7 +192,7 @@ class _$_Initial implements _Initial {
 abstract class _Initial implements Chat {
   const factory _Initial(
           {String? id,
-          @JsonKey(toJson: userToJson) User? user,
+          List<String>? userIds,
           @JsonKey(toJson: listMessagesToJson) List<Message>? listMessages}) =
       _$_Initial;
 
@@ -219,8 +201,7 @@ abstract class _Initial implements Chat {
   @override
   String? get id;
   @override
-  @JsonKey(toJson: userToJson)
-  User? get user;
+  List<String>? get userIds;
   @override
   @JsonKey(toJson: listMessagesToJson)
   List<Message>? get listMessages;

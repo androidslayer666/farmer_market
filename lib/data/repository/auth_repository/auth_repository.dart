@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../../presentation/screens/phone_enter_screen/bloc/phone_enter_bloc.dart';
+import '../../../presentation/screens/authorization_screen/bloc/authorization_bloc.dart';
 import '../constants.dart';
 import '../../models/user/user.dart' as models;
 import '../storage/storage_repository.dart';
@@ -24,7 +24,7 @@ class AuthRepository {
         _storageRepository = storageRepository;
 
   Future<Result> signUpWithPhone(
-      {required String phone, required PhoneEnterBloc bloc}) async {
+      {required String phone, required AuthorizationBloc bloc}) async {
     try {
       if (phone.isNotEmpty) {
         await _auth.verifyPhoneNumber(
@@ -69,28 +69,6 @@ class AuthRepository {
       return Failure(error: err.toString());
     }
   }
-
-  // Stream<Result<models.User, String>> getCurrentUserStream() async*{
-  //   final currentUser = _auth.currentUser;
-  //
-  //   if (currentUser != null) {
-  //     final result = _firestore
-  //         .collection(fireStoreUsersTableName)
-  //         .doc(currentUser.uid)
-  //         .snapshots();
-  //
-  //     await for(final user in result){
-  //
-  //       if (user.data() != null) {
-  //         yield Success(data: models.User.fromJson(user.data()!));
-  //       }
-  //     }
-  //
-  //   } else {
-  //     yield Failure(error: null);
-  //   }
-  // }
-
 
   Future<Result<models.User, String>> getCurrentUser() async {
     final currentUser = _auth.currentUser;
@@ -140,6 +118,13 @@ class AuthRepository {
 
     } catch (e) {
       yield Failure(error: e.toString());
+    }
+  }
+
+  Stream<User?> authChanges() async*{
+    final stream = _auth.authStateChanges();
+    await for (final user in stream) {
+      yield user;
     }
   }
 

@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../../presentation/screens/phone_enter_screen/bloc/phone_enter_bloc.dart' ;
-import '../../../presentation/screens/phone_enter_screen/bloc/phone_enter_event.dart' as events;
+import '../../../presentation/screens/authorization_screen/bloc/authorization_bloc.dart';
+import '../../../presentation/screens/authorization_screen/bloc/authorization_event.dart' as events;
 
 
 Future<Object> onCodeSent(String verificationId, int? forceResendingToken,
-    PhoneEnterBloc bloc, FirebaseAuth _auth) async {
+    AuthorizationBloc bloc, FirebaseAuth _auth) async {
   // adding event in bloc with a function that should be called after the code is submitted
-  bloc.add(events.PhoneCodeSent(
+  bloc.add(events.AuthorizationCodeSent(
       onCodeSubmitted: (String code) async {
     try {
       //sending the code

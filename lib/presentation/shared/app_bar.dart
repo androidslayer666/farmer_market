@@ -1,4 +1,3 @@
-import 'package:farmer_market/presentation/screens/main_screen_pages/list_products/bloc/list_product_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -6,7 +5,8 @@ import '../../data/models/user/user.dart';
 import '../navigation/arguments.dart';
 import '../navigation/navigation_wrapper.dart';
 import '../screens/main_screen/bloc/main_bloc.dart';
-import '../screens/main_screen_pages/list_products/bloc/list_product_state.dart';
+import '../screens/main_screen/main_screen_pages/list_products/bloc/list_product_bloc.dart';
+import '../screens/main_screen/main_screen_pages/list_products/bloc/list_product_state.dart';
 
 class CustomAppBar extends StatefulWidget with PreferredSizeWidget {
   const CustomAppBar(

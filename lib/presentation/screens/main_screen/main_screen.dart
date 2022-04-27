@@ -7,18 +7,18 @@ import '../../../app/bloc/app_bloc.dart';
 import '../../../data/models/filter/filter.dart';
 import '../../navigation/navigation_wrapper.dart';
 import '../../shared/app_bar.dart';
-import '../main_screen_pages/cart_page/cart_page.dart';
-import '../main_screen_pages/chat_page/chat_page.dart';
-import '../main_screen_pages/list_products/bloc/list_product_bloc.dart';
-import '../main_screen_pages/list_products/bloc/list_product_state.dart';
-import '../main_screen_pages/list_products/list_products_page.dart';
-import '../main_screen_pages/shipping_page/shipping_page.dart';
-import '../main_screen_pages/user_products_page/user_products_page.dart';
+import 'main_screen_pages/shipping_page/shipping_page.dart';
+import 'main_screen_pages/cart_page/cart_page.dart';
+import 'main_screen_pages/chat_page/chat_page.dart';
+import 'main_screen_pages/list_products/bloc/list_product_bloc.dart';
+import 'main_screen_pages/list_products/bloc/list_product_state.dart';
 import 'bloc/main_bloc.dart';
 import 'bloc/main_state.dart';
 import 'main_screen_back_press_resolver.dart';
 import 'main_screen_bottom_navigation_bar.dart';
 import 'main_screen_fab.dart';
+import 'main_screen_pages/list_products/list_products_page.dart';
+import 'main_screen_pages/user_products_page/user_products_page.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -28,11 +28,9 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  late final List<Widget> _pages;
 
   @override
   void initState() {
-    _pages = _getListPages(true);
     super.initState();
   }
 
@@ -47,7 +45,7 @@ class _MainScreenState extends State<MainScreen> {
               appState: appState,
               listProductState: listProductState,
               mainState: mainState,
-              pages: _pages,
+              pages: _getListPages(appState.currentUser?.isSeller == true),
             );
           });
         },

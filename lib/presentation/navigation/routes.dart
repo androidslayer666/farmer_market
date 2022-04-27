@@ -7,7 +7,7 @@ import '../screens/add_product_screen/add_product_screen.dart';
 import '../screens/chat_screen/chat_screen.dart';
 import '../screens/edit_user_screen/edit_user_screen.dart';
 import '../screens/main_screen/main_screen.dart';
-import '../screens/phone_enter_screen/phone_enter_screen.dart';
+import '../screens/authorization_screen/phone_enter_screen.dart';
 
 String signInRoute = '/signIn';
 String mainRoute = '/main_screen';

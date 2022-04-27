@@ -59,9 +59,6 @@ class ChatScreenCubit extends Cubit<ChatScreenState> {
           time: DateTime.now())
     ];
     Chat? chat = state.chat.copyWith(listMessages: listMessages);
-    if (state.chat.user == null && state.user?.id != null) {
-      chat = chat.copyWith(user: state.user);
-    }
     if (message.isNotEmpty) {
       _chatRepository.saveChat(chat);
     }

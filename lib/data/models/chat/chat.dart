@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../convertors.dart';
-import '../user/user.dart';
 import 'message.dart';
 
 
@@ -13,8 +12,7 @@ part 'chat.g.dart';
 class Chat with _$Chat {
   const factory Chat(
       {String? id,
-        @JsonKey(toJson: userToJson)
-        User? user,
+        List<String>? userIds,
         @JsonKey(toJson: listMessagesToJson)
         List<Message>? listMessages
       }) = _Initial;

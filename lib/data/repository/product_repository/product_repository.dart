@@ -37,7 +37,6 @@ class ProductRepository {
       final _currentUser = _auth.currentUser;
       product = await _addProductPicture(product, file);
 
-
       if (_currentUser != null) {
         product = product.copyWith(userID: _currentUser.uid);
         product = await _addProductAddress(product, _currentUser);

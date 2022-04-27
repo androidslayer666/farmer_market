@@ -8,9 +8,8 @@ part of 'chat.dart';
 
 _$_Initial _$$_InitialFromJson(Map<String, dynamic> json) => _$_Initial(
       id: json['id'] as String?,
-      user: json['user'] == null
-          ? null
-          : User.fromJson(json['user'] as Map<String, dynamic>),
+      userIds:
+          (json['userIds'] as List<dynamic>?)?.map((e) => e as String).toList(),
       listMessages: (json['listMessages'] as List<dynamic>?)
           ?.map((e) => Message.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -19,6 +18,6 @@ _$_Initial _$$_InitialFromJson(Map<String, dynamic> json) => _$_Initial(
 Map<String, dynamic> _$$_InitialToJson(_$_Initial instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'user': userToJson(instance.user),
+      'userIds': instance.userIds,
       'listMessages': listMessagesToJson(instance.listMessages),
     };

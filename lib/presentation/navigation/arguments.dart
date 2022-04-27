@@ -1,5 +1,6 @@
 
 
+import '../../data/models/chat/chat.dart';
 import '../../data/models/filter/filter.dart';
 import '../../data/models/product/product.dart';
 import '../../data/models/user/user.dart';
@@ -14,6 +15,12 @@ class UserDetailArguments{
   User? user;
 
   UserDetailArguments({required this.user});
+}
+
+class ChatDetailArguments{
+  Chat? chat;
+
+  ChatDetailArguments({required this.chat});
 }
 
 class ProductDetailArguments{
